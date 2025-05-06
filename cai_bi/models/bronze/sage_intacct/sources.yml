@@ -1,0 +1,76 @@
+version: 2
+
+sources:
+  - name: sage_intacct
+    description: "source tables from sage intacct"
+    database: fivetran_database
+    schema: sage_intacct_ldg
+    tables:
+      - name: acct_range
+      - name: ap_adjustment
+      - name: ap_adjustment_item
+      - name: ap_advance
+      - name: ap_advance_item
+      - name: ap_bill
+      - name: ap_bill_item
+      - name: ap_term
+      - name: aradvance
+      - name: aradvanceitem
+      - name: ar_adjustment
+      - name: ar_adjustment_item
+      - name: ar_invoice
+      - name: ar_invoice_item
+      - name: ar_invoice_payment
+      - name: ar_payment
+      - name: ar_payment_item
+      - name: ar_term
+      - name: cc_transaction
+      - name: cc_transaction_entry
+      - name: contact
+      - name: customer
+      - name: customergroup
+      - name: custtype
+      - name: department
+      - name: department_group
+      - name: department_grp_member
+      - name: dimension_filter
+      - name: earningtype
+      - name: expenses
+      - name: eexpenses_item
+      - name: ee_account_label
+      - name: employee
+      - name: employeegroup
+      - name: employeerate
+      - name: employeetype
+      - name: exchange_rate
+      - name: exchange_rate_entry
+      - name: exchange_rate_types
+      - name: expense_adjustments
+      - name: expense_adjustments_item
+      - name: expense_payment_type
+      - name: financialaccount
+      - name: gl_account
+      - name: gl_acct_grp
+      - name: gl_acct_grp_member
+      - name: gl_batch
+      - name: gl_detail
+      - name: gl_dim_grp_member
+      - name: gl_entry
+      - name: gl_journal
+      - name: item
+      - name: item_gl_group
+      - name: item_group
+      - name: location
+      - name: location_entity
+      - name: location_group
+      - name: location_grp_member
+      - name: project
+      - name: project_resources
+      - name: so_document
+      - name: so_document_entry
+      - name: task
+      - name: taxdetail
+      - name: timesheet
+      - name: timesheetentry
+      - name: trx_currencies
+      - name: vendor
