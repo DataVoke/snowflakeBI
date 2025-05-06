@@ -2,36 +2,36 @@ version: 2
 
 sources:
   - name: ukg_pro
-    database: FIVETRAN_DATABASE
-    schema: UKG_PRO
+    database: fivetran_database
+    schema: ukg_pro
     tables:
-      - name: COMPANY
-      - name: COMPENSATION
-      - name: CONTACT
-      - name: DIRECT_DEPOSIT
-      - name: EARNING
-      - name: EARNING_HISTORY_BASE_ELEMENT
-      - name: EDUCATION
-      - name: EMPLOYEE
-      - name: EMPLOYEE_CHANGE
-      - name: EMPLOYEE_DEMOGRAPHIC
-      - name: EMPLOYEE_JOB_HISTORY
-      - name: EMPLOYEE_MULTIPLE_JOB
-      - name: EMPLOYEE_SECURITY_USER
-      - name: EMPLOYEE_STATUS
-      - name: EMPLOYEE_SUPERVISOR
-      - name: EMPLOYMENT
-      - name: EMPLOYMENT_FIELD_ROW
-      - name: GENERAL_LEDGER
-      - name: JOB
-      - name: LOCATION
-      - name: ORGANIZATION_LEVEL
-      - name: ORGANIZATION_REPORTING_CATEGORY
-      - name: PAY_GROUP
-      - name: PAY_REGISTER
-      - name: PHONE_NUMBER
-      - name: PLATFORM_CONFIG_EMPLOYMENT
-      - name: ROLE
-      - name: TAX_GROUP
-      - name: USERS
-      - name: USER_PROFILE
+      - name: company
+      - name: compensation
+      - name: contact
+      - name: direct_deposit
+      - name: earning
+      - name: earning_history_base_element
+      - name: education
+      - name: employee
+      - name: employee_change
+      - name: employee_demographic
+      - name: employee_job_history
+      - name: employee_multiple_job
+      - name: employee_security_user
+      - name: employee_status
+      - name: employee_supervisor
+      - name: employment
+      - name: employment_field_row
+      - name: general_ledger
+      - name: job
+      - name: location
+      - name: organization_level
+      - name: organization_reporting_category
+      - name: pay_group
+      - name: pay_register
+      - name: phone_number
+      - name: platform_config_employment
+      - name: role
+      - name: tax_group
+      - name: users
+      - name: user_profile
