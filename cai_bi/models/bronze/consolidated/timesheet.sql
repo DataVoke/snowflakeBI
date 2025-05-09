@@ -4,73 +4,75 @@
 
 with salesforce as (
     select
-        md5(t.id) RECORD_KEY,
-        'SFC' SRC_SYS_KEY,
-        CURRENT_TIMESTAMP()::TIMESTAMP_TZ CREATED_AT_DTS,
-        '{{ this.name }}' CREATED_BY,
-        CURRENT_TIMESTAMP()::TIMESTAMP_TZ UPDATED_AT_DTS,
-        '{{ this.name }}' UPDATED_BY,
-        t.id as RECORD_NO,
-        c.PSE_API_RESOURCE_CORRELATION_ID_C EMPLOYEE_ID,
-        t.PSE_START_DATE_C BEGIN_DTE,
-        t.PSE_END_DATE_C END_DTE,
-        t.PSE_ASSIGNMENT_C ASSIGNMENT_C
-    from {{ source('salesforce', 'pse_timecard_header_c')}} t
-    left join {{ source('salesforce', 'contact') }} c on c.pse_is_resource_c
+        md5(t.id) as record_key,
+        'SFC' as src_sys_key,
+        current_timestamp()::TIMESTAMP_TZ as created_at_dts,
+        '{{ this.name }}' as created_by,
+        current_timestamp()::TIMESTAMP_TZ as updated_at_dts,
+        '{{ this.name }}' as updated_by,
+        t.id as record_no,
+        c.pse_api_resource_correlation_id_c as employee_id,
+        t.pse_start_date_c as begin_dte,
+        t.pse_end_date_c as end_dte,
+        t.pse_assignment_c as assignment_c
+    from {{ source('salesforce', 'pse_timecard_header_c') }} as t
+    left join {{ source('salesforce', 'contact') }} as c on c.pse_is_resource_c
 ),
+
 sage_intacct as (
     select
-        md5(recordno) RECORD_KEY,
-        'SIN' SRC_SYS_KEY,
-        CURRENT_TIMESTAMP()::TIMESTAMP_TZ CREATED_AT_DTS,
-        '{{ this.model }}' CREATED_BY,
-        CURRENT_TIMESTAMP()::TIMESTAMP_TZ UPDATED_AT_DTS,
-        '{{ this.name }}' UPDATED_BY,
-        recordno RECORD_NO,
-        EMPLOYEEID EMPLOYEE_ID,
-        begindate BEGIN_DTE,
-        enddate END_DTE,
-        state STATE,
-        state_worked STATE_WORKED,
-        actualcost ACTUAL_COST,
-        glpostdate GLPOST_DTE
-    from {{ source('sage_intacct', 'timesheet')}}
+        md5(recordno) as record_key,
+        'SIN' as src_sys_key,
+        current_timestamp()::TIMESTAMP_TZ as created_at_dts,
+        '{{ this.model }}' as created_by,
+        current_timestamp()::TIMESTAMP_TZ as updated_at_dts,
+        '{{ this.name }}' as updated_by,
+        recordno as record_no,
+        employeeid as employee_id,
+        begindate as begin_dte,
+        enddate as end_dte,
+        state,
+        state_worked,
+        actualcost as actual_cost,
+        glpostdate as glpost_dte
+    from {{ source('sage_intacct', 'timesheet') }}
 ),
+
 final as (
-    select 
-        RECORD_KEY,
-        SRC_SYS_KEY,
-        CREATED_AT_DTS,
-        CREATED_BY,
-        UPDATED_AT_DTS,
-        UPDATED_BY,
-        RECORD_NO,
-        EMPLOYEE_ID,
-        BEGIN_DTE,
-        END_DTE,
-        NULL STATE,
-        NULL STATE_WORKED,
-        NULL ACTUAL_COST,
-        NULL GLPOST_DTE,
-        ASSIGNMENT_C
+    select
+        record_key,
+        src_sys_key,
+        created_at_dts,
+        created_by,
+        updated_at_dts,
+        updated_by,
+        record_no,
+        employee_id,
+        begin_dte,
+        end_dte,
+        NULL as state,
+        NULL as state_worked,
+        NULL as actual_cost,
+        NULL as glpost_dte,
+        assignment_c
     from salesforce
     union all
     select
-        RECORD_KEY,
-        SRC_SYS_KEY,
-        CREATED_AT_DTS,
-        CREATED_BY,
-        UPDATED_AT_DTS,
-        UPDATED_BY,
-        RECORD_NO,
-        EMPLOYEE_ID,
-        BEGIN_DTE,
-        END_DTE,
-        STATE,
-        STATE_WORKED,
-        ACTUAL_COST,
-        GLPOST_DTE,
-        NULL ASSIGNMENT_C
+        record_key,
+        src_sys_key,
+        created_at_dts,
+        created_by,
+        updated_at_dts,
+        updated_by,
+        record_no,
+        employee_id,
+        begin_dte,
+        end_dte,
+        state,
+        state_worked,
+        actual_cost,
+        glpost_dte,
+        NULL as assignment_c
     from sage_intacct
 )
 
