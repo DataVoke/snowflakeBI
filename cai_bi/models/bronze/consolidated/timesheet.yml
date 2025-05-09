@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: timesheet
+    description: Combined timesheet data from Salesforce and Sage Intacct.
+    contract:
+      enforced: true
+    columns:
+      - name: RECORD_KEY
+        description: Unique key for each record.
+        data_type: VARCHAR(32)
+        tests: [not_null]
+
+      - name: SRC_SYS_KEY
+        description: Source system identifier ('SFC' or 'SIN').
+        data_type: VARCHAR(250)
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['SFC', 'SIN']
+
+      - name: CREATED_AT_DTS
+        description: Timestamp when the record was created.
+        data_type: TIMESTAMP_TZ(9)
+
+      - name: CREATED_BY
+        description: User who created the record.
+        data_type: VARCHAR(250)
+
+      - name: UPDATED_AT_DTS
+        description: Timestamp when the record was last updated.
+        data_type: TIMESTAMP_TZ(9)
+
+      - name: UPDATED_BY
+        description: User who last updated the record.
+        data_type: VARCHAR(250)
+
+      - name: RECORD_NO
+        description: Original record number from source system.
+        data_type: VARCHAR(5000)
+
+      - name: EMPLOYEE_ID
+        description: Employee or resource ID.
+        data_type: VARCHAR(5000)
+        tests: [not_null]
+
+      - name: BEGIN_DTE
+        description: Timesheet start date.
+        data_type: DATE
+        tests: [not_null]
+
+      - name: END_DTE
+        description: Timesheet end date.
+        data_type: DATE
+
+      - name: STATE
+        description: Current state of the timesheet.
+        data_type: VARCHAR(5000)
+
+      - name: STATE_WORKED
+        description: U.S. state where the work occurred (Sage Intacct only).
+        data_type: VARCHAR(5000)
+
+      - name: ACTUAL_COST
+        description: Whether actual cost is recorded.
+        data_type: BOOLEAN
+
+      - name: GLPOST_DTE
+        description: General ledger posting date.
+        data_type: DATE
+
+      - name: ASSIGNMENT_C
+        description: Assignment identifier from Salesforce.
+        data_type: VARCHAR(5000)
