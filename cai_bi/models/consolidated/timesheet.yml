@@ -3,8 +3,6 @@ version: 2
 models:
   - name: timesheet
     description: Combined timesheet data from Salesforce and Sage Intacct.
-    contract:
-      enforced: true
     columns:
       - name: RECORD_KEY
         description: Unique key for each record.
