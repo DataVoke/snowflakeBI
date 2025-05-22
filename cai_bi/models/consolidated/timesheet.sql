@@ -6,11 +6,13 @@ with
     sf_time as (
         select * 
         from {{ source('salesforce', 'pse_timecard_header_c') }}
+        where _fivetran_deleted = false
     ),
 
     sf_contact as (
         select * 
         from {{ source('salesforce', 'contact') }}
+        where _fivetran_deleted = false
     ),
 
     si_time as (

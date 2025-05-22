@@ -1,9 +1,9 @@
 with 
     sf_timesheetentry as (select * from {{ ref('int_sf_timesheetentry') }}),
-    si_timesheetentry as (select * from {{ source('sage_intacct', 'timesheetentry') }}),
-    sf_contact        as (select * from {{ source('salesforce', 'contact') }}),
-    sf_project        as (select * from {{ source('salesforce', 'pse_proj_c') }}),
-    sf_project_task   as (select * from {{ source('salesforce', 'pse_project_task_c') }}),
+    si_timesheetentry as (select * from {{ source('sage_intacct', 'timesheetentry') }} where _fivetran_deleted = false),
+    sf_contact        as (select * from {{ source('salesforce', 'contact') }} where _fivetran_deleted = false),
+    sf_project        as (select * from {{ source('salesforce', 'pse_proj_c') }} where _fivetran_deleted = false),
+    sf_project_task   as (select * from {{ source('salesforce', 'pse_project_task_c') }} where _fivetran_deleted = false),
     si_filtered       as (
                             select 
                                 * 

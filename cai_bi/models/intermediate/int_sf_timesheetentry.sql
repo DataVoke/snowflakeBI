@@ -5,8 +5,8 @@
     )
 }}
 
-with task_time       as (select * from {{ source('salesforce', 'pse_task_time_c') }}),
-     timecard_header as (select * from {{ source('salesforce', 'pse_timecard_header_c') }}),
+with task_time       as (select * from {{ source('salesforce', 'pse_task_time_c') }} where _fivetran_deleted = false),
+     timecard_header as (select * from {{ source('salesforce', 'pse_timecard_header_c') }} where _fivetran_deleted = false),
 
 monday as (
     select 
