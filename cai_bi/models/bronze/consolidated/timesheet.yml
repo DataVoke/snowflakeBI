@@ -2,73 +2,168 @@ version: 2
 
 models:
   - name: timesheet
-    description: Combined timesheet data from Salesforce and Sage Intacct.
-    contract:
-      enforced: true
+    description: Consolidated timesheet data from Sage Intacct.
     columns:
-      - name: RECORD_KEY
-        description: Unique key for each record.
+      - name: PK_TIMESHEET
+        description: Surrogate key for the timesheet record.
         data_type: VARCHAR(32)
         tests: [not_null]
 
       - name: SRC_SYS_KEY
-        description: Source system identifier ('SFC' or 'SIN').
+        description: Source system identifier ('SIN' for Sage Intacct).
         data_type: VARCHAR(250)
         tests:
           - not_null
           - accepted_values:
-              values: ['SFC', 'SIN']
+              values: ['SIN']
 
-      - name: CREATED_AT_DTS
+      - name: DTS_CREATED_AT
         description: Timestamp when the record was created.
-        data_type: TIMESTAMP_TZ(9)
+        data_type: TIMESTAMP_LTZ(9)
+        tests: [not_null]
 
       - name: CREATED_BY
-        description: User who created the record.
+        description: DBT model that created this record.
         data_type: VARCHAR(250)
+        tests: [not_null]
 
-      - name: UPDATED_AT_DTS
+      - name: DTS_UPDATED_AT
         description: Timestamp when the record was last updated.
-        data_type: TIMESTAMP_TZ(9)
+        data_type: TIMESTAMP_LTZ(9)
+        tests: [not_null]
 
       - name: UPDATED_BY
-        description: User who last updated the record.
+        description: DBT model that last updated the record.
+        data_type: VARCHAR(250)
+        tests: [not_null]
+
+      - name: ASSIGNMENT_ID
         data_type: VARCHAR(250)
 
-      - name: RECORD_NO
-        description: Original record number from source system.
+      - name: EMPLOYEE_DEPARTMENT_ID
+        description: Department ID of the employee.
         data_type: VARCHAR(5000)
 
       - name: EMPLOYEE_ID
-        description: Employee or resource ID.
+        description: Employee ID from Sage Intacct.
         data_type: VARCHAR(5000)
         tests: [not_null]
 
-      - name: BEGIN_DTE
-        description: Timesheet start date.
-        data_type: DATE
+      - name: EMPLOYEE_LOCATION_ID
+        description: Location ID of the employee.
+        data_type: VARCHAR(5000)
+
+      - name: EMPLOYEE_SYSTEM_ID
+        description: Internal system ID for the employee.
+        data_type: NUMBER(38,0)
+
+      - name: FK_EMPLOYEE
+        description: Surrogate key for the employee (hashed employee ID).
+        data_type: VARCHAR(32)
         tests: [not_null]
 
-      - name: END_DTE
-        description: Timesheet end date.
-        data_type: DATE
+      - name: LOCATION_KEY
+        description: Location key from the source system.
+        data_type: NUMBER(38,0)
 
-      - name: STATE
-        description: Current state of the timesheet.
+      - name: MEGA_ENTITY_ID
+        description: Mega entity ID from Sage Intacct.
         data_type: VARCHAR(5000)
 
-      - name: STATE_WORKED
-        description: U.S. state where the work occurred (Sage Intacct only).
+      - name: MEGA_ENTITY_KEY
+        description: Mega entity key from Sage Intacct.
+        data_type: NUMBER(38,0)
+
+      - name: SRC_CREATED_BY_ID
+        description: User ID who created the record in the source system.
+        data_type: NUMBER(38,0)
+
+      - name: SRC_MODIFIED_BY_ID
+        description: User ID who last modified the record in the source system.
+        data_type: NUMBER(38,0)
+
+      - name: SUP_DOC_ID
+        description: Supporting document ID.
         data_type: VARCHAR(5000)
 
-      - name: ACTUAL_COST
-        description: Whether actual cost is recorded.
+      - name: SUP_DOC_KEY
+        description: Supporting document key.
+        data_type: NUMBER(38,0)
+
+      - name: SYSTEM_ID
+        description: Record number from the source system.
+        data_type: VARCHAR(5000)
+        tests: [not_null]
+
+      - name: BLN_COST_ACTUAL
+        description: Actual cost from the timesheet.
         data_type: BOOLEAN
 
-      - name: GLPOST_DTE
+      - name: CONFIG
+        description: Configuration field from Sage Intacct.
+        data_type: VARCHAR(5000)
+
+      - name: DESCRIPTION
+        description: Description of the timesheet.
+        data_type: VARCHAR(5000)
+
+      - name: DTE_GL_POST
         description: General ledger posting date.
         data_type: DATE
 
-      - name: ASSIGNMENT_C
-        description: Assignment identifier from Salesforce.
+      - name: DTE_SRC_END
+        description: End date of the timesheet.
+        data_type: DATE
+
+      - name: DTE_SRC_START
+        description: Start date of the timesheet.
+        data_type: DATE
+        tests: [not_null]
+
+      - name: DTS_SRC_CREATED
+        description: Timestamp when the record was created in the source system.
+        data_type: TIMESTAMP_TZ
+
+      - name: DTS_SRC_MODIFIED
+        description: Timestamp when the record was modified in the source system.
+        data_type: TIMESTAMP_TZ
+
+      - name: EMPLOYEE_FIRST_NAME
+        description: First name of the employee.
+        data_type: VARCHAR(5000)
+
+      - name: EMPLOYEE_LAST_NAME
+        description: Last name of the employee.
+        data_type: VARCHAR(5000)
+
+      - name: EMPLOYEE_NAME
+        description: Full name of the employee.
+        data_type: VARCHAR(5000)
+
+      - name: HOURS_IN_DAY
+        description: Number of hours in a workday.
+        data_type: NUMBER(38,0)
+
+      - name: MEGA_ENTITY_NAME
+        description: Name of the mega entity.
+        data_type: VARCHAR(5000)
+
+      - name: METHOD
+        description: Method used in the timesheet.
+        data_type: VARCHAR(5000)
+
+      - name: RECORD_URL
+        description: URL to access the record in the source system.
+        data_type: VARCHAR(5000)
+
+      - name: STATE_WORKED
+        description: U.S. state where the work was performed.
+        data_type: VARCHAR(5000)
+
+      - name: STATUS
+        description: Status of the timesheet.
+        data_type: VARCHAR(5000)
+
+      - name: UOM
+        description: Unit of measurement for the timesheet.
         data_type: VARCHAR(5000)
