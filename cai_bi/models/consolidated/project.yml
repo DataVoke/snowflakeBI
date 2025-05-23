@@ -1,0 +1,236 @@
+version: 2
+
+models:
+  - name: project
+    description: "Project table containing consolidated project data from multiple sources."
+    columns:
+      - name: pk_project
+        data_type: varchar(32)
+      - name: src_sys_key
+        data_type: varchar(3)
+      - name: dts_created_at
+        data_type: timestamp_ltz(9)
+      - name: created_by
+        data_type: varchar(9)
+      - name: dts_updated_at
+        data_type: timestamp_ltz(9)
+      - name: updated_by
+        data_type: varchar(9)
+      - name: dts_eff_start
+        data_type: timestamp_ltz(9)
+      - name: dts_eff_end
+        data_type: varchar(10)
+      - name: bln_current
+        data_type: boolean
+      - name: account_id
+        data_type: varchar(255)
+      - name: assistant_project_manager_id
+        data_type: varchar(255)
+      - name: billto_key
+        data_type: number(38,0)
+      - name: client_site_id
+        data_type: varchar(765)
+      - name: contact_key
+        data_type: number(38,0)
+      - name: customer_id
+        data_type: varchar(256)
+      - name: customer_key
+        data_type: number(38,0)
+      - name: department_id
+        data_type: varchar(256)
+      - name: estimate_id
+        data_type: varchar(255)
+      - name: group_id
+        data_type: varchar(18)
+      - name: int_manager_id
+        data_type: varchar(16777216)
+      - name: intacct_region_id
+        data_type: varchar(18)
+      - name: location_id
+        data_type: varchar(16777216)
+      - name: location_id_intacct
+        data_type: varchar(16777216)
+      - name: manager_key
+        data_type: number(38,0)
+      - name: mega_entity_id
+        data_type: varchar(256)
+      - name: mega_entity_key
+        data_type: number(38,0)
+      - name: opportunity_id
+        data_type: varchar(255)
+      - name: owner_id
+        data_type: varchar(18)
+      - name: parent_key
+        data_type: number(38,0)
+      - name: portal_project_id
+        data_type: varchar(765)
+      - name: practice_id
+        data_type: varchar(18)
+      - name: practice_id_intacct
+        data_type: varchar(150)
+      - name: project_dept_key
+        data_type: number(38,0)
+      - name: project_id
+        data_type: varchar(16777216)
+      - name: project_link_id
+        data_type: varchar(16777216)
+      - name: project_location_key
+        data_type: number(38,0)
+      - name: project_manager_id
+        data_type: varchar(256)
+      - name: project_type_key
+        data_type: number(38,0)
+      - name: purchase_order_id
+        data_type: varchar(75)
+      - name: root_parent_id
+        data_type: varchar(256)
+      - name: root_parent_key
+        data_type: number(38,0)
+      - name: ship_to_key
+        data_type: number(38,0)
+      - name: src_created_by_id
+        data_type: varchar(16777216)
+      - name: src_modified_by_id
+        data_type: varchar(16777216)
+      - name: system_id
+        data_type: varchar(16777216)
+      - name: term_key
+        data_type: number(38,0)
+      - name: qty_actual
+        data_type: float
+      - name: amt_bac_awarded
+        data_type: varchar(16777216)
+      - name: amt_budget_at_completion
+        data_type: varchar(16777216)
+      - name: amt_cai_spent_1
+        data_type: varchar(16777216)
+      - name: amt_total_billable
+        data_type: number(35,17)
+      - name: amt_total_budget
+        data_type: number(35,17)
+      - name: assistant_project_manager_name
+        data_type: varchar(255)
+      - name: billing_over_max
+        data_type: varchar(256)
+      - name: billing_type
+        data_type: varchar(765)
+      - name: bln_allow_expenses_without_assignments
+        data_type: boolean
+      - name: bln_allow_time_without_assignments
+        data_type: boolean
+      - name: bln_cai_complete
+        data_type: varchar(16777216)
+      - name: bln_daily_timecard_notes_required
+        data_type: boolean
+      - name: bln_exclude_from_project_planner
+        data_type: boolean
+      - name: bln_is_active
+        data_type: boolean
+      - name: bln_is_billable
+        data_type: boolean
+      - name: bln_is_billable_ap_po
+        data_type: boolean
+      - name: bln_is_billable_expense
+        data_type: boolean
+      - name: bln_pse_closed_for_expense_entry
+        data_type: boolean
+      - name: bln_pse_closed_for_time_entry
+        data_type: boolean
+      - name: bln_top_concern
+        data_type: boolean
+      - name: bln_travel_prohibited
+        data_type: boolean
+      - name: concern_type
+        data_type: varchar(255)
+      - name: contact_name
+        data_type: varchar(256)
+      - name: contract_type
+        data_type: varchar(765)
+      - name: cost_expense
+        data_type: number(35,17)
+      - name: cost_total_awarded
+        data_type: varchar(16777216)
+      - name: currency_iso_code
+        data_type: varchar(256)
+      - name: customer_name
+        data_type: varchar(256)
+      - name: department_name
+        data_type: varchar(256)
+      - name: dte_src_end
+        data_type: date
+      - name: dte_src_start
+        data_type: date
+      - name: dts_int_last_assignment_sync
+        data_type: timestamp_ntz(9)
+      - name: dts_int_last_phase_code_sync
+        data_type: timestamp_ntz(9)
+      - name: dts_int_last_project_sync
+        data_type: timestamp_ntz(9)
+      - name: dts_last_resource_plan_review
+        data_type: timestamp_ntz(9)
+      - name: dts_pmo_data_migration
+        data_type: timestamp_ntz(9)
+      - name: dts_sfc_last_assignment_sync
+        data_type: timestamp_ntz(9)
+      - name: dts_sfc_last_phase_code_sync
+        data_type: timestamp_ntz(9)
+      - name: dts_sfc_last_project_sync
+        data_type: timestamp_ntz(9)
+      - name: dts_sfc_last_task_sync
+        data_type: timestamp_ntz(9)
+      - name: dts_src_created
+        data_type: timestamp_tz(9)
+      - name: dts_src_modified
+        data_type: timestamp_tz(9)
+      - name: group_name
+        data_type: varchar(16777216)
+      - name: invoice_currency
+        data_type: varchar(256)
+      - name: last_resource_plan_review_by
+        data_type: varchar(255)
+      - name: last_synced_status
+        data_type: varchar(255)
+      - name: location_name
+        data_type: varchar(256)
+      - name: memo
+        data_type: varchar(2000)
+      - name: parent_name
+        data_type: varchar(256)
+      - name: pmo_comments
+        data_type: varchar(2000)
+      - name: pnm_notes
+        data_type: varchar(2000)
+      - name: pnm_revision
+        data_type: number(38,0)
+      - name: po_amount
+        data_type: float
+      - name: po_number
+        data_type: varchar(256)
+      - name: portal_project_code
+        data_type: varchar(765)
+      - name: project_category
+        data_type: varchar(765)
+      - name: project_description
+        data_type: varchar(2000)
+      - name: project_name
+        data_type: varchar(256)
+      - name: project_status
+        data_type: varchar(765)
+      - name: project_type
+        data_type: varchar(765)
+      - name: risk_rating
+        data_type: varchar(255)
+      - name: root_parent_name
+        data_type: varchar(256)
+      - name: sharepoint_url
+        data_type: varchar(2000)
+      - name: status
+        data_type: varchar(256)
+      - name: term_name
+        data_type: varchar(256)
+      - name: total_earned_value
+        data_type: number(35,17)
+      - name: total_number_of_tasks
+        data_type: float
+      - name: travel_rate
+        data_type: number(18,2)
