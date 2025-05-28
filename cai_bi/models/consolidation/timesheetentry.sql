@@ -16,7 +16,6 @@ with
 
 salesforce as (
     select
-        md5(sf_timesheetentry.id || sf_timesheetentry.created_date) as pk_timesheet,
         'sfc' as src_sys_key,
         current_timestamp as dts_created_at,
         'timesheet' as created_by,
@@ -32,10 +31,6 @@ salesforce as (
         null as employee_earning_type_key,
         sf_contact.pse_api_resource_correlation_id_c as employee_id,
         sf_timesheetentry.pse_resource_c as employee_system_id,
-        md5(sf_timesheetentry.pse_project_c) as fk_project,
-        md5(sf_timesheetentry.pse_timecard_c) as fk_timesheet,
-        md5(sf_timesheetentry.pse_resource_c) as fk_employee,
-        null as fk_task,
         null as item_id,
         null as item_key,
         null as labor_gl_batch_key,
@@ -105,7 +100,6 @@ salesforce as (
 
 sage_intacct as (
     select
-        md5(recordno) as pk_timesheet,
         'sin' as src_sys_key,
         current_timestamp as dts_created_at,
         'timesheet' as created_by,
@@ -121,10 +115,6 @@ sage_intacct as (
         employee_earningtypekey as employee_earning_type_key,
         employeeid as employee_id,
         md5(employeedimkey) as employee_system_id,
-        md5(projectid) as fk_project,
-        md5(timesheetkey) as fk_timesheet,
-        md5(employeeid) as fk_employee,
-        null as fk_task,
         itemid as item_id,
         cast(itemkey as string) as item_key,
         cast(laborglbatchkey as string) as labor_gl_batch_key,
