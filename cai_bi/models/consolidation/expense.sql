@@ -14,6 +14,14 @@ with
 
 sage_intacct as (
     select
+        'sin' as src_sys_key,
+        current_timestamp as dts_created_at,
+        '{{ this.name }}' as created_by,
+        current_timestamp as dts_updated_at,
+        '{{ this.name }}' as updated_by,
+        current_timestamp as dts_eff_start,
+        '9999-12-31' as dts_eff_end,
+        true as bln_current,
         cast(si_expenses.recordno as string) as key,
         md5(si_expenses.recordno) as hash_key,
         cast(si_expenses.psa_id as string) as link,
@@ -80,6 +88,9 @@ sage_intacct as (
 salesforce as (
     select
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4939536 (metadata columns)
         'sfc' as src_sys_key,
         current_timestamp as dts_created_at,
         '{{ this.name }}' as created_by,
@@ -88,8 +99,11 @@ salesforce as (
         current_timestamp as dts_eff_start,
         '9999-12-31' as dts_eff_end,
         true as bln_current,
+<<<<<<< HEAD
 =======
 >>>>>>> bc2e2da (expense model v3)
+=======
+>>>>>>> 4939536 (metadata columns)
         sf_expenses.id as key,
         md5(sf_expenses.id) as hash_key,
         sf_expenses.id as link,
