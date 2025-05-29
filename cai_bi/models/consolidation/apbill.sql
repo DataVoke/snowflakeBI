@@ -10,6 +10,14 @@ with
 
 sage_intacct as (
     select
+        'int' as src_sys_key,
+        current_timestamp as dts_created_at,
+        '{{ this.name }}' as created_by,
+        current_timestamp as dts_updated_at,
+        '{{ this.name }}' as updated_by,
+        current_timestamp as dts_eff_start,
+        '9999-12-31' as dts_eff_end,
+        true as bln_current,
         recordno as key,
         md5(recordno) as hash_key,
         megaentitykey as key_entity,
