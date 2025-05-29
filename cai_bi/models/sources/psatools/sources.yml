@@ -1,0 +1,53 @@
+version: 2
+
+sources:
+  - name: psatools
+    description: Source for PSA Tools database
+    database: fivetran_database
+    schema: mysql_psatools
+    tables:
+      - name: contracttype
+      - name: currency
+      - name: deliverabletype
+      - name: equipmenttype
+      - name: estimate
+      - name: estimatephasecodelink
+      - name: estimatestaff
+      - name: estimatestaffbooking
+      - name: estimatestaffrateincrease
+      - name: estimatetotals
+      - name: estimatetotals_personnel
+      - name: estimatetotals_phasecodes
+      - name: estimatetotals_scopeparts
+      - name: estimatetotals_tasks
+      - name: facilitytype
+      - name: indirectlaboritem
+      - name: intermittenttrip
+      - name: nonsystemitem
+      - name: nontravelexpense
+      - name: options
+      - name: optionset
+      - name: personnel
+      - name: phasecode
+      - name: phasecodetype
+      - name: projects
+      - name: projects_personnel
+      - name: projects_phase_codes
+      - name: projects_tasks
+      - name: ratecard
+      - name: ratecardset
+      - name: regionalmarkup
+      - name: regulartrip
+      - name: role
+      - name: scopepart
+      - name: scopepartestimatevalue
+      - name: scopepartitem
+      - name: scopepartphasecodelink
+      - name: standarddeliverable
+      - name: standardestimate
+      - name: subcontractedservice
+      - name: travelclassification
+      - name: travelcosttype
+      - name: travelitem
+      - name: travelrotation
+      - name: travelrotationcosttypedefault
