@@ -4,9 +4,11 @@
 
 with 
 
-    si_timesheetentry as (select * from {{ source('sage_intacct', 'timesheetentry') }} where _fivetran_deleted = false),
-    si_timesheet      as (select * from {{ source('sage_intacct', 'timesheet') }} where _fivetran_deleted = false),
-    si_filtered       as (
+    si_timesheetentry    as (select * from {{ source('sage_intacct', 'timesheetentry') }} where _fivetran_deleted = false),
+    si_timesheet         as (select * from {{ source('sage_intacct', 'timesheet') }} where _fivetran_deleted = false),
+    si_project_resources as (select * from {{ source('sage_intacct', 'project_resources') }} where _fivetran_deleted = false),
+    si_project           as (select * from {{ source('sage_intacct', 'project') }} where _fivetran_deleted = false),
+    si_filtered          as (
                             select 
                                 * 
                             from si_timesheetentry
@@ -16,11 +18,108 @@ with
                             ) = 1
                         ),
                         
-    sf_tasktime as (select * from {{ source('salesforce', 'pse_task_time_c') }} where is_deleted = false),
-    sf_timecardheader as (select * from {{ source('salesforce', 'pse_timecard_header_c') }} where is_deleted = false),
-    sf_project as (select * from {{ source('salesforce', 'pse_proj_c') }} where is_deleted = false),
-    sf_contact as (select * from {{ source('salesforce', 'contact') }} where is_deleted = false),
-    sf_projecttask as (select * from {{ source('salesforce', 'pse_project_task_c') }} where is_deleted = false),
+    sf_tasktime         as (select * from {{ source('salesforce', 'pse_task_time_c') }} where is_deleted = false),
+    sf_timecardheader   as (select * from {{ source('salesforce', 'pse_timecard_header_c') }} where is_deleted = false),
+    sf_project          as (select * from {{ source('salesforce', 'pse_proj_c') }} where is_deleted = false),
+    sf_contact          as (select * from {{ source('salesforce', 'contact') }} where is_deleted = false),
+    sf_projecttask      as (select * from {{ source('salesforce', 'pse_project_task_c') }} where is_deleted = false),
+    billrate_currency   as (
+        with base as (
+            select 
+                pr.recordno,
+                pr.employeekey, 
+                pr.employeeid, 
+                pr.projectkey,
+                pr.projectid, 
+                pr.itemkey,
+                pr.itemid, 
+                pr.employeecontactname,        
+                pr.billingrate, 
+                p.currency, 
+                ifnull(pr.startdate, '1900-01-01') as effectivedate, 
+                concat(ifnull(pr.employeeid,''), ifnull(pr.projectid,''), ifnull(pr.itemid,'')) as currentid
+            from si_project_resources pr
+            left join si_project p on (pr.projectid = p.projectid)
+        ),
+        with_date_ranges as (
+            select *, 
+                effectivedate as date_from,
+                ifnull(lead(ifnull(effectivedate,'9999-12-31')) over (partition by currentid order by effectivedate asc ) - interval '1 day','9999-12-31')  as date_to
+            from base
+        ),
+        matched_items as(
+            select 
+            t.recordno as timerecordno,
+            t.projectid as timeprojectid, 
+            t.employeeid,  
+            t.entrydate, 
+            t.taskid,
+            t.taskkey,
+            t.itemid,
+            t.itemkey,
+            t.employeedimkey,
+            r.recordno,
+            r.employeekey, 
+            r.employeeid, 
+            r.projectkey,
+            r.projectid, 
+            r.itemkey,
+            r.itemid, 
+            r.employeecontactname,        
+            r.billingrate,  
+            r.currency, 
+            r.effectivedate,
+            r.date_from,
+            r.date_to
+            from (
+                select   * 
+                from si_timesheetentry 
+                    qualify row_number() over ( partition by projectid, employeeid, entrydate, taskid order by whenmodified desc ) =1 
+            ) as t 
+            inner join with_date_ranges as r on (r.projectkey = t.projectkey and r.employeekey = t.employeedimkey and r.itemkey = t.itemkey and (t.entrydate between date_from and date_to))    
+        ),
+        unmatched_items as (
+            select 
+            t.recordno as timerecordno,
+            t.projectid as timeprojectid, 
+            t.employeeid,  
+            t.entrydate, 
+            t.taskid,
+            t.taskkey,
+            t.itemid,
+            t.itemkey,
+            t.employeedimkey,
+            r.recordno,
+            r.employeekey, 
+            r.employeeid, 
+            r.projectkey,
+            r.projectid , 
+            r.itemkey,
+            r.itemid, 
+            r.employeecontactname,        
+            r.billingrate,  
+            r.currency, 
+            r.effectivedate,
+            r.date_from,
+            r.date_to
+            from (
+                select   * 
+                from si_timesheetentry 
+                    qualify row_number() over ( partition by projectid, employeeid, entrydate, taskid order by whenmodified desc ) =1 
+            ) as t  
+            left join with_date_ranges as r on (r.projectkey = t.projectkey and  r.employeekey = t.employeedimkey and r.itemkey is null and (t.entrydate between date_from and date_to))    
+            where timerecordno not in (select timerecordno from matched_items)
+        ),
+        billrate_currency_final as (
+            select * 
+            from matched_items
+            union(
+                select * from unmatched_items
+            )
+        )
+
+        select * from billrate_currency_final
+        ),
 
 sage_intacct as (
     select
@@ -70,7 +169,8 @@ sage_intacct as (
         si_timesheetentry.laborglentryamount as amt_labor_gl_entry,
         si_timesheetentry.laborglentrytrxamount as amt_labor_glentry_trx,
         si_timesheetentry.statglentryamount as amt_stat_gl_entry,
-        null as bill_rate,
+        billrate_currency.billingrate as bill_rate,
+        billrate_currency.currency as currency,
         si_timesheetentry.billable as bln_billable,
         si_timesheetentry.billed as bln_billed,
         si_timesheetentry.customername as customer_name,
@@ -106,6 +206,7 @@ sage_intacct as (
         si_timesheetentry.taskname as task_name
     from si_timesheetentry
     left join si_timesheet on si_timesheet.recordno = si_timesheetentry.timesheetkey
+    left join billrate_currency on billrate_currency.timeprojectid = si_timesheetentry.recordno
 ),
 
 salesforce as (
@@ -157,6 +258,7 @@ salesforce as (
         null as amt_labor_glentry_trx,
         null as amt_stat_gl_entry,
         null as bill_rate,
+        null as currency,
         null as bln_billable,
         null as bln_billed,
         null as customer_name,
