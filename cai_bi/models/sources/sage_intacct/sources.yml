@@ -35,7 +35,7 @@ sources:
       - name: department_grp_member
       - name: dimension_filter
       - name: earningtype
-      - name: expenses
+      - name: eexpenses
       - name: eexpenses_item
       - name: ee_account_label
       - name: employee
