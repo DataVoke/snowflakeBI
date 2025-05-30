@@ -143,8 +143,8 @@ sage_intacct as (
         md5(si_timesheet.megaentitykey) as hash_key_entity,
         cast(si_timesheetentry.projectkey as string) as key_project,
         md5(si_timesheetentry.projectkey) as hash_key_project,
-        si_timesheetentry.taskkey as key_task,
-        cast(si_timesheetentry.taskkey as string) as hash_key_task,
+        cast(si_timesheetentry.taskkey as string) as key_task,
+        md5(si_timesheetentry.taskkey) as hash_key_task,
         concat(si_timesheetentry.projectid, si_timesheetentry.employeeid, si_timesheetentry.taskid, si_timesheetentry.entrydate) as key_timesheet_entry,
         md5(concat(si_timesheetentry.projectid, si_timesheetentry.employeeid, si_timesheetentry.taskid, si_timesheetentry.entrydate)) as hash_key_timesheet_entry,
         si_timesheetentry.billuacctkey as billu_acct_key,
@@ -229,8 +229,8 @@ salesforce as (
         md5(tt.pse_resource_c) as hash_key_employee,
         c.pse_group_c as key_entity,
         md5(c.pse_group_c) as hash_key_entity,
-        p.intacct_record_no_c as key_project,
-        md5(p.intacct_record_no_c) as hash_key_project,
+        pt.id as key_project,
+        md5(pt.id) as hash_key_project,
         pt.intacct_record_no_c as key_task,
         md5(pt.intacct_record_no_c) as hash_key_task,
         p.intacct_project_id_c||c.pse_api_resource_correlation_id_c ||pt.intacct_id_c||tt.entrydate as key_timesheet_entry,
@@ -291,7 +291,7 @@ salesforce as (
         null as record_url,
         null as stat_gl_entry_line_no,
         null as state,
-        tt.name
+        tt.name as task_name
     from (
         select
             tt.id,
