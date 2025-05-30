@@ -3,13 +3,12 @@
 ) }}
 
 with 
-    sf_timesheetentry as (select * from {{ ref('int_sf_timesheetentry') }}),
-    si_timesheetentry as (select * from {{ source('sage_intacct', 'timesheetentry') }} where _fivetran_deleted = false),
-    si_timesheet      as (select * from {{ source('sage_intacct', 'timesheet') }} where _fivetran_deleted = false),
-    sf_contact        as (select * from {{ source('salesforce', 'contact') }} where _fivetran_deleted = false),
-    sf_project        as (select * from {{ source('salesforce', 'pse_proj_c') }} where _fivetran_deleted = false),
-    sf_project_task   as (select * from {{ source('salesforce', 'pse_project_task_c') }} where _fivetran_deleted = false),
-    si_filtered       as (
+
+    si_timesheetentry    as (select * from {{ source('sage_intacct', 'timesheetentry') }} where _fivetran_deleted = false),
+    si_timesheet         as (select * from {{ source('sage_intacct', 'timesheet') }} where _fivetran_deleted = false),
+    si_project_resources as (select * from {{ source('sage_intacct', 'project_resources') }} where _fivetran_deleted = false),
+    si_project           as (select * from {{ source('sage_intacct', 'project') }} where _fivetran_deleted = false),
+    si_filtered          as (
                             select 
                                 * 
                             from si_timesheetentry
@@ -18,14 +17,117 @@ with
                                 order by whenmodified desc
                             ) = 1
                         ),
+                        
+    sf_tasktime         as (select * from {{ source('salesforce', 'pse_task_time_c') }} where is_deleted = false),
+    sf_timecardheader   as (select * from {{ source('salesforce', 'pse_timecard_header_c') }} where is_deleted = false),
+    sf_project          as (select * from {{ source('salesforce', 'pse_proj_c') }} where is_deleted = false),
+    sf_contact          as (select * from {{ source('salesforce', 'contact') }} where is_deleted = false),
+    sf_projecttask      as (select * from {{ source('salesforce', 'pse_project_task_c') }} where is_deleted = false),
+    billrate_currency   as (
+        with base as (
+            select 
+                pr.recordno,
+                pr.employeekey, 
+                pr.employeeid, 
+                pr.projectkey,
+                pr.projectid, 
+                pr.itemkey,
+                pr.itemid, 
+                pr.employeecontactname,        
+                pr.billingrate, 
+                p.currency, 
+                ifnull(pr.startdate, '1900-01-01') as effectivedate, 
+                concat(ifnull(pr.employeeid,''), ifnull(pr.projectid,''), ifnull(pr.itemid,'')) as currentid
+            from si_project_resources pr
+            left join si_project p on (pr.projectid = p.projectid)
+        ),
+        with_date_ranges as (
+            select *, 
+                effectivedate as date_from,
+                ifnull(lead(ifnull(effectivedate,'9999-12-31')) over (partition by currentid order by effectivedate asc ) - interval '1 day','9999-12-31')  as date_to
+            from base
+        ),
+        matched_items as(
+            select 
+            t.recordno as timerecordno,
+            t.projectid as timeprojectid, 
+            t.employeeid,  
+            t.entrydate, 
+            t.taskid,
+            t.taskkey,
+            t.itemid,
+            t.itemkey,
+            t.employeedimkey,
+            r.recordno,
+            r.employeekey, 
+            r.employeeid, 
+            r.projectkey,
+            r.projectid, 
+            r.itemkey,
+            r.itemid, 
+            r.employeecontactname,        
+            r.billingrate,  
+            r.currency, 
+            r.effectivedate,
+            r.date_from,
+            r.date_to
+            from (
+                select   * 
+                from si_timesheetentry 
+                    qualify row_number() over ( partition by projectid, employeeid, entrydate, taskid order by whenmodified desc ) =1 
+            ) as t 
+            inner join with_date_ranges as r on (r.projectkey = t.projectkey and r.employeekey = t.employeedimkey and r.itemkey = t.itemkey and (t.entrydate between date_from and date_to))    
+        ),
+        unmatched_items as (
+            select 
+            t.recordno as timerecordno,
+            t.projectid as timeprojectid, 
+            t.employeeid,  
+            t.entrydate, 
+            t.taskid,
+            t.taskkey,
+            t.itemid,
+            t.itemkey,
+            t.employeedimkey,
+            r.recordno,
+            r.employeekey, 
+            r.employeeid, 
+            r.projectkey,
+            r.projectid , 
+            r.itemkey,
+            r.itemid, 
+            r.employeecontactname,        
+            r.billingrate,  
+            r.currency, 
+            r.effectivedate,
+            r.date_from,
+            r.date_to
+            from (
+                select   * 
+                from si_timesheetentry 
+                    qualify row_number() over ( partition by projectid, employeeid, entrydate, taskid order by whenmodified desc ) =1 
+            ) as t  
+            left join with_date_ranges as r on (r.projectkey = t.projectkey and  r.employeekey = t.employeedimkey and r.itemkey is null and (t.entrydate between date_from and date_to))    
+            where timerecordno not in (select timerecordno from matched_items)
+        ),
+        billrate_currency_final as (
+            select * 
+            from matched_items
+            union(
+                select * from unmatched_items
+            )
+        )
+
+        select * from billrate_currency_final
+        ),
 
 sage_intacct as (
     select
         'int' as src_sys_key,
         current_timestamp as dts_created_at,
-        '{{ this.model }}' as created_by,
+        '{{ this.name }}' as created_by,
         current_timestamp as dts_updated_at,
-        '{{ this.model }}' as updated_by,
+        '{{ this.name }}' as updated_by,
         current_timestamp as dts_eff_start,
         '9999-12-31' as dts_eff_end,
         true as bln_current,
@@ -41,8 +143,8 @@ sage_intacct as (
         md5(si_timesheet.megaentitykey) as hash_key_entity,
         cast(si_timesheetentry.projectkey as string) as key_project,
         md5(si_timesheetentry.projectkey) as hash_key_project,
-        si_timesheetentry.taskkey as key_task,
-        cast(si_timesheetentry.taskkey as string) as hash_key_task,
+        cast(si_timesheetentry.taskkey as string) as key_task,
+        md5(si_timesheetentry.taskkey) as hash_key_task,
         concat(si_timesheetentry.projectid, si_timesheetentry.employeeid, si_timesheetentry.taskid, si_timesheetentry.entrydate) as key_timesheet_entry,
         md5(concat(si_timesheetentry.projectid, si_timesheetentry.employeeid, si_timesheetentry.taskid, si_timesheetentry.entrydate)) as hash_key_timesheet_entry,
         si_timesheetentry.billuacctkey as billu_acct_key,
@@ -67,7 +169,8 @@ sage_intacct as (
         si_timesheetentry.laborglentryamount as amt_labor_gl_entry,
         si_timesheetentry.laborglentrytrxamount as amt_labor_glentry_trx,
         si_timesheetentry.statglentryamount as amt_stat_gl_entry,
-        null as bill_rate,
+        billrate_currency.billingrate as bill_rate,
+        billrate_currency.currency as currency,
         si_timesheetentry.billable as bln_billable,
         si_timesheetentry.billed as bln_billed,
         si_timesheetentry.customername as customer_name,
@@ -103,40 +206,41 @@ sage_intacct as (
         si_timesheetentry.taskname as task_name
     from si_timesheetentry
     left join si_timesheet on si_timesheet.recordno = si_timesheetentry.timesheetkey
+    left join billrate_currency on billrate_currency.timeprojectid = si_timesheetentry.recordno
 ),
 
 salesforce as (
     select
         'sfc' as src_sys_key,
         current_timestamp as dts_created_at,
-        '{{ this.model }}' as created_by,
+        '{{ this.name }}' as created_by,
         current_timestamp as dts_updated_at,
-        '{{ this.model }}' as updated_by,
+        '{{ this.name }}' as updated_by,
         current_timestamp as dts_eff_start,
         '9999-12-31' as dts_eff_end,
         true as bln_current,
-        sf_timesheetentry.id as key,
-        md5(sf_timesheetentry.id) as hash_key,
-        null as link,-- link will be in join
-        null as hash_link, -- hash_link will be in join
-        sf_timesheetentry.pse_timecard_c as key_timesheet,
-        md5(sf_timesheetentry.pse_timecard_c) as hash_key_timesheet,
-        sf_timesheetentry.pse_resource_c as key_employee,
-        md5(sf_timesheetentry.pse_resource_c) as hash_key_employee,
-        sf_contact.pse_group_c as key_entity,
-        md5(sf_contact.pse_group_c) as hash_key_entity,
-        sf_contact.pse_group_c as key_project,
-        md5(sf_contact.pse_group_c) as hash_key_project,
-        sf_project_task.intacct_record_no_c as key_task,
-        md5(sf_project_task.intacct_record_no_c) as hash_key_task,
-        null as key_timesheet_entry,
-        null as hash_key_timesheet_entry,
+        tt.id as key,
+        md5(tt.id) as hash_key,
+        si.recordno as link,
+        md5(si.recordno) as hash_link,
+        tt.pse_timecard_c as key_timesheet,
+        md5(tt.pse_timecard_c) as hash_key_timesheet,
+        tt.pse_resource_c as key_employee,
+        md5(tt.pse_resource_c) as hash_key_employee,
+        c.pse_group_c as key_entity,
+        md5(c.pse_group_c) as hash_key_entity,
+        pt.id as key_project,
+        md5(pt.id) as hash_key_project,
+        pt.intacct_record_no_c as key_task,
+        md5(pt.intacct_record_no_c) as hash_key_task,
+        p.intacct_project_id_c||c.pse_api_resource_correlation_id_c ||pt.intacct_id_c||tt.entrydate as key_timesheet_entry,
+        md5(p.intacct_project_id_c||c.pse_api_resource_correlation_id_c ||pt.intacct_id_c||tt.entrydate) as key_timesheet_entry,
         null as billu_acct_key,
         null as customer_id,
         null as department_id,
         null as department_key,
         null as employee_earning_type_key,
-        sf_contact.pse_api_resource_correlation_id_c as employee_id_intacct,
+        c.pse_api_resource_correlation_id_c as employee_id_intacct,
         null as item_id,
         null as item_key,
         null as labor_gl_batch_key,
@@ -144,36 +248,37 @@ salesforce as (
         null as location_key,
         null as non_billnu_acct_key,
         null as non_billu_acct_key,
-        sf_project.intacct_project_id_c as project_id,
-        sf_timesheetentry.created_by_id as src_created_by_id,
-        sf_timesheetentry.last_modified_by_id as src_modified_by_id,
+        p.intacct_project_id_c as project_id,
+        tt.created_by_id as src_created_by_id,
+        tt.last_modified_by_id as src_modified_by_id,
         null as stat_gl_batch_key,
         null as stat_journal_key,
-        sf_project_task.intacct_id_c as task_id,
+        pt.intacct_id_c as task_id,
         null as amt_labor_gl_entry,
         null as amt_labor_glentry_trx,
         null as amt_stat_gl_entry,
         null as bill_rate,
+        null as currency,
         null as bln_billable,
         null as bln_billed,
         null as customer_name,
-        sf_contact.department as department_name,
-        null as dte_entry,
+        c.department as department_name,
+        tt.entrydate as dte_entry,
         null as dte_gl_post,
-        sf_timesheetentry.created_date as dte_src_created,
-        sf_timesheetentry.pse_end_date_c as dte_src_end,
-        sf_timesheetentry.last_modified_date as dte_src_modified,
-        sf_timesheetentry.header_start_date as dte_src_start,
-        sf_contact.name as employee_name,
+        tt.created_date as dte_src_created,
+        tt.pse_end_date_c as dte_src_end,
+        tt.last_modified_date as dte_src_modified,
+        tt.entrydate as dte_src_start,
+        c.name as employee_name,
         null as item_name,
         null as labor_gl_entry_cost_rate,
         null as labor_gl_entry_line_no,
         null as labor_gl_entry_offset_line_no,
         null as line_no,
         null as location_name,
-        sf_timesheetentry.notes as notes,
-        sf_project.name as project_name,
-        sf_timesheetentry.qty as qty,
+        tt.notes,
+        p.name as project_name,
+        tt.hours as qty,
         null as qty_approved,
         null as qty_approved_billable,
         null as qty_approved_non_billable,
@@ -186,16 +291,187 @@ salesforce as (
         null as record_url,
         null as stat_gl_entry_line_no,
         null as state,
-        sf_timesheetentry.name as task_name
-    from sf_timesheetentry
-    left join sf_contact on sf_contact.id = sf_timesheetentry.pse_resource_c
-    left join sf_project on sf_project.id = sf_timesheetentry.pse_project_c
-    left join sf_project_task on sf_project_task.id = sf_timesheetentry.pse_project_task_c
-    left join si_filtered si 
-        on sf_project.intacct_project_id_c = si.projectid
-        and sf_contact.pse_api_resource_correlation_id_c = si.employeeid
-        and sf_timesheetentry.task_start_date = si.entrydate
-        and sf_project_task.intacct_record_no_c = si.taskkey
+        tt.name as task_name
+    from (
+        select
+            tt.id,
+            tt.pse_timecard_c,
+            tt.pse_project_task_c,
+            tt.pse_start_date_c as entrydate,
+            th.pse_resource_c,
+            nullif(tt.pse_sunday_hours_c, 0) as hours,
+            th.pse_sunday_notes_c as notes,
+            tt.created_by_id,
+            tt.last_modified_by_id,
+            tt.created_date,
+            th.pse_end_date_c,
+            th.last_modified_date,
+            tt.name
+        from sf_tasktime tt
+        left join sf_timecardheader th
+            on tt.pse_timecard_c = th.id
+        where nullif(tt.pse_sunday_hours_c, 0) <> 0
+            and tt.is_deleted = false
+            and th.is_deleted = false
+
+        union
+
+        select
+            tt.id,
+            tt.pse_timecard_c,
+            tt.pse_project_task_c,
+            tt.pse_start_date_c + 1 as entrydate,
+            th.pse_resource_c,
+            nullif(tt.pse_monday_hours_c, 0) as hours,
+            th.pse_monday_notes_c as notes,
+            tt.created_by_id,
+            tt.last_modified_by_id,
+            tt.created_date,
+            th.pse_end_date_c,
+            th.last_modified_date,
+            tt.name
+        from sf_tasktime tt
+        left join sf_timecardheader th
+            on tt.pse_timecard_c = th.id
+        where nullif(tt.pse_monday_hours_c, 0) <> 0
+            and tt.is_deleted = false
+            and th.is_deleted = false
+
+        union
+
+        select
+            tt.id,
+            tt.pse_timecard_c,
+            tt.pse_project_task_c,
+            tt.pse_start_date_c + 2 as entrydate,
+            th.pse_resource_c,
+            nullif(tt.pse_tuesday_hours_c, 0) as hours,
+            th.pse_tuesday_notes_c as notes,
+            tt.created_by_id,
+            tt.last_modified_by_id,
+            tt.created_date,
+            th.pse_end_date_c,
+            th.last_modified_date,
+            tt.name
+        from sf_tasktime tt
+        left join sf_timecardheader th
+            on tt.pse_timecard_c = th.id
+        where nullif(tt.pse_tuesday_hours_c, 0) <> 0
+            and tt.is_deleted = false
+            and th.is_deleted = false
+
+        union
+
+        select
+            tt.id,
+            tt.pse_timecard_c,
+            tt.pse_project_task_c,
+            tt.pse_start_date_c + 3 as entrydate,
+            th.pse_resource_c,
+            nullif(tt.pse_wednesday_hours_c, 0) as hours,
+            th.pse_wednesday_notes_c as notes,
+            tt.created_by_id,
+            tt.last_modified_by_id,
+            tt.created_date,
+            th.pse_end_date_c,
+            th.last_modified_date,
+            tt.name
+        from sf_tasktime tt
+        left join sf_timecardheader th
+            on tt.pse_timecard_c = th.id
+        where nullif(tt.pse_wednesday_hours_c, 0) <> 0
+            and tt.is_deleted = false
+            and th.is_deleted = false
+
+        union
+
+        select
+            tt.id,
+            tt.pse_timecard_c,
+            tt.pse_project_task_c,
+            tt.pse_start_date_c + 4 as entrydate,
+            th.pse_resource_c,
+            nullif(tt.pse_thursday_hours_c, 0) as hours,
+            th.pse_thursday_notes_c as notes,
+            tt.created_by_id,
+            tt.last_modified_by_id,
+            tt.created_date,
+            th.pse_end_date_c,
+            th.last_modified_date,
+            tt.name
+        from sf_tasktime tt
+        left join sf_timecardheader th
+            on tt.pse_timecard_c = th.id
+        where nullif(tt.pse_thursday_hours_c, 0) <> 0
+            and tt.is_deleted = false
+            and th.is_deleted = false
+
+        union
+
+        select
+            tt.id,
+            tt.pse_timecard_c,
+            tt.pse_project_task_c,
+            tt.pse_start_date_c + 5 as entrydate,
+            th.pse_resource_c,
+            nullif(tt.pse_friday_hours_c, 0) as hours,
+            th.pse_friday_notes_c as notes,
+            tt.created_by_id,
+            tt.last_modified_by_id,
+            tt.created_date,
+            th.pse_end_date_c,
+            th.last_modified_date,
+            tt.name
+        from sf_tasktime tt
+        left join sf_timecardheader th
+            on tt.pse_timecard_c = th.id
+        where nullif(tt.pse_friday_hours_c, 0) <> 0
+            and tt.is_deleted = false
+            and th.is_deleted = false
+
+        union
+
+        select
+            tt.id,
+            tt.pse_timecard_c,
+            tt.pse_project_task_c,
+            tt.pse_start_date_c + 6 as entrydate,
+            th.pse_resource_c,
+            nullif(tt.pse_saturday_hours_c, 0) as hours,
+            th.pse_saturday_notes_c as notes,
+            tt.created_by_id,
+            tt.last_modified_by_id,
+            tt.created_date,
+            th.pse_end_date_c,
+            th.last_modified_date,
+            tt.name
+        from sf_tasktime tt
+        left join sf_timecardheader th
+            on tt.pse_timecard_c = th.id
+        where nullif(tt.pse_saturday_hours_c, 0) <> 0
+            and tt.is_deleted = false
+            and th.is_deleted = false
+    ) tt
+    left join sf_timecardheader th
+        on tt.pse_timecard_c = th.id
+    left join sf_project p
+        on th.pse_project_c = p.id
+    left join sf_contact c
+        on th.pse_resource_c = c.id
+    left join sf_projecttask pt
+        on tt.pse_project_task_c = pt.id
+    left join (
+        select *
+        from si_timesheetentry
+        qualify row_number() over (
+            partition by projectid, employeeid, entrydate, taskid
+            order by whenmodified desc
+        ) = 1
+    ) si
+        on p.intacct_project_id_c = si.projectid
+    and c.pse_api_resource_correlation_id_c = si.employeeid
+    and tt.entrydate = si.entrydate
+    and pt.intacct_id_c = si.taskid
 )
 
 select * from sage_intacct
