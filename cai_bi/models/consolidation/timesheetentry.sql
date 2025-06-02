@@ -21,7 +21,7 @@ with
 
 sage_intacct as (
     select
-        'sin' as src_sys_key,
+        'int' as src_sys_key,
         current_timestamp as dts_created_at,
         '{{ this.model }}' as created_by,
         current_timestamp as dts_updated_at,
