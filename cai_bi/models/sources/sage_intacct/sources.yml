@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: sage_intacct
     description: "source tables from sage intacct"
-    database: fivetran_database
+    database: dev_bi_raw
     schema: sage_intacct_ldg
     tables:
       - name: acct_range
