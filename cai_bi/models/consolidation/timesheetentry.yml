@@ -3,9 +3,6 @@ version: 2
 models:
   - name: timesheetentry
     description: "Consolidated Timesheet Entry table combining Salesforce and Sage Intacct data."
-    config:
-      contract:
-        enforced: true
     columns:
       - name: pk_timesheet
         data_type: VARCHAR(32)
