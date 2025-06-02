@@ -3,8 +3,8 @@ version: 2
 sources:
   - name: portal
     description: Source for Portal database
-    database: fivetran_database
-    schema: mysql_portal
+    database: dev_bi_raw
+    schema:  cai_prod_portal
     tables:
       - name: base_teams
       - name: contractor_companies
