@@ -17,11 +17,11 @@ with
     where src_sys_key = 'sfc'
     group by hash_link 
     ),
-    departments as (select * from {{ source('portal', 'departments') }}),
-    locations as (select * from {{ source('portal', 'locations') }}),
-    locations_intacct as (select * from {{ source('sage_intacct', 'location') }}),
-    entities as (select * from {{ source('portal', 'entities') }}),
-    practice_areas as (select * from {{ source('portal', 'practice_areas') }}),
+    departments as (select * from {{ source('portal', 'departments') }} where _fivetran_deleted = false),
+    locations as (select * from {{ source('portal', 'locations') }} where _fivetran_deleted = false),
+    locations_intacct as (select * from {{ source('sage_intacct', 'location') }} where _fivetran_deleted = false),
+    entities as (select * from {{ source('portal', 'entities') }} where _fivetran_deleted = false),
+    practice_areas as (select * from {{ source('portal', 'practice_areas') }} where _fivetran_deleted = false),
     project as (select * from {{ ref('project') }})
 
 select 
