@@ -249,6 +249,7 @@ final as (
     select * from salesforce
 )
 
+<<<<<<< HEAD
 select
     src_sys_key,
     cast(dts_created_at as timestamp_tz) as dts_created_at,
@@ -327,3 +328,6 @@ select
     cast(org_amount as number(38, 2)) as org_amount,
     org_currency
 from final
+=======
+select * from final
+>>>>>>> 0ef5ad8aa9ee86bcb004d94e2b144967080ebe45
