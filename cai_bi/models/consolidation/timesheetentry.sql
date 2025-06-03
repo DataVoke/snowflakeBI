@@ -1,5 +1,6 @@
 {{ config(
     materialized='table',
+    alias="timesheet_entry"
 ) }}
 
 with 
