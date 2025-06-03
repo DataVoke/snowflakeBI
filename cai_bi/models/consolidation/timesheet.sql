@@ -69,7 +69,7 @@ sage_intacct as (
 
 salesforce as (
     select
-        'sin' as src_sys_key,
+        'sfc' as src_sys_key,
         current_timestamp as dts_created_at,
         '{{ this.name }}' as created_by,
         current_timestamp as dts_updated_at,
