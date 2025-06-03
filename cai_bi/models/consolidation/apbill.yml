@@ -2,87 +2,176 @@ version: 2
 
 models:
   - name: apbill
-    description: Staging model for AP Bill from Sage Intacct
-    schema: consolidation
+    description: ''
+    config:
+      contract:
+        enforced: true
     columns:
-      - name: src_sys_key
-      - name: dts_created_at
-      - name: created_by
-      - name: dts_updated_at
-      - name: updated_by
-      - name: dts_eff_start
-      - name: dts_eff_end
-      - name: bln_current
-      - name: key
-      - name: hash_key
-      - name: key_entity
-      - name: hash_key_entity
-      - name: billto_payto_key
-      - name: created_user_id
-      - name: exch_rate_type_id
-      - name: mega_entity_id
-      - name: module_key
-      - name: payto_tax_id
-      - name: pr_batch_key
-      - name: record_id
-      - name: schop_key
-      - name: ship_to_return_to_key
-      - name: src_created_by_id
-      - name: src_modified_by_id
-      - name: supdoc_id
-      - name: tax_solution_id
-      - name: term_key
-      - name: user_id
-      - name: vendor_id
-      - name: vendor_key
-      - name: amt_total_due
-      - name: amt_total_entered
-      - name: amt_total_paid
-      - name: amt_trx_total_entered
-      - name: amt_trx_total_paid
-      - name: base_currency_code
-      - name: bill_back_template
-      - name: billto_payto_contact_name
-      - name: bln_do_not_process_vat
-      - name: bln_on_hold
-      - name: bln_retain_age_released
-      - name: bln_system_generated
-      - name: contact_tax_group
-      - name: currency_code
-      - name: description
-      - name: description_2
-      - name: doc_number
-      - name: dte_exch_rate
-      - name: dte_rec_payment
-      - name: dte_src_end
-      - name: dte_src_start
-      - name: dte_when_discount
-      - name: dte_when_due
-      - name: dte_when_paid
-      - name: dte_when_posted
-      - name: dts_au_src_created
-      - name: dts_src_created
-      - name: dts_src_modified
-      - name: due_in_days
-      - name: exchange_rate
-      - name: financial_entity
-      - name: form_1099_box
-      - name: form_1099_type
-      - name: megaentity_name
-      - name: payment_priority
-      - name: payto_taxgroup_name
-      - name: payto_taxgroup_recordno
-      - name: pr_batch
-      - name: raw_state
-      - name: record_url
-      - name: recordtype
-      - name: sender_email
-      - name: shipto_returnto_contact_name
-      - name: state
-      - name: tax_entity_number
-      - name: tax_reverse_status
-      - name: term_name
-      - name: term_value
-      - name: trx_entity_due
-      - name: trx_total_due
-      - name: vendor_name
+      - name: SRC_SYS_KEY
+        data_type: VARCHAR(250)
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_EFF_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EFF_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: BLN_CURRENT
+        data_type: BOOLEAN
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - not_null
+          - unique
+      - name: HASH_KEY
+        data_type: VARCHAR(32)
+        tests:
+          - not_null
+          - unique
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_ENTITY
+        data_type: VARCHAR(32)
+      - name: BILLTO_PAYTO_KEY
+        data_type: NUMBER(38,0)
+      - name: CREATED_USER_ID
+        data_type: VARCHAR(5000)
+      - name: EXCH_RATE_TYPE_ID
+        data_type: NUMBER(38,0)
+      - name: MEGA_ENTITY_ID
+        data_type: VARCHAR(5000)
+      - name: MODULE_KEY
+        data_type: VARCHAR(5000)
+      - name: PAYTO_TAX_ID
+        data_type: VARCHAR(5000)
+      - name: PR_BATCH_KEY
+        data_type: NUMBER(38,0)
+      - name: RECORD_ID
+        data_type: VARCHAR(5000)
+      - name: SCHOP_KEY
+        data_type: NUMBER(38,0)
+      - name: SHIP_TO_RETURN_TO_KEY
+        data_type: NUMBER(38,0)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(250)
+      - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(250)
+      - name: SUPDOC_ID
+        data_type: VARCHAR(5000)
+      - name: TAX_SOLUTION_ID
+        data_type: VARCHAR(5000)
+      - name: TERM_KEY
+        data_type: NUMBER(38,0)
+      - name: USER_ID
+        data_type: VARCHAR(5000)
+      - name: VENDOR_ID
+        data_type: VARCHAR(5000)
+      - name: VENDOR_KEY
+        data_type: NUMBER(38,0)
+      - name: AMT_TOTAL_DUE
+        data_type: NUMBER(38,17)
+      - name: AMT_TOTAL_ENTERED
+        data_type: NUMBER(38,17)
+      - name: AMT_TOTAL_PAID
+        data_type: NUMBER(38,17)
+      - name: AMT_TRX_TOTAL_ENTERED
+        data_type: NUMBER(38,17)
+      - name: AMT_TRX_TOTAL_PAID
+        data_type: NUMBER(38,17)
+      - name: BASE_CURRENCY_CODE
+        data_type: VARCHAR(20)
+      - name: BILL_BACK_TEMPLATE
+        data_type: VARCHAR(5000)
+      - name: BILLTO_PAYTO_CONTACT_NAME
+        data_type: VARCHAR(5000)
+      - name: BLN_DO_NOT_PROCESS_VAT
+        data_type: BOOLEAN
+      - name: BLN_ON_HOLD
+        data_type: BOOLEAN
+      - name: BLN_RETAIN_AGE_RELEASED
+        data_type: BOOLEAN
+      - name: BLN_SYSTEM_GENERATED
+        data_type: BOOLEAN
+      - name: CONTACT_TAX_GROUP
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_CODE
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION_2
+        data_type: VARCHAR(5000)
+      - name: DOC_NUMBER
+        data_type: VARCHAR(5000)
+      - name: DTE_EXCH_RATE
+        data_type: DATE
+      - name: DTE_REC_PAYMENT
+        data_type: DATE
+      - name: DTE_SRC_END
+        data_type: DATE
+      - name: DTE_SRC_START
+        data_type: DATE
+      - name: DTE_WHEN_DISCOUNT
+        data_type: DATE
+      - name: DTE_WHEN_DUE
+        data_type: DATE
+      - name: DTE_WHEN_PAID
+        data_type: DATE
+      - name: DTE_WHEN_POSTED
+        data_type: DATE
+      - name: DTS_AU_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DUE_IN_DAYS
+        data_type: NUMBER(38,0)
+      - name: EXCHANGE_RATE
+        data_type: NUMBER(38,17)
+      - name: FINANCIAL_ENTITY
+        data_type: VARCHAR(5000)
+      - name: FORM_1099_BOX
+        data_type: NUMBER(38,0)
+      - name: FORM_1099_TYPE
+        data_type: VARCHAR(5000)
+      - name: MEGAENTITY_NAME
+        data_type: VARCHAR(5000)
+      - name: PAYMENT_PRIORITY
+        data_type: VARCHAR(5000)
+      - name: PAYTO_TAXGROUP_NAME
+        data_type: VARCHAR(5000)
+      - name: PAYTO_TAXGROUP_RECORDNO
+        data_type: NUMBER(38,0)
+      - name: PR_BATCH
+        data_type: VARCHAR(5000)
+      - name: RAW_STATE
+        data_type: VARCHAR(5000)
+      - name: RECORD_URL
+        data_type: VARCHAR(5000)
+      - name: RECORDTYPE
+        data_type: VARCHAR(5000)
+      - name: SENDER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: SHIPTO_RETURNTO_CONTACT_NAME
+        data_type: VARCHAR(5000)
+      - name: STATE
+        data_type: VARCHAR(5000)
+      - name: TAX_ENTITY_NUMBER
+        data_type: VARCHAR(5000)
+      - name: TAX_REVERSE_STATUS
+        data_type: VARCHAR(5000)
+      - name: TERM_NAME
+        data_type: VARCHAR(5000)
+      - name: TERM_VALUE
+        data_type: VARCHAR(5000)
+      - name: TRX_ENTITY_DUE
+        data_type: NUMBER(38,17)
+      - name: TRX_TOTAL_DUE
+        data_type: NUMBER(38,17)
+      - name: VENDOR_NAME
+        data_type: VARCHAR(5000)
