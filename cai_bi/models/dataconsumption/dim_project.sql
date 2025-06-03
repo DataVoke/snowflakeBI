@@ -23,27 +23,27 @@ with
     ),
 
     en as (
-        select * from {{ source('portal','entities') }}
+        select * from {{ source('portal','entities') }} where _fivetran_deleted = false
     ),
 
     por_dep as (
-        select * from {{ source('portal','departments') }}
+        select * from {{ source('portal','departments')}} where _fivetran_deleted = false 
     ),
 
     por_ent as (
-        select * from {{ source('portal','entities') }}
+        select * from {{ source('portal','entities')}} where _fivetran_deleted = false
     ),
 
     por_pract as (
-        select * from {{ source('portal','practices') }}
+        select * from {{ source('portal','practices')}} where _fivetran_deleted = false
     ),
 
     por_loc as (
-        select * from {{ source('portal','locations') }} where id != '55-1'
+        select * from {{ source('portal','locations') }} where _fivetran_deleted = false and id != '55-1'
     ),
 
     locations_intacct as (
-        select * from {{ source('sage_intacct','location') }}
+        select * from {{ source('sage_intacct','location')}} where _fivetran_deleted = false
     )
 
 select
@@ -79,12 +79,14 @@ select
     int.src_created_by_id,
     int.src_modified_by_id,
     int.term_key,
+    ---Key columns---
     por_dep.record_id as key_department,
     por_loc.record_id as key_location,
     en.record_id as key_entity,
     por_ent.record_id as key_group,
     por_pract.record_id as key_practice,
     pts_employee.key as key_project,
+     ---Key columns---
     por_dep.display_name as department_name,
     por_loc.display_name as location_name,
     en.display_name as entity_name,
@@ -159,9 +161,10 @@ from int
 left join pts on int.hash_link = pts.hash_link
 left join sfc on sfc.hash_link = pts.hash_link
 left join pts_employee on pts.assistant_project_manager_id = pts_employee.link
-left join en on int.location_id = en.id
+left join locations_intacct on int.project_location_key = locations_intacct.recordno
+left join en on ifnull(loc_int.parentkey, int.project_location_key) = en.id
 left join por_dep on int.department_id = por_dep.intacct_id
 left join por_ent on por_ent.salesforce_id = sfc.group_id
 left join por_pract on por_pract.salesforce_id = sfc.practice_id
 left join por_loc on por_loc.intacct_id = int.location_id
-left join locations_intacct on int.project_location_key = locations_intacct.recordno
+
