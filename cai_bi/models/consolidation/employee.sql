@@ -26,15 +26,12 @@ with
         ) = 1
     ),
     ukg_compensation    as (
-            select 
-                *
-            from {{ source('ukg_pro', 'compensation') }} 
-            where _fivetran_deleted = false
-            qualify row_number() over (
-            partition by employee_id, company_id
-            order by date_in_job desc
-        ) = 1
+    select 
+        * 
+    from {{ source('ukg_pro', 'compensation') }} qualify row_number() over ( partition by employee_id
+    order by date_in_job desc ) = 1
     ),
+    
 
 ukg as (
     select 
@@ -160,7 +157,7 @@ ukg as (
     from ukg_employee
     left join ukg_employment on ukg_employee.id = ukg_employment.employee_id
     left join ukg_job on ukg_employment.primary_job_id = ukg_job.id
-    left join ukg_compensation on ukg_compensation.employee_id = ukg_employee.id
+    left join ukg_compensation on ukg_compensation.employee_id = ukg_employee.id and ukg_compensation.company_id = ukg_employee.company_id
     left join ukg_employee_change on ukg_employee_change.employee_id = ukg_employee.id 
         and ukg_employee_change.company_id = ukg_employee.company_id
 ),
