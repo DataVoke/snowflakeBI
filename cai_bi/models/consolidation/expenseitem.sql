@@ -144,8 +144,6 @@ salesforce as (
         md5(sf_expense.pse_expense_report_c) as hash_key_expense,
         sf_expensereport.pse_resource_c as key_employeee,
         md5(sf_expensereport.pse_resource_c) as hash_key_employee,
-        -- sf_project.pse_group_c as key_entity,
-        -- md5(sf_project.pse_group_c) as hash_key_entity,
         sf_project.intacct_record_no_c as key_project,
         md5(sf_project.intacct_record_no_c) as hash_key_project,
         null as account_key,
@@ -164,7 +162,6 @@ salesforce as (
         sf_project.intacct_project_id_c as project_id,
         sf_expensereport.created_by_id as src_created_by,
         sf_expensereport.last_modified_by_id as src_modified_by,
-        -- null as vendor_key,
         null as vendor_id,
         null as account_label,
         null as account_no,
@@ -249,7 +246,6 @@ final as (
     select * from salesforce
 )
 
-<<<<<<< HEAD
 select
     src_sys_key,
     cast(dts_created_at as timestamp_tz) as dts_created_at,
@@ -328,6 +324,3 @@ select
     cast(org_amount as number(38, 2)) as org_amount,
     org_currency
 from final
-=======
-select * from final
->>>>>>> 0ef5ad8aa9ee86bcb004d94e2b144967080ebe45
