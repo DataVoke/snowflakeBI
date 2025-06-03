@@ -37,6 +37,7 @@ select
     entities.record_id as key_entity,
     practice_areas.record_id as key_practice_area,
     project.key as key_project,
+    int.key_employee as key_employee,
     -- --names
     departments.display_name as department_name,
     locations.display_name as location_name,
