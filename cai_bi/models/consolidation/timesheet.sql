@@ -40,10 +40,7 @@ sage_intacct as (
 
         supdocid as sup_doc_id,
         supdockey as sup_doc_key,
-<<<<<<< HEAD
        
-=======
->>>>>>> 305a474 (Removed system_id)
 
         actualcost as bln_cost_actual,
         config as config,
