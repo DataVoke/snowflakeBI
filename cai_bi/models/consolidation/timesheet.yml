@@ -67,8 +67,6 @@ models:
         data_type: VARCHAR(5000)
       - name: SUP_DOC_KEY
         data_type: NUMBER(38,0)
-      - name: SYSTEM_ID
-        data_type: VARCHAR(5000)
       - name: BLN_COST_ACTUAL
         data_type: BOOLEAN
       - name: CONFIG

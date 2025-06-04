@@ -40,7 +40,6 @@ sage_intacct as (
 
         supdocid as sup_doc_id,
         supdockey as sup_doc_key,
-        recordno as system_id,
 
         actualcost as bln_cost_actual,
         config as config,
@@ -100,7 +99,6 @@ salesforce as (
 
         null as sup_doc_id,
         null as sup_doc_key,
-        pse.id as system_id,
 
         null as bln_cost_actual,
         null as config,
@@ -162,7 +160,6 @@ select
     src_modified_by_id,
     sup_doc_id,
     sup_doc_key,
-    system_id,
     bln_cost_actual,
     config,
     description,
