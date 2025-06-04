@@ -99,10 +99,10 @@ select
     int.key_task as task_key,
     int.key_timesheet_entry as timesheet_entry_ref,
     int.task_name
-from dev_bi_dw.consolidation.timesheetentry int
+from int
 left join (
     select hash_link, sum(qty) as qty, listagg(notes, ', ') within group(order by notes) as notes
-    from dev_bi_dw.consolidation.timesheetentry
+    from int
     where src_sys_key = 'sfc'
     group by hash_link
 ) sfc on int.hash_link = sfc.hash_link 
