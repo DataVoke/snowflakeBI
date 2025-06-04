@@ -41,9 +41,9 @@ sage_intacct as (
         supdocid as sup_doc_id,
         supdockey as sup_doc_key,
 <<<<<<< HEAD
-=======
        
->>>>>>> 1a1ab4c (dim_project and timesheet adjustments)
+=======
+>>>>>>> 305a474 (Removed system_id)
 
         actualcost as bln_cost_actual,
         config as config,
