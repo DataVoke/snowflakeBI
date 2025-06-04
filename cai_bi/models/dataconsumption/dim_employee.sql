@@ -49,7 +49,7 @@ SELECT
     genders.record_id as key_gender,
     labor_categories.record_id as key_labor_categories,
     locations.record_id as key_location,
-    locations_intacct.record_id as key_location_intacct,
+    cast(locations_intacct.record_id as string) as key_location_intacct,
     locations_ukg.record_id as key_location_ukg,
     payroll_companies.record_id as key_payroll_company,
     pay_types.record_id as key_pay_type,
