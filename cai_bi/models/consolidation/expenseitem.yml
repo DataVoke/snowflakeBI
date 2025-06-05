@@ -44,10 +44,6 @@ models:
         data_type: VARCHAR(5000)
       - name: HASH_KEY_EMPLOYEE
         data_type: VARCHAR(32)
-      # - name: KEY_ENTITY
-      #   data_type: VARCHAR(5000)
-      # - name: HASH_KEY_ENTITY
-      #   data_type: VARCHAR(32)
       - name: KEY_PROJECT
         data_type: VARCHAR(5000)
       - name: HASH_KEY_PROJECT
