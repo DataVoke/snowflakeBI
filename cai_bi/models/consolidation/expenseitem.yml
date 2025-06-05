@@ -170,3 +170,65 @@ models:
         data_type: NUMBER(38,17)
       - name: ORG_CURRENCY
         data_type: VARCHAR(5000)
+      - name: PSA_URL
+        data_type: VARCHAR(5000)
+      - name: PSE_ASSIGNMENT_C
+        data_type: VARCHAR(5000)
+      - name: PSE_AUDIT_NOTES_C
+        data_type: VARCHAR(5000)
+      - name: PSE_LOST_RECEIPT_C
+        data_type: VARCHAR(5000)
+      - name: PSE_NOTES_C
+        data_type: VARCHAR(5000)
+      - name: PSE_RATE_UNIT_C
+        data_type: VARCHAR(5000)
+      - name: PSE_REIMBURSEMENT_AMOUNT_IN_PROJECT_CURRENCY_C
+        data_type: NUMBER(38,17)
+      - name: PSE_REIMBURSEMENT_CURRENCY_C
+        data_type: VARCHAR(5000)
+      - name: PSE_TYPE_C
+        data_type: VARCHAR(5000)
+      - name: QUANTITY
+        data_type: NUMBER(38,17)
+      - name: RECLAIM
+        data_type: BOOLEAN
+      - name: RECORD_TYPE
+        data_type: VARCHAR(5000)
+      - name: RECORD_URL
+        data_type: VARCHAR(5000)
+      - name: STATE
+        data_type: VARCHAR(5000)
+      - name: TAX_USE_IC_CODE
+        data_type: VARCHAR(5000)
+      - name: TOTAL_PAID
+        data_type: NUMBER(38,17)
+      - name: TOTAL_SELECTED
+        data_type: NUMBER(38,17)
+      - name: TRX_AMOUNT
+        data_type: NUMBER(38,17)
+      - name: TRX_TOTAL_PAID
+        data_type: NUMBER(38,17)
+      - name: TRX_TOTAL_SELECTED
+        data_type: NUMBER(38,17)
+      - name: UNIT_RATE
+        data_type: VARCHAR(5000)
+      - name: USER_EXCH_RATE
+        data_type: NUMBER(38,17)
+      - name: VAT_RATE
+        data_type: NUMBER(38,17)
+      - name: VENDOR_NAME
+        data_type: VARCHAR(5000)
+      - name: AMT_TRX_NR
+        data_type: NUMBER(38,17)
+      - name: ORG_EXCHRATE
+        data_type: NUMBER(38,17)
+      - name: ORG_EXCHRATEDATE
+        data_type: DATE
+      - name: ORG_EXCHRATETYPE
+        data_type: VARCHAR(5000)
+      - name: PROJECTNAME
+        data_type: VARCHAR(5000)
+      - name: PSE_LOST_RECEIPT_C
+        data_type: BOOLEAN
+
+

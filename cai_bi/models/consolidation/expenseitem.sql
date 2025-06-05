@@ -1,7 +1,8 @@
 {{
     config(
         materialized="table",
-        schema="consolidation"
+        schema="consolidation",
+        alias="expense_item"
     )
 }}
 
@@ -292,6 +293,7 @@ select
     cast(amt_net_of_vat_base as number(38, 2)) as amt_net_of_vat_base,
     amt_non_reclaim_vat_base_amount,
     amt_nr,
+    amt_trx_nr,
     amt_reclaim_vat,
     amt_reclaim_vat_base,
     amt_reverse_txn_vat,
@@ -322,5 +324,33 @@ select
     cast(non_reclaim_vat_base_amount as string) as non_reclaim_vat_base_amount,
     non_reimbursable,
     cast(org_amount as number(38, 2)) as org_amount,
-    org_currency
+    org_currency,
+    cast(org_exchrate as number(38, 6)) as org_exchrate,
+    org_exchratedate,
+    cast(org_exchratetype as string) as org_exchratetype,
+    projectname,
+    psa_url,
+    pse_assignment_c,
+    pse_audit_notes_c,
+    pse_lost_receipt_c,
+    pse_notes_c,
+    pse_rate_unit_c,
+    cast(pse_reimbursement_amount_in_project_currency_c as number(38, 2)) as pse_reimbursement_amount_in_project_currency_c,
+    pse_reimbursement_currency_c,
+    pse_type_c,
+    cast(quantity as number(38, 2)) as quantity,
+    cast(reclaim as boolean) as reclaim,
+    record_type,
+    record_url,
+    state,
+    cast(tax_use_ic_code as string) as tax_use_ic_code,
+    cast(total_paid as number(38, 2)) as total_paid,
+    cast(total_selected as number(38, 2)) as total_selected,
+    cast(trx_amount as number(38, 2)) as trx_amount,
+    cast(trx_total_paid as number(38, 2)) as trx_total_paid,
+    cast(trx_total_selected as number(38, 2)) as trx_total_selected,
+    unit_rate,
+    cast(user_exch_rate as number(38, 6)) as user_exch_rate,
+    cast(vat_rate as number(38, 6)) as vat_rate,
+    vendor_name
 from final
