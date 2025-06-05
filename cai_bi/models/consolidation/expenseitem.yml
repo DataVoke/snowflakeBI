@@ -172,21 +172,21 @@ models:
         data_type: VARCHAR(5000)
       - name: PSA_URL
         data_type: VARCHAR(5000)
-      - name: PSE_ASSIGNMENT_C
+      - name: PSE_ASSIGNMENT
         data_type: VARCHAR(5000)
-      - name: PSE_AUDIT_NOTES_C
+      - name: PSE_AUDIT_NOTES
         data_type: VARCHAR(5000)
-      - name: PSE_LOST_RECEIPT_C
+      - name: PSE_LOST_RECEIPT
         data_type: VARCHAR(5000)
-      - name: PSE_NOTES_C
+      - name: PSE_NOTES
         data_type: VARCHAR(5000)
-      - name: PSE_RATE_UNIT_C
+      - name: PSE_RATE_UNIT
         data_type: VARCHAR(5000)
-      - name: PSE_REIMBURSEMENT_AMOUNT_IN_PROJECT_CURRENCY_C
+      - name: PSE_REIMBURSEMENT_AMOUNT_IN_PROJECT_CURRENCY
         data_type: NUMBER(38,17)
-      - name: PSE_REIMBURSEMENT_CURRENCY_C
+      - name: PSE_REIMBURSEMENT_CURRENCY
         data_type: VARCHAR(5000)
-      - name: PSE_TYPE_C
+      - name: PSE_TYPE
         data_type: VARCHAR(5000)
       - name: QUANTITY
         data_type: NUMBER(38,17)
@@ -228,7 +228,7 @@ models:
         data_type: VARCHAR(5000)
       - name: PROJECTNAME
         data_type: VARCHAR(5000)
-      - name: PSE_LOST_RECEIPT_C
+      - name: PSE_LOST_RECEIPT
         data_type: BOOLEAN
 
 
