@@ -1,7 +1,8 @@
 {{
     config(
         materialized="table",
-        schema="consolidation"
+        schema="consolidation",
+        alias="ap_bill_item"
     )
 }}
 
@@ -22,27 +23,26 @@ sage_intacct as (
         md5(recordno) as hash_key,
         recordkey as key_ap_bill,
         md5(recordkey) as hash_key_ap_bill,
-        -- megaentitykey as key_entity,
-        -- md5(megaentitykey) as hash_key_entity,
         cast(employeedimkey as string) as key_employee,
         md5(employeedimkey) as hash_key_employee,
         accountkey as account_key,
-        customerdimkey as customer_dim_key,
+        customerdimkey as customer_key,
         customerid as customer_id,
         departmentid as department_id,
         detailkey as detail_key,
         employeeid as employee_id,
         exch_rate_type_id as exch_rate_type_id,
-        itemdimkey as item_dim_key,
+        itemdimkey as item_key,
         itemid as item_id,
         locationid as location_id,
         offsetaccountkey as offset_account_key,
-        projectdimkey as project_dim_key,
+        projectdimkey as key_project,
+        md5(projectdimkey) as hash_key_project,
         projectid as project_id,
         recordid as record_id,
         cast(createdby as string) as src_created_by_id,
         cast(modifiedby as string) as src_modified_by_id,
-        vendordimkey as vendor_dim_key,
+        vendordimkey as vendor_key,
         vendorid as vendor_id,
         exch_rate_date as dte_exch_rate,
         cast(non_reclaim_vat_base_amount as number(38, 2)) as amt_non_reclaim_vat_base,
