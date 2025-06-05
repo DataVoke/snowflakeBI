@@ -84,8 +84,8 @@ models:
         data_type: VARCHAR(250)
       - name: SRC_MODIFIED_BY
         data_type: VARCHAR(250)
-      # - name: VENDOR_KEY
-      #   data_type: VARCHAR(5000)
+      - name: VENDOR_KEY
+        data_type: VARCHAR(5000)
       - name: VENDOR_ID
         data_type: VARCHAR(5000)
       - name: ACCOUNT_LABEL
