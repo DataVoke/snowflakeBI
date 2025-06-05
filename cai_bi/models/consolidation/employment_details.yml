@@ -1,0 +1,133 @@
+version: 2
+
+models:
+  - name: employment_details
+    description: Model for employment details data
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: SRC_SYS_KEY
+        data_type: VARCHAR(250)
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_EFF_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EFF_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: BLN_CURRENT
+        data_type: BOOLEAN
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - not_null
+          - unique
+      - name: HASH_KEY
+        data_type: VARCHAR(32)
+        tests:
+          - not_null
+          - unique
+      - name: LINK
+        data_type: VARCHAR(5000)
+      - name: HASH_LINK
+        data_type: VARCHAR(32)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_ENTITY
+        data_type: VARCHAR(32)
+      - name: KEY_EMPLOYMENT
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_EMPLOYMENT
+        data_type: VARCHAR(32)
+      - name: BASE_TEAM_ID
+        data_type: VARCHAR(5000)
+      - name: DEPARTMENT_ID
+        data_type: VARCHAR(5000)
+      - name: DOL_STATUS_ID
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_TYPE_ID
+        data_type: VARCHAR(5000)
+      - name: ENTITY_ID
+        data_type: VARCHAR(5000)
+      - name: FK_EMPLOYEE
+        data_type: VARCHAR(32)
+      - name: FK_ENTITY
+        data_type: VARCHAR(32)
+      - name: HOME_COMPANY_ID
+        data_type: VARCHAR(5000)
+      - name: JOB_ID
+        data_type: VARCHAR(5000)
+      - name: LOCATION_ID_INTACCT
+        data_type: VARCHAR(5000)
+      - name: LOCATION_ID_UKG
+        data_type: VARCHAR(5000)
+      - name: PAY_TYPE_ID
+        data_type: VARCHAR(5000)
+      - name: PAYROLL_COMPANY_ID
+        data_type: VARCHAR(5000)
+      - name: POSITION_ID
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(250)
+      - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(250)
+      - name: SUPERVISOR_ID
+        data_type: VARCHAR(5000)
+      - name: SYSTEM_ID
+        data_type: VARCHAR(5000)
+      - name: TERMINATION_TYPE_ID
+        data_type: VARCHAR(5000)
+      - name: ANNUAL_SALARY
+        data_type: NUMBER(38,17)
+      - name: BLN_IS_ACTIVE
+        data_type: BOOLEAN
+      - name: CURRENCY_CODE
+        data_type: VARCHAR(20)
+      - name: DTE_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTE_SRC_END
+        data_type: DATE
+      - name: DTE_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTE_SRC_START
+        data_type: DATE
+      - name: DTS_LAST_HIRE
+        data_type: TIMESTAMP_TZ(9)
+      - name: EMPL_STATUS
+        data_type: VARCHAR(5000)
+      - name: HOURLY_PAY_RATE
+        data_type: NUMBER(38,17)
+      - name: DTS_JOB_EFFECTIVE
+        data_type: TIMESTAMP_TZ(9)
+      - name: JOB_SALARY_GRADE
+        data_type: VARCHAR(5000)
+      - name: JOB_TITLE
+        data_type: VARCHAR(5000)
+      - name: OTHER_RATE_1
+        data_type: NUMBER(38,17)
+      - name: OTHER_RATE_2
+        data_type: NUMBER(38,17)
+      - name: OTHER_RATE_3
+        data_type: NUMBER(38,17)
+      - name: OTHER_RATE_4
+        data_type: NUMBER(38,17)
+      - name: PAY_GROUP
+        data_type: VARCHAR(5000)
+      - name: PAY_PERIOD_PAY_RATE
+        data_type: NUMBER(38,17)
+      - name: UKG_STATUS
+        data_type: VARCHAR(5000)
+      - name: TERM_TYPE
+        data_type: VARCHAR(5000)
+      - name: TERMINATION_REASON_DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: WEEKLY_PAY_RATE
+        data_type: NUMBER(38,17)
