@@ -7,7 +7,7 @@
 
 with
 
-    int as (select * from {{ ref('timesheetentry') }}),
+    int as (select * from {{ ref('timesheet_entry') }}),
     sfc as (
         select 
             hash_link, 
