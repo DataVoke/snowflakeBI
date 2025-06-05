@@ -7,7 +7,7 @@
 }}
 
 with 
-    si_apbillitem as (select * from {{ source("sage_intacct", "ap_bill_item") }}),
+    si_apbillitem as (select * from {{ source("sage_intacct", "ap_bill_item") }} where _fivetran_deleted = false),
 
 sage_intacct as (
     select
