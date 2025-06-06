@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: dim_project
+    description: >
+      Dimension table for projects, combining data from Intacct, PSA, Salesforce, and Portal sources to provide enriched project metadata.
+    config:
+      schema: dataconsumption
+    columns:
+      - name: key
+        description: Primary key from Intacct project data
+        tests:
+          - not_null
+          - unique
+
+     
