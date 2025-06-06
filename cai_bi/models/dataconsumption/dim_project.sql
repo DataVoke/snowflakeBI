@@ -1,56 +1,60 @@
-{{
-    config(
-        materialized = "table",
-        schema = "dataconsumption"
-    )
-}}
+{{ config(
+    materialized = "table",
+    schema = "dataconsumption"
+) }}
 
 with
-    int as (
-        select * from {{ ref('project') }} where src_sys_key = 'int'
-    ),
 
-    pts as (
-        select * from {{ ref('project') }} where src_sys_key = 'psa'
-    ),
+int as (
+    select * from {{ ref('project') }} where src_sys_key = 'int'
+),
 
-    sfc as (
-        select * from {{ ref('project') }} where src_sys_key = 'sfc'
-    ),
+pts as (
+    select * from {{ ref('project') }} where src_sys_key = 'psa'
+),
 
-    pts_employee as (
-        select * from {{ ref('employee') }} where src_sys_key = 'por'
-    ),
+sfc as (
+    select * from {{ ref('project') }} where src_sys_key = 'sfc'
+),
 
-    en as (
-        select * from {{ source('portal','entities') }} where _fivetran_deleted = false
-    ),
+employee_int as (
+    select * from {{ ref('employee') }} where src_sys_key = 'int'
+),
 
-    por_dep as (
-        select * from {{ source('portal','departments')}} where _fivetran_deleted = false 
-    ),
+employee_ukg as (
+    select * from {{ ref('employee') }} where src_sys_key = 'ukg'
+),
 
-    por_ent as (
-        select * from {{ source('portal','entities')}} where _fivetran_deleted = false
-    ),
+por_dep as (
+    select * from {{ source('portal','departments') }} where _fivetran_deleted = false
+),
 
-    por_pract as (
-        select * from {{ source('portal','practices')}} where _fivetran_deleted = false
-    ),
+por_grp as (
+    select * from {{ source('portal','entities') }} where _fivetran_deleted = false
+),
 
-    por_loc as (
-        select * from {{ source('portal','locations') }} where _fivetran_deleted = false and id != '55-1'
-    ),
+por_pract as (
+    select * from {{ source('portal','practices') }} where _fivetran_deleted = false
+),
 
-    locations_intacct as (
-        select * from {{ source('sage_intacct','location')}} where _fivetran_deleted = false
-    )
+por_loc as (
+    select * from {{ source('portal','locations') }} where _fivetran_deleted = false and id != '55-1'
+),
+
+por_ent as (
+    select * from {{ source('portal','entities') }} where _fivetran_deleted = false
+),
+
+locations_intacct as (
+    select * from {{ source('sage_intacct','location') }} where _fivetran_deleted = false
+)
 
 select
     current_timestamp as dts_created_at,
     '{{ this.name }}' as created_by,
     current_timestamp as dts_updated_at,
     '{{ this.name }}' as updated_by,
+
     int.key,
     sfc.account_id,
     int.billto_key,
@@ -79,20 +83,21 @@ select
     int.src_created_by_id,
     int.src_modified_by_id,
     int.term_key,
-    ---Key columns---
+
     por_dep.record_id as key_department,
     por_loc.record_id as key_location,
-    en.record_id as key_entity,
-    por_ent.record_id as key_group,
+    por_ent.record_id as key_entity,
+    por_grp.record_id as key_group,
     por_pract.record_id as key_practice,
-    pts_employee.key as key_project,
-     ---Key columns---
+    employee_ukg.key as key_project_manager,
+
     por_dep.display_name as department_name,
     por_loc.display_name as location_name,
-    en.display_name as entity_name,
-    por_ent.name as group_name,
+    por_ent.display_name as entity_name,
+    por_grp.display_name as group_name,
     por_pract.display_name as practice_name,
-    pts_employee.display_name as employee_name,
+    employee_ukg.display_name as project_manager_name,
+
     int.qty_actual,
     int.amt_total_billable,
     int.amt_total_budget,
@@ -117,7 +122,6 @@ select
     sfc.cost_expense,
     int.currency_iso_code,
     int.customer_name,
-    --int.department_name,
     int.dte_src_end,
     int.dte_src_start,
     pts.dts_int_last_assignment_sync,
@@ -135,7 +139,6 @@ select
     int.invoice_currency,
     pts.last_resource_plan_review_by,
     pts.last_synced_status,
-    --int.location_name,
     int.memo,
     int.parent_name,
     pts.pmo_comments,
@@ -157,14 +160,15 @@ select
     sfc.total_earned_value,
     sfc.total_number_of_tasks,
     pts.travel_rate
+
 from int
 left join pts on int.hash_link = pts.hash_link
 left join sfc on sfc.hash_link = pts.hash_link
-left join pts_employee on pts.assistant_project_manager_id = pts_employee.link
-left join locations_intacct on int.project_location_key = locations_intacct.recordno
-left join en on ifnull(locations_intacct.parentkey, int.project_location_key) = en.id
+left join employee_int on int.project_manager_id = employee_int.intacct_employee_id
+left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
 left join por_dep on int.department_id = por_dep.intacct_id
-left join por_ent on por_ent.salesforce_id = sfc.group_id
+left join por_grp on sfc.group_id = por_grp.salesforce_id
 left join por_pract on por_pract.salesforce_id = sfc.practice_id
 left join por_loc on por_loc.intacct_id = int.location_id
-
+left join por_ent on por_loc.entity_id = por_ent.id
+left join locations_intacct on int.project_location_key = locations_intacct.recordno
