@@ -138,7 +138,7 @@ models:
         data_type: VARCHAR(5000)
       - name: EXPENSE_DETAIL_REPORTING_CATEGORY
         data_type: VARCHAR(5000)
-      - name: EXPENSE_TYPE_DETAIL_C
+      - name: EXPENSE_TYPE_DETAIL
         data_type: VARCHAR(5000)
       - name: FORM_1099
         data_type: VARCHAR(5000)
@@ -160,31 +160,29 @@ models:
         data_type: VARCHAR(5000)
       - name: NON_RECLAIM_VAT_BASE_AMOUNT
         data_type: VARCHAR(5000)
-      - name: NON_REIMBURSABLE
+      - name: BLN_NON_REIMBURSABLE
         data_type: BOOLEAN
-      - name: ORG_AMOUNT
+      - name: AMT_ORG
         data_type: NUMBER(38,17)
       - name: ORG_CURRENCY
         data_type: VARCHAR(5000)
       - name: PSA_URL
         data_type: VARCHAR(5000)
-      - name: PSE_ASSIGNMENT
+      - name: ASSIGNMENT_ID
         data_type: VARCHAR(5000)
-      - name: PSE_AUDIT_NOTES
+      - name: AUDIT_NOTES
         data_type: VARCHAR(5000)
-      - name: PSE_LOST_RECEIPT
+      - name: NOTES
         data_type: VARCHAR(5000)
-      - name: PSE_NOTES
+      - name: RATE_UNIT
         data_type: VARCHAR(5000)
-      - name: PSE_RATE_UNIT
-        data_type: VARCHAR(5000)
-      - name: PSE_REIMBURSEMENT_AMOUNT_IN_PROJECT_CURRENCY
+      - name: AMT_REIMBURSEMENT_IN_PROJECT_CURRENCY
         data_type: NUMBER(38,17)
-      - name: PSE_REIMBURSEMENT_CURRENCY
+      - name: REIMBURSEMENT_CURRENCY
         data_type: VARCHAR(5000)
-      - name: PSE_TYPE
+      - name: TYPE
         data_type: VARCHAR(5000)
-      - name: QUANTITY
+      - name: QTY
         data_type: NUMBER(38,17)
       - name: RECLAIM
         data_type: BOOLEAN
@@ -196,15 +194,15 @@ models:
         data_type: VARCHAR(5000)
       - name: TAX_USE_IC_CODE
         data_type: VARCHAR(5000)
-      - name: TOTAL_PAID
+      - name: AMT_TOTAL_PAID
         data_type: NUMBER(38,17)
-      - name: TOTAL_SELECTED
+      - name: AMT_TOTAL_SELECTED
         data_type: NUMBER(38,17)
-      - name: TRX_AMOUNT
+      - name: AMT_TRX
         data_type: NUMBER(38,17)
-      - name: TRX_TOTAL_PAID
+      - name: AMT_TRX_TOTAL_PAID
         data_type: NUMBER(38,17)
-      - name: TRX_TOTAL_SELECTED
+      - name: AMT_TRX_TOTAL_SELECTED
         data_type: NUMBER(38,17)
       - name: UNIT_RATE
         data_type: VARCHAR(5000)
@@ -218,13 +216,13 @@ models:
         data_type: NUMBER(38,17)
       - name: ORG_EXCHRATE
         data_type: NUMBER(38,17)
-      - name: ORG_EXCHRATEDATE
+      - name: DTE_ORG_EXCHRATE
         data_type: DATE
       - name: ORG_EXCHRATETYPE
         data_type: VARCHAR(5000)
       - name: PROJECTNAME
         data_type: VARCHAR(5000)
-      - name: PSE_LOST_RECEIPT
+      - name: BLN_LOST_RECEIPT
         data_type: BOOLEAN
 
 
