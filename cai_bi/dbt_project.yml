@@ -33,3 +33,7 @@ models:
   cai_bi:
     consolidation:
       +materialized: table
+      +schema: consolidation
+    dataconsumption:
+      +materialized: table
+      +schema: dataconsumption
