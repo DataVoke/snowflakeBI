@@ -172,3 +172,4 @@ left join por_pract on por_pract.salesforce_id = sfc.practice_id
 left join por_loc on por_loc.intacct_id = int.location_id
 left join por_ent on por_loc.entity_id = por_ent.id
 left join locations_intacct on int.project_location_key = locations_intacct.recordno
+where lower(int.project_type) <> 'client site'

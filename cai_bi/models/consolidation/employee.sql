@@ -31,7 +31,7 @@ with
             from {{ source('ukg_pro', 'compensation') }} 
             where _fivetran_deleted = false
             qualify row_number() over (
-            partition by employee_id, company_id
+            partition by employee_id
             order by date_in_job desc
         ) = 1
     ),
@@ -234,7 +234,7 @@ portal as (
         address_street as address_street,
         null as annual_salary,
         null as bln_exclude_from_resource_planner,
-        null as bln_is_active,
+        case when UPPER(status) = 'ACTIVE' then true else false end as bln_is_active,
         null as bln_is_hourly,
         is_mst as bln_mst,
         is_pm_qualified as bln_pm_qualified,
@@ -358,7 +358,7 @@ sage_intacct as (
         si_contact.mailaddress_address_1 as address_street,
         null as annual_salary,
         null as bln_exclude_from_resource_planner,
-        null as bln_is_active,
+        case when UPPER(si_contact.status) = 'ACTIVE' then true else false end as bln_is_active,
         si_employee.hourly_payroll as bln_is_hourly,
         null as bln_mst,
         null as bln_pm_qualified,
