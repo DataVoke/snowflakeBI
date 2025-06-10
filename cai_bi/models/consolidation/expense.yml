@@ -5,6 +5,9 @@ models:
     config:
       contract:
         enforced: true
+    tests:
+      - expense_source_count_match_sage
+      - expense_source_count_match_sf
     columns:
       - name: SRC_SYS_KEY
         data_type: VARCHAR(250)
