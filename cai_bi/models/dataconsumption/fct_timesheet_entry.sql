@@ -2,6 +2,7 @@
     config(
         materialized="table",
         schema="dataconsumption",
+        alias="timesheet_entry"
     )
 }}
 

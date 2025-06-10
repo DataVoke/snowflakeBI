@@ -8,7 +8,7 @@ with
     si_timesheet         as (select * from {{ source('sage_intacct', 'timesheet') }} where _fivetran_deleted = false),
     si_project_resources as (select * from {{ source('sage_intacct', 'project_resources') }} where _fivetran_deleted = false),
     si_project           as (select * from {{ source('sage_intacct', 'project') }} where _fivetran_deleted = false),
-    si_filtered          as (
+    si_timesheetentry_filtered          as (
                             select 
                                 * 
                             from si_timesheetentry
@@ -53,29 +53,13 @@ with
             t.projectid as timeprojectid, 
             t.employeeid,  
             t.entrydate, 
-            t.taskid,
-            t.taskkey,
-            t.itemid,
-            t.itemkey,
-            t.employeedimkey,
-            r.recordno,
-            r.employeekey, 
-            r.employeeid, 
-            r.projectkey,
-            r.projectid, 
-            r.itemkey,
-            r.itemid, 
-            r.employeecontactname,        
+            t.taskid,      
             r.billingrate,  
             r.currency, 
             r.effectivedate,
             r.date_from,
             r.date_to
-            from (
-                select   * 
-                from si_timesheetentry 
-                    qualify row_number() over ( partition by projectid, employeeid, entrydate, taskid order by whenmodified desc ) =1 
-            ) as t 
+            from si_timesheetentry_filtered as t 
             inner join with_date_ranges as r on (r.projectkey = t.projectkey and r.employeekey = t.employeedimkey and r.itemkey = t.itemkey and (t.entrydate between date_from and date_to))    
         ),
         unmatched_items as (
@@ -84,29 +68,13 @@ with
             t.projectid as timeprojectid, 
             t.employeeid,  
             t.entrydate, 
-            t.taskid,
-            t.taskkey,
-            t.itemid,
-            t.itemkey,
-            t.employeedimkey,
-            r.recordno,
-            r.employeekey, 
-            r.employeeid, 
-            r.projectkey,
-            r.projectid , 
-            r.itemkey,
-            r.itemid, 
-            r.employeecontactname,        
+            t.taskid,  
             r.billingrate,  
             r.currency, 
             r.effectivedate,
             r.date_from,
             r.date_to
-            from (
-                select   * 
-                from si_timesheetentry 
-                    qualify row_number() over ( partition by projectid, employeeid, entrydate, taskid order by whenmodified desc ) =1 
-            ) as t  
+            from si_timesheetentry_filtered as t  
             left join with_date_ranges as r on (r.projectkey = t.projectkey and  r.employeekey = t.employeedimkey and r.itemkey is null and (t.entrydate between date_from and date_to))    
             where timerecordno not in (select timerecordno from matched_items)
         ),
@@ -204,9 +172,9 @@ sage_intacct as (
         si_timesheetentry.statglentrylineno as stat_gl_entry_line_no,
         si_timesheetentry.state as state,
         si_timesheetentry.taskname as task_name
-    from si_timesheetentry
+    from si_timesheetentry_filtered as si_timesheetentry
     left join si_timesheet on si_timesheet.recordno = si_timesheetentry.timesheetkey
-    left join billrate_currency on billrate_currency.timeprojectid = si_timesheetentry.recordno
+    left join billrate_currency on billrate_currency.timerecordno = si_timesheetentry.recordno
 ),
 
 salesforce as (
@@ -219,8 +187,8 @@ salesforce as (
         current_timestamp as dts_eff_start,
         '9999-12-31' as dts_eff_end,
         true as bln_current,
-        tt.id as key,
-        md5(tt.id) as hash_key,
+        tt.id || tt.entrydate as key,
+        md5(tt.id || tt.entrydate) as hash_key,
         si.recordno as link,
         md5(si.recordno) as hash_link,
         tt.pse_timecard_c as key_timesheet,
