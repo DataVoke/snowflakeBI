@@ -1,6 +1,7 @@
 {{ config(
     materialized = 'table',
-    schema = 'dataconsumption'
+    schema = 'dataconsumption',
+    alias="reporting_groups_locations"
 ) }}
 
 with practice_3 as (

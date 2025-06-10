@@ -1,7 +1,8 @@
 {{
     config(
         materialized="table",
-        schema="dataconsumption"
+        schema="dataconsumption",
+        alias="employee"
     )
 }}
 

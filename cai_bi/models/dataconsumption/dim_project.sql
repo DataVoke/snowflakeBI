@@ -1,6 +1,7 @@
 {{ config(
     materialized = "table",
-    schema = "dataconsumption"
+    schema = "dataconsumption",
+    alias="project"
 ) }}
 
 with
