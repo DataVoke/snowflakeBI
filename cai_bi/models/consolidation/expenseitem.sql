@@ -318,7 +318,7 @@ select
     cast(gl_dim_line_tax_detail as string) as gl_dim_line_tax_detail,
     cast(gl_dim_vat_code as string) as gl_dim_vat_code,
     item_name,
-    cast(line_item as string) as line_item,
+    line_item as bln_line_item,
     line_no,
     location_name,
     cast(non_reclaim_vat_base_amount as string) as non_reclaim_vat_base_amount,
