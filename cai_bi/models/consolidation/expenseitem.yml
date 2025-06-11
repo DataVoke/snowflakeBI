@@ -152,8 +152,8 @@ models:
         data_type: VARCHAR(5000)
       - name: ITEM_NAME
         data_type: VARCHAR(5000)
-      - name: LINE_ITEM
-        data_type: VARCHAR(5000)
+      - name: BLN_LINE_ITEM
+        data_type: BOOLEAN
       - name: LINE_NO
         data_type: VARCHAR(5000)
       - name: LOCATION_NAME
