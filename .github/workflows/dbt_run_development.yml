@@ -33,3 +33,4 @@ jobs:
 
       - name: Run dbt build
         run: dbt build --profiles-dir ~/.dbt
+        working-directory: cai_bi
