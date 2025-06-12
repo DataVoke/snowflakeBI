@@ -7,12 +7,12 @@
 with
 ap_bill_item as (
     select * 
-    from {{ ref('ap_bill_item') }} 
+    from {{ ref('apbillitem') }} 
     where src_sys_key = 'int' and bln_line_item = true
 ),
 ap_bill as (
     select * 
-    from {{ ref('ap_bill') }} 
+    from {{ ref('apbill') }} 
 ),
 portal_departments as (
     select * 
