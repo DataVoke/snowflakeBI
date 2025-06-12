@@ -13,7 +13,6 @@ ap_bill_item as (
 ap_bill as (
     select * 
     from {{ ref('ap_bill') }} 
-    where key is not null
 ),
 portal_departments as (
     select * 
@@ -215,6 +214,7 @@ final as (
     left join project on abi.key_project = project.key
     left join employee_int on abi.employee_id = employee_int.intacct_employee_id
     left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
+    where ab.key is not null
 )
 
 select * from final
