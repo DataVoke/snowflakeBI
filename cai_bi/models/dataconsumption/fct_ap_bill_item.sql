@@ -1,6 +1,7 @@
 {{ config(
     materialized='table',
     schema='dataconsumption',
+    alias="ap_bill_item"
 ) }}
 
 with
