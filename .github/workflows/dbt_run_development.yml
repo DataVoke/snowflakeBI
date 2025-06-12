@@ -24,6 +24,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install dbt-core dbt-snowflake
 
+      - name: Decode Snowflake private key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SNOWFLAKE_PK_BASE64 }}" | base64 -d > ~/.ssh/snowflake_key.pem
+          chmod 600 ~/.ssh/snowflake_key.pem
+
       - name: Set up dbt profile
         run: |
           mkdir -p ~/.dbt
