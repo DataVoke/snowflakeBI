@@ -1,4 +1,4 @@
-development:
+cai_bi:
   target: dev
   outputs:
     dev:
