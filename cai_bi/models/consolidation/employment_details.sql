@@ -19,7 +19,7 @@ ukg as (
         cast(current_timestamp as timestamp_tz) as dts_updated_at,
         '{{ this.name }}' as updated_by,
         cast(employee_job_history.date_time_created as timestamp_tz) as dts_eff_start,
-        cast(dateadd(second, -1, employee_job_history.date_time_created) as timestamp_tz) as dts_eff_end,
+        coalesce(cast(dateadd(second, -1,  lag(employee_job_history.date_time_created)  over (partition by employee_job_history.EMPLOYEE_ID order by employee_job_history.date_time_created desc ) ) as timestamp_tz ),'9999-12-31') as dts_eff_end,
         true as bln_current,
         employment.id as key,
         md5(employment.id) as hash_key,
@@ -44,7 +44,6 @@ ukg as (
         cast(employee_job_history.created_by_user_id as string) as src_created_by_id,
         null as src_modified_by_id,
         employment.supervisor_id,
-        employee_job_history.employee_id as system_id,
         employment.term_reason as termination_type_id,
         cast(employee_job_history.annual_salary as number(19, 4)) as annual_salary,
         case 
