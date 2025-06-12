@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: fct_timesheet
+    description: >
+      Fact table for timesheet, combining data from Intacct sources to provide enriched project metadata.
+    columns:
+      - name: key
+        description: Primary key from Intacct timesheet
+        tests:
+          - not_null
+          - unique
+
+     
