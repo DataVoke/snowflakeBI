@@ -34,6 +34,8 @@ models:
     consolidation:
       +materialized: table
       +schema: consolidation
+      +transient: false
     dataconsumption:
       +materialized: table
       +schema: dataconsumption
+      +transient: false
