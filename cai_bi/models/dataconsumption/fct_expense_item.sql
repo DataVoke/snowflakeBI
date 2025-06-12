@@ -1,6 +1,6 @@
 {{ config(
     materialized='table',
-    alias="expense_items"
+    alias="expense_item"
 ) }}
 
 with
