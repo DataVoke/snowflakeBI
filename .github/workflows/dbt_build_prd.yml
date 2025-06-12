@@ -1,9 +1,9 @@
-name: Run dbt Build
+name: Run dbt Build in Production
 
 on:
   push:
     branches:
-      - feature/development_ci_cd
+      - main
   workflow_dispatch:
 
 jobs:
@@ -37,12 +37,6 @@ jobs:
         env:
           DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
 
-      - name: check if private key was created
-        run: ls -la ~/.ssh
-
-      - name: get content of profiles.yml
-        run: cat ~/.dbt/profiles.yml
-
       - name: Run dbt build
-        run: dbt build --profiles-dir ~/.dbt
+        run: dbt build --profiles-dir ~/.dbt --target prd
         working-directory: cai_bi

@@ -1,0 +1,24 @@
+development:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: OTB26825.us-east-1
+      user: gh_dbt_service_user
+      role: SYSADMIN
+      database: DEV_BI_DW
+      warehouse: BI_INGEST_WH
+      schema: CONSOLIDATION
+      private_key_path: /home/runner/.ssh/snowflake_key.pem
+      threads: 4
+
+    prd:
+      type: snowflake
+      account: OTB26825.us-east-1
+      user: gh_dbt_service_user
+      role: SYSADMIN
+      database: PRD_BI_DW
+      warehouse: BI_INGEST_WH
+      schema: CONSOLIDATION
+      private_key_path: /home/runner/.ssh/snowflake_key.pem
+      threads: 4
