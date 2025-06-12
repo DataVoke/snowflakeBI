@@ -1,4 +1,4 @@
-{% test timesheet_source_count_match_salesforce(model) %}
+{% test timesheetentry_source_count_match_salesforce(model) %}
     WITH model_count AS (
         SELECT COUNT(*) AS cnt FROM {{ model }} WHERE src_sys_key = 'sfc'
     ),
