@@ -212,6 +212,7 @@ final as (
     left join project on int_ei.key_project = project.key
     left join employee_int on int_ei.employee_id = employee_int.intacct_employee_id
     left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
+    where int_e.key is not null
 )
 
 select * from final
