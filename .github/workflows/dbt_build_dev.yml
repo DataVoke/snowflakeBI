@@ -38,5 +38,5 @@ jobs:
           DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
 
       - name: Run dbt build
-        run: dbt build --profiles-dir cai_bi --target dev
+        run: dbt build --profiles-dir . --target dev
         working-directory: cai_bi
