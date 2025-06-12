@@ -149,13 +149,15 @@ models:
         data_type: VARCHAR(5000)
       - name: CUSTOMER_NAME
         data_type: VARCHAR(5000)
-      - name: DEPARTMENTNAME
+      - name: DEPARTMENT_NAME
         data_type: VARCHAR(5000)
       - name: DTE_CF_APBILLITEM_EXPAMTSTART
         data_type: DATE
       - name: DTE_ENTRY
         data_type: DATE
       - name: DTE_SRC_START
+        data_type: DATE
+      - name: DTE_SRC_END
         data_type: DATE
       - name: DTS_SRC_CREATED
         data_type: TIMESTAMP_TZ(9)
