@@ -127,8 +127,6 @@ models:
         data_type: VARCHAR(5000)
       - name: SUPERVISOR_ID
         data_type: VARCHAR(5000)
-      - name: SYSTEM_ID
-        data_type: VARCHAR(5000)
       - name: TERMINATION_TYPE_ID
         data_type: VARCHAR(5000)
       - name: TRACKER_RECORD_ID
