@@ -31,5 +31,5 @@ jobs:
           chmod 600 ~/.ssh/snowflake_key.pem
 
       - name: Run dbt build
-        run: dbt build --profiles-dir . --target dev
+        run: dbt build --profiles-dir ./profiles --target dev
         working-directory: cai_bi
