@@ -3,7 +3,7 @@ name: Run dbt Build in Development
 on:
   push:
     branches:
-      - development
+      - feature/development_ci_cd
   workflow_dispatch:
 
 jobs:
