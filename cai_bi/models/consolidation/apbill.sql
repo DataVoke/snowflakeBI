@@ -2,6 +2,7 @@
     config(
         materialized="table",
         schema="consolidation",
+        alias="ap_bill"
     )
 }}
 
