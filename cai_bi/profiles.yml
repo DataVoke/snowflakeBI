@@ -5,6 +5,7 @@ cai_bi:
       type: snowflake
       account: OTB26825.us-east-1
       user: CICD_SVC_USER_NONPROD
+      database: DEV_BI_RAW
       schema: CONSOLIDATION
       private_key_path: /home/runner/.ssh/snowflake_key.pem
       threads: 4
@@ -13,6 +14,7 @@ cai_bi:
       type: snowflake
       account: OTB26825.us-east-1
       user: CICD_SVC_USER_PROD
+      database: PROD_BI_RAW
       schema: CONSOLIDATION
       private_key_path: /home/runner/.ssh/snowflake_key.pem
       threads: 4
