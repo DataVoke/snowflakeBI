@@ -49,10 +49,8 @@ models:
         data_type: VARCHAR(5000)
       - name: HASH_KEY_BASE_TEAM
         data_type: VARCHAR(32)
-      - name: KEY_EMPLOYMENT
+      - name: EMPLOYMENT_ID
         data_type: VARCHAR(5000)
-      - name: HASH_KEY_EMPLOYMENT
-        data_type: VARCHAR(32)
       - name: ACCOUNT_ID
         data_type: VARCHAR(5000)
       - name: AZURE_ID
