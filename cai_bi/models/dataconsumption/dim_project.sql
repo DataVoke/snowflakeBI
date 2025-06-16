@@ -38,6 +38,10 @@ por_pract as (
     select * from {{ source('portal','practices') }} where _fivetran_deleted = false
 ),
 
+por_pract_area as (
+    select * from {{ source('portal','practice_areas') }} where _fivetran_deleted = false
+),
+
 por_loc as (
     select * from {{ source('portal','locations') }} where _fivetran_deleted = false and id != '55-1'
 ),
@@ -91,6 +95,7 @@ select
     por_grp.record_id as key_group,
     por_pract.record_id as key_practice,
     employee_ukg.key as key_project_manager,
+    por_pract_area.record_id as key_practice_area,
 
     por_dep.display_name as department_name,
     por_loc.display_name as location_name,
@@ -98,6 +103,7 @@ select
     por_grp.display_name as group_name,
     por_pract.display_name as practice_name,
     employee_ukg.display_name as project_manager_name,
+    por_pract_area.display_name as practice_area_name,
 
     int.qty_actual,
     int.amt_total_billable,
@@ -170,6 +176,7 @@ left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
 left join por_dep on int.department_id = por_dep.intacct_id
 left join por_grp on sfc.group_id = por_grp.salesforce_id
 left join por_pract on por_pract.salesforce_id = sfc.practice_id
+left join por_pract_area on int.department_id = por_pract_area.intacct_id
 left join por_loc on por_loc.intacct_id = int.location_id
 left join por_ent on por_loc.entity_id = por_ent.id
 left join locations_intacct on int.project_location_key = locations_intacct.recordno
