@@ -145,7 +145,7 @@ select
     pts.pmo_comments,
     pts.pnm_notes,
     pts.pnm_revision,
-    int.po_amount,
+    int.amt_po,
     int.po_number,
     pts.portal_project_code,
     int.project_category,

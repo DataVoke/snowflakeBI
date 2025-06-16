@@ -207,8 +207,8 @@ models:
         data_type: VARCHAR(5000)
       - name: PNM_REVISION
         data_type: NUMBER(38,0)
-      - name: PO_AMOUNT
-        data_type: VARCHAR(5000)
+      - name: AMT_PO
+        data_type: NUMBER(38,17)
       - name: PO_NUMBER
         data_type: VARCHAR(5000)
       - name: PORTAL_PROJECT_CODE
