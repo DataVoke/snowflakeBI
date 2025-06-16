@@ -7,7 +7,7 @@ with
 int_expense_item as (
     select * 
     from {{ ref('expenseitem')}} 
-    where src_sys_key = 'int' and line_item = true
+    where src_sys_key = 'int' and bln_line_item = true
 ),
 sfc_expense_item as (
     select * 
@@ -136,7 +136,7 @@ final as (
         int_ei.gl_dim_line_tax_detail,
         int_ei.gl_dim_vat_code,
         int_ei.item_name,
-        int_ei.line_item,
+        int_ei.bln_line_item,
         int_ei.line_no,
         int_ei.location_name int_location_name,
         int_ei.non_reclaim_vat_base_amount,
