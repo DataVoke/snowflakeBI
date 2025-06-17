@@ -49,7 +49,7 @@ sage_intacct as (
         accountno as account_no,
         accounttitle as account_title,
         allocationkey as allocationkey,
-        cast(amount as number(38, 2)) as amount,
+        cast(amount as number(38, 2)) as amt,
         cast(base_vat_amount as number(38, 2)) as amt_base_vat,
         cast(net_of_vat_amount as number(38, 2)) as amt_net_of_vat,
         cast(net_of_vat_base_amount as number(38, 2)) as amt_net_of_vat_base,

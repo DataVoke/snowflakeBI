@@ -89,7 +89,7 @@ final as (
         abi.amt_non_reclaim_vat_base,
         abi.account_no,
         abi.account_title,
-        abi.amount,
+        abi.amt,
         abi.amt_base_vat,
         abi.amt_net_of_vat,
         abi.amt_net_of_vat_base,
