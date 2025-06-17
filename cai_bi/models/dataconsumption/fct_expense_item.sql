@@ -152,7 +152,6 @@ final as (
         sfc_ei.audit_notes sfc_audit_notes,
         sfc_ei.bln_lost_receipt,
         sfc_ei.notes,
-        sfc_ei.rate_unit,
         sfc_ei.amt_reimbursement_in_project_currency,
         sfc_ei.reimbursement_currency,
         sfc_ei.type,
