@@ -2,7 +2,7 @@
     config(
         materialized="table",
         schema="dataconsumption",
-        alias="timesheet_entry"
+        alias="timesheet_entry_bkp"
     )
 }}
 
@@ -23,9 +23,7 @@ with
     locations_intacct as (select * from {{ source('sage_intacct', 'location') }} where _fivetran_deleted = false),
     entities as (select * from {{ source('portal', 'entities') }} where _fivetran_deleted = false),
     practice_areas as (select * from {{ source('portal', 'practice_areas') }} where _fivetran_deleted = false),
-    project as (select * from {{ ref('project') }}),
-    employee_int as ( select * from {{ ref('employee') }} where src_sys_key = 'int' ),
-    employee_ukg as ( select * from {{ ref('employee') }} where src_sys_key = 'ukg')
+    project as (select * from {{ ref('project') }})
 
 select 
     current_timestamp as dts_created_at,
@@ -40,7 +38,7 @@ select
     entities.record_id as key_entity,
     practice_areas.record_id as key_practice_area,
     project.key as key_project,
-    employee_ukg.key as key_employee,
+    int.key_employee as key_employee,
     -- --names
     departments.display_name as department_name,
     locations.display_name as location_name,
@@ -48,7 +46,6 @@ select
     practice_areas.display_name as practice_area_name,
     project.project_id as project_id,
     project.project_name as project_name,
-    employee_ukg.display_name as employee_name,
     -- fields
     int.billu_acct_key,
     int.customer_id,
@@ -79,6 +76,7 @@ select
     int.dte_src_end,
     int.dte_src_modified,
     int.dte_src_start,
+    int.employee_name,
     int.item_name,
     int.labor_gl_entry_cost_rate,
     int.labor_gl_entry_line_no,
@@ -115,6 +113,4 @@ left join locations_intacct on int.location_key = locations_intacct.recordno
 left join entities on ifnull(locations_intacct.parentkey,int.location_key) = entities.id
 left join practice_areas on int.department_id = practice_areas.intacct_id
 left join project on int.key_project = project.key
-left join employee_int on int.employee_id_intacct = employee_int.intacct_employee_id
-left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
 where int.src_sys_key = 'int'

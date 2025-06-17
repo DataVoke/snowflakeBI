@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: portal
     description: Source for Portal database
-    database: dev_bi_raw
+    database: prod_bi_raw
     schema:  cai_prod_portal
     tables:
       - name: base_teams
