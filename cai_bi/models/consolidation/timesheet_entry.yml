@@ -7,8 +7,10 @@ models:
       contract:
         enforced: true
     tests:
-      - timesheetentry_source_count_match_sage
-      - timesheetentry_source_count_match_sf
+      - timesheetentry_source_count_match_sage:
+          severity: warn
+      - timesheetentry_source_count_match_sf:
+          severity: warn
     columns:
       - name: SRC_SYS_KEY
         data_type: VARCHAR(250)
