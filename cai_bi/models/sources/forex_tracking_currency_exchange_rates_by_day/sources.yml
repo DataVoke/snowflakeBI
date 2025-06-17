@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: forex_tracking_currency_exchange_rates_by_day
+    description: This source contains the currency exchange rates by day for various currencies.
+    database: forex_tracking_currency_exchange_rates_by_day
+    schema: stock
+    tables:
+       - name: forex_metrics
