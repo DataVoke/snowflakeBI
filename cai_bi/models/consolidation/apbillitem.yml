@@ -6,6 +6,8 @@ models:
     config:
       contract:
         enforced: true
+    tests:
+      - ap_bill_item_source_count_match_int
     columns:
       - name: SRC_SYS_KEY
         data_type: VARCHAR(250)
