@@ -177,8 +177,6 @@ models:
         data_type: VARCHAR(5000)
       - name: NOTES
         data_type: VARCHAR(5000)
-      - name: RATE_UNIT
-        data_type: VARCHAR(5000)
       - name: AMT_REIMBURSEMENT_IN_PROJECT_CURRENCY
         data_type: NUMBER(38,17)
       - name: REIMBURSEMENT_CURRENCY

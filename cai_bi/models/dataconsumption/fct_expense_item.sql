@@ -152,7 +152,6 @@ final as (
         sfc_ei.audit_notes sfc_audit_notes,
         sfc_ei.bln_lost_receipt,
         sfc_ei.notes,
-        sfc_ei.rate_unit,
         sfc_ei.amt_reimbursement_in_project_currency,
         sfc_ei.reimbursement_currency,
         sfc_ei.type,
@@ -199,8 +198,10 @@ final as (
         int_e.total_nr_trx_entered,
         int_e.total_trx_due,
         int_e.total_trx_entered,
-        int_e.total_trx_paid
-
+        int_e.total_trx_paid,
+        int_e.dts_when_paid,
+        int_e.dts_when_posted,
+        int_e.dts_when_submitted
     from int_expense_item int_ei
     left join sfc_expense_item sfc_ei on int_ei.hash_link = sfc_ei.hash_link
     left join int_expense int_e on int_ei.key_expense = int_e.key
