@@ -62,7 +62,7 @@ sage_intacct as (
         cast(totalpaid as number(38, 2)) as amt_total_paid,
         cast(trx_amount as number(38, 2)) as amt_trx,
         cast(trx_totalpaid as number(38, 2)) as amt_trx_total_paid,
-        basecurr as basecurr,
+        basecurr as base_currency,
         baselocation as baselocation,
         manual_vat_amount as bln_amt_manual_vat,
         billable as bln_billable,

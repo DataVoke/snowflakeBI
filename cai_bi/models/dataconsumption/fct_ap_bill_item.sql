@@ -102,7 +102,7 @@ final as (
         abi.amt_total_paid,
         abi.amt_trx,
         abi.amt_trx_total_paid,
-        abi.basecurr,
+        abi.base_currency,
         abi.baselocation,
         abi.bln_amt_manual_vat,
         abi.bln_billable,

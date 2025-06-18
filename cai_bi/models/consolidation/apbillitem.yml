@@ -117,7 +117,7 @@ models:
         data_type: NUMBER(38,17)
       - name: AMT_TRX_TOTAL_PAID
         data_type: NUMBER(38,17)
-      - name: BASECURR
+      - name: BASE_CURRENCY
         data_type: VARCHAR(5000)
       - name: BASELOCATION
         data_type: NUMBER(38,0)
