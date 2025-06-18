@@ -43,7 +43,7 @@ models:
         data_type: VARCHAR(5000)
       - name: HASH_KEY_EXPENSE
         data_type: VARCHAR(32)
-      - name: KEY_EMPLOYEEE
+      - name: KEY_EMPLOYEE
         data_type: VARCHAR(5000)
       - name: HASH_KEY_EMPLOYEE
         data_type: VARCHAR(32)
