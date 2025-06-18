@@ -5,6 +5,7 @@
 with 
     si_project        as (select * from {{ source('sage_intacct', 'project') }} where _fivetran_deleted = false),
     sf_project        as (select * from {{ source('salesforce', 'pse_proj_c') }} where _fivetran_deleted = false),
+    sf_pse_grp        as (select * from {{ source('salesforce', 'pse_grp_c') }} where _fivetran_deleted = false),
     opportunity       as (select * from {{ source('salesforce', 'opportunity') }} where _fivetran_deleted = false),
     practice          as (select * from {{ source('salesforce', 'pse_practice_c') }} where _fivetran_deleted = false),
     psatools_projects as (select * from {{ source('psatools', 'projects') }} where _fivetran_deleted = false),
@@ -212,7 +213,7 @@ salesforce as (
         null as dts_sfc_last_task_sync,
         sf_project.created_date as dts_src_created,
         sf_project.last_modified_date as dts_src_modified,
-        null as group_name,
+        sf_pse_grp.name as group_name,
         null as invoice_currency,
         null as last_resource_plan_review_by,
         null as last_synced_status,
@@ -240,6 +241,7 @@ salesforce as (
         null as travel_rate
     from sf_project
     left join opportunity on opportunity.id = sf_project.pse_opportunity_c
+    left join sf_pse_grp on sf_pse_grp.id = sf_project.pse_group_c
     left join practice on practice.id = sf_project.pse_practice_c
 ),
 

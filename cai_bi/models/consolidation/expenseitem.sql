@@ -30,7 +30,7 @@ sage_intacct as (
         md5(si_expenseitem.psa_id) as hash_link,
         cast(si_expenseitem.recordkey as string) as key_expense,
         md5(si_expenseitem.recordkey) as hash_key_expense,
-        cast(si_expenseitem.employeedimkey as string) as key_employeee,
+        cast(si_expenseitem.employeedimkey as string) as key_employee,
         md5(si_expenseitem.employeedimkey) as hash_key_employee,
         cast(si_expenseitem.projectdimkey as string) as key_project,
         md5(si_expenseitem.projectdimkey) as hash_key_project,
