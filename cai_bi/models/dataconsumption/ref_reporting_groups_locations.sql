@@ -22,11 +22,11 @@ concat(l.id,'|3') as id,
             p.salesforce_id as sfc_practice_id, 
             p.intacct_id as int_practice_id,
             iff(current_date>=r.start_date and current_date<r.end_date,true, false) as active
-        from prod_bi_raw.cai_prod_portal.reporting_groups_locations l
-        left join prod_bi_raw.cai_prod_portal.reporting_groups r on l.group_id=r.id
-        left join prod_bi_raw.cai_prod_portal.locations loc on l.location_id = loc.id
-        left join prod_bi_raw.cai_prod_portal.practices p on p.id = 3
-        where practice_id like '%|3|%'
+        from {{ source('portal', 'reporting_groups_locations') }} l
+        left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
+        left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
+        left join {{ source('portal', 'practices') }} p on p.id = 3
+        where practice_id like '%|3|%' and r.visible = true
 ),
 
 practice_2 as (
@@ -47,11 +47,11 @@ practice_2 as (
                 p.salesforce_id as sfc_practice_id, 
                 p.intacct_id as int_practice_id,
                 iff(current_date>=r.start_date and current_date<r.end_date,true, false) as active
-            from prod_bi_raw.cai_prod_portal.reporting_groups_locations l
-            left join prod_bi_raw.cai_prod_portal.reporting_groups r on l.group_id=r.id
-            left join prod_bi_raw.cai_prod_portal.locations loc on l.location_id = loc.id
-            left join prod_bi_raw.cai_prod_portal.practices p on p.id = 2
-            where practice_id like '%|2|%'
+            from {{ source('portal', 'reporting_groups_locations') }} l
+            left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
+            left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
+            left join {{ source('portal', 'practices') }} p on p.id = 2
+            where practice_id like '%|2|%' and r.visible = true
 )
 
 select
