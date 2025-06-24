@@ -2,9 +2,22 @@
   (
     CASE
       WHEN {{ frm_curr_column }} = {{ to_curr_column }} THEN {{ value_column }}
-      ELSE
+      WHEN {{ to_curr_column }} = 'USD' THEN
         -- Step 1: Convert from FROM_CURRENCY to USD
         {{ value_column }} / NULLIF(
+          (
+            SELECT close
+            FROM {{ forex_table }} ex1
+            WHERE ex1.frm_curr = {{ frm_curr_column }}
+              AND ex1.to_curr = 'USD'
+              AND ex1.run_date <= {{ date_column }}
+            QUALIFY ROW_NUMBER() OVER (
+              PARTITION BY ex1.frm_curr, ex1.to_curr ORDER BY ex1.run_date DESC
+            ) = 1
+          ), 0
+        )
+    ELSE
+       {{ value_column }} / NULLIF(
           (
             SELECT close
             FROM {{ forex_table }} ex1
@@ -29,7 +42,7 @@
               PARTITION BY ex2.frm_curr, ex2.to_curr ORDER BY ex2.run_date DESC
             ) = 1
           ), 0
-        )
+        )    
     END
   )
 {% endmacro %}

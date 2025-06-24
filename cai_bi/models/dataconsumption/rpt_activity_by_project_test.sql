@@ -1,6 +1,6 @@
 {{
     config(
-        alias="activity_by_project",
+        alias="activity_by_project_test",
         materialized="table",
         schema="dataconsumption"
     )
@@ -46,9 +46,9 @@ activitybyproject_te as
         coalesce(ex.close,1) as to_usd_close,
         null as to_pcurr_close,
         p.amt_po,
-        round(amt_po/to_usd_close,2) as amt_po_usd, 
+        p.amt_po_usd, 
         coalesce(round(te.bill_rate,2),0) as bill_rate,
-        round(coalesce( te.bill_rate * te.qty,0),2) as cost,
+        round(coalesce( bill_rate * te.qty,0),2) as cost,
         round(cost/to_usd_close,2) as cost_usd
         from timesheet_entry te  
         inner join project p on te.key_project = p.key
@@ -67,15 +67,15 @@ expi_with_project as
               when ei.org_currency = p.currency_iso_code then 1
               when ei.currency =  p.currency_iso_code  then 2
               else 3
-        end as curr_ind, coalesce(round(p.amt_po,2),0) as amt_po, coalesce(round(ei.amt,2),0) as amt, coalesce(round(ei.amt_org,2),0) as amt_org, p.project_name, p.project_status, p.practice_area_name, ei.dts_when_posted,
-        1 as qty, 'expense' as task_name, ei.customer_id , ei.customer_name , p.practice_id_intacct, p.billing_type, null as notes
+        end as curr_ind, p.amt_po, p.amt_po_usd, coalesce(round(ei.amt,2),0) as amt, coalesce(round(ei.amt_org,2),0) as amt_org, p.project_name, p.project_status, p.practice_area_name, ei.dts_when_posted,
+        1 as qty, 'EXPENSE' as task_name, ei.customer_id , ei.customer_name , p.practice_id_intacct, p.billing_type, null as notes
         from expense_item ei 
           inner join project p on ei.key_project = p.key
           left join employee ei_e on ei.key_employee = ei_e.key
 
 ),
 exchange_matched_ei as 
-(  select key_project,key_expense_item, key_expense, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,ukg_employee_number,employee_name ,currency_iso_code,org_currency,currency ,curr_ind,amt_po, amt, amt_org,project_name,project_status,practice_area_name,dts_when_posted,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
+(  select key_project,key_expense_item, key_expense, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,ukg_employee_number,employee_name ,currency_iso_code,org_currency,currency ,curr_ind,amt_po, amt_po_usd, amt, amt_org,project_name,project_status,practice_area_name,dts_when_posted,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             coalesce(ex.close,1) as to_usd_close, ex.run_date, ex.currency_pair_name
           from expi_with_project ei
           left join forex_filtered ex
@@ -88,8 +88,7 @@ exchange_matched_ei as
  ( select key_project, key_expense_item,key_expense, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,ukg_employee_number,employee_name ,currency_iso_code,org_currency,currency ,curr_ind,project_name,project_status,practice_area_name,dts_when_posted,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
         exm.currency_pair_name,ex_pcurr.currency_pair_name as currency_pair_name_pcurr,exm.to_usd_close,
             coalesce(ex_pcurr.close,1) as to_pcurr_close, exm.run_date, ex_pcurr.run_date as run_date_pcurr,
-            amt_po,
-            round(amt_po/to_usd_close,2) as amt_po_usd,
+            amt_po, amt_po_usd,
         round(case when curr_ind =1 then amt_org 
              when curr_ind =2 then amt
         else amt_org/to_pcurr_close
@@ -107,12 +106,12 @@ exchange_matched_ei as
              qualify row_number() over ( partition by exm.key_expense_item  order by ex_pcurr.run_date desc ) =1
 ),
 agg_by_keyei as (     
-        select key_project,key_expense,  location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,ukg_employee_number,employee_name ,currency_iso_code,org_currency,currency ,curr_ind,project_name,project_status,practice_area_name,dts_when_posted,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,to_usd_close,to_pcurr_close,
+        select key_project,key_expense,  location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,ukg_employee_number,employee_name ,currency_iso_code,currency ,org_currency, curr_ind,project_name,project_status,practice_area_name,dts_when_posted,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,to_usd_close,to_pcurr_close,
             amt_po,amt_po_usd , sum(bill_rate) as bill_rate , sum(cost) as cost , sum(cost_usd) as cost_usd
         from exchange_matched_projcurr_ei group by all   
 ),
 activitybyproject_ei as (     
-        select key_project,key_expense as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,ukg_employee_number,employee_name ,currency_iso_code,org_currency,currency ,curr_ind,project_name,project_status,practice_area_name,dts_when_posted,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,to_usd_close,to_pcurr_close,
+        select key_project,key_expense as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,ukg_employee_number,employee_name ,currency_iso_code,currency as base_currency ,org_currency as currency_code ,curr_ind,project_name,project_status,practice_area_name,dts_when_posted,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,to_usd_close,to_pcurr_close,
             amt_po,amt_po_usd ,  bill_rate ,  cost , cost_usd
         from agg_by_keyei   )
         ,
@@ -123,13 +122,13 @@ apbi_with_project as
               when apbi.base_currency = p.currency_iso_code then 1
               when apbi.currency_code = p.currency_iso_code then 2
               else 3
-        end as curr_ind, coalesce(round(p.amt_po,2),0) as amt_po, coalesce(round(apbi.amt,2),0) as amt, coalesce(round(apbi.amt_trx,2),0) as amt_trx, p.project_name, p.project_status, p.practice_area_name, apbi.dte_when_posted,
-        1 as qty, 'ap' as task_name, apbi.customer_id , apbi.customer_name , p.practice_id_intacct, p.billing_type, null as notes
+        end as curr_ind, amt_po,amt_po_usd, coalesce(round(apbi.amt,2),0) as amt, coalesce(round(apbi.amt_trx,2),0) as amt_trx, p.project_name, p.project_status, p.practice_area_name, apbi.dte_when_posted,
+        1 as qty, 'AP' as task_name, apbi.customer_id , apbi.customer_name , p.practice_id_intacct, p.billing_type, null as notes
         from ap_bill_item apbi
           inner join project p on apbi.key_project = p.key 
 ),
 exchange_matched_api as 
-(  select key_project,key_api, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,ukg_employee_number,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,amt_po, amt, amt_trx,project_name,project_status,practice_area_name,dte_when_posted,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
+(  select key_project,key_api, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,ukg_employee_number,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,amt_po,amt_po_usd, amt, amt_trx,project_name,project_status,practice_area_name,dte_when_posted,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             coalesce(ex.close,1) as to_usd_close, ex.run_date, ex.currency_pair_name
           from apbi_with_project apbi
           left join forex_filtered ex
@@ -143,8 +142,7 @@ exchange_matched_projcurr_api as
             key_project,key_api, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,ukg_employee_number,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,project_name,project_status,practice_area_name,dte_when_posted,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
              exm.currency_pair_name,ex_pcurr.currency_pair_name as currency_pair_name_pcurr,exm.to_usd_close,
             coalesce(ex_pcurr.close,1) as to_pcurr_close, exm.run_date, ex_pcurr.run_date as run_date_pcurr,
-            amt_po,
-            round(amt_po/to_usd_close,2) as amt_po_usd,
+            amt_po, amt_po_usd,
         round(case when curr_ind =1 then amt 
              when curr_ind =2 then amt_trx
         else amt_trx/to_pcurr_close
