@@ -55,19 +55,19 @@ practice_2 as (
 )
 
 select
-    current_timestamp() as dts_created_at,
-    'ref_reportiing_groups_locations' as created_by,
-    current_timestamp() as dts_updated_at,
-    'ref_reportiing_groups_locations' as updated_by,
+    current_timestamp as dts_created_at,
+    '{{ this.name }}' as created_by,
+    current_timestamp as dts_updated_at,
+    '{{ this.name }}' as updated_by,
     practice_3.*
 from practice_3
 
 union all
 
 select
-    current_timestamp() as dts_created_at,
-    'ref_reportiing_groups_locations' as created_by,
-    current_timestamp() as dts_updated_at,
-    'ref_reportiing_groups_locations' as updated_by,
+    current_timestamp as dts_created_at,
+    '{{ this.name }}' as created_by,
+    current_timestamp as dts_updated_at,
+    '{{ this.name }}' as updated_by,
     practice_2.*
 from practice_2
