@@ -3,8 +3,8 @@ version: 2
 sources:
   - name: sage_intacct
     description: "source tables from sage intacct"
-    database: dev_bi_raw
-    schema: sage_intacct_ldg
+    database: prod_bi_raw
+    schema: sage_intacct
     tables:
       - name: acct_range
       - name: ap_adjustment
