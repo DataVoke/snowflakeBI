@@ -1,0 +1,110 @@
+version: 2
+
+models:
+  - name: cc_transaction
+    config:
+      contract:
+        enforced: true
+    tests:
+      - cc_transaction_source_count_match_int
+    columns:
+      - name: src_sys_key
+        data_type: varchar(250)
+      - name: dts_created_at
+        data_type: timestamp_tz(9)
+      - name: created_by
+        data_type: varchar(250)
+      - name: dts_updated_at
+        data_type: timestamp_tz(9)
+      - name: updated_by
+        data_type: varchar(250)
+      - name: dts_eff_start
+        data_type: timestamp_tz(9)
+      - name: dts_eff_end
+        data_type: timestamp_tz(9)
+      - name: bln_current
+        data_type: boolean
+      - name: key
+        data_type: varchar(5000)
+        tests:
+          - not_null
+          - unique
+      - name: hash_key
+        data_type: varchar(32)
+        tests:
+          - not_null
+          - unique
+      - name: key_entity
+        data_type: varchar(5000)
+      - name: hash_key_entity
+        data_type: varchar(32)
+      - name: exchange_rate_type_id
+        data_type: number(38,0)
+      - name: entity_id
+        data_type: varchar(5000)
+      - name: pr_batch_key
+        data_type: number(38,0)
+      - name: record_id
+        data_type: varchar(5000)
+      - name: src_created_by_id
+        data_type: number(38,0)
+      - name: src_modified_by_id
+        data_type: number(38,0)
+      - name: sup_doc_id
+        data_type: varchar(5000)
+      - name: amt_total_due
+        data_type: number(38,17)
+      - name: amt_total_entered
+        data_type: number(38,17)
+      - name: amt_total_paid
+        data_type: number(38,17)
+      - name: amt_total_selected
+        data_type: number(38,17)
+      - name: amt_trx_total_due
+        data_type: number(38,17)
+      - name: amt_trx_total_entered
+        data_type: number(38,17)
+      - name: amt_trx_total_paid
+        data_type: number(38,17)
+      - name: amt_trx_total_selected
+        data_type: number(38,17)
+      - name: base_currency
+        data_type: varchar(5000)
+      - name: bln_cleared
+        data_type: boolean
+      - name: bln_inclusive_tax
+        data_type: boolean
+      - name: brex_expense_url
+        data_type: varchar(5000)
+      - name: brex_receipt_url
+        data_type: varchar(5000)
+      - name: currency
+        data_type: varchar(5000)
+      - name: description
+        data_type: varchar(5000)
+      - name: description_2
+        data_type: varchar(5000)
+      - name: dte_exchange_rate
+        data_type: date
+      - name: dts_au_when_created
+        data_type: timestamp_ntz(9)
+      - name: dts_src_created
+        data_type: timestamp_ntz(9)
+      - name: dts_when_paid
+        data_type: timestamp_ntz(9)
+      - name: entity_name
+        data_type: varchar(5000)
+      - name: exchange_rate
+        data_type: number(38,17)
+      - name: financial_entity
+        data_type: varchar(5000)
+      - name: pr_batch_open
+        data_type: varchar(5000)
+      - name: raw_state
+        data_type: varchar(5000)
+      - name: record_type
+        data_type: varchar(5000)
+      - name: record_url
+        data_type: varchar(5000)
+      - name: state
+        data_type: varchar(5000)
