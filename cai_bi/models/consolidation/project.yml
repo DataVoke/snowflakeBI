@@ -53,6 +53,8 @@ models:
         data_type: NUMBER(38,0)
       - name: CLIENT_SITE_ID
         data_type: VARCHAR(5000)
+      - name: CLIENT_MANAGER_ID
+        data_type: VARCHAR(5000)
       - name: CONTACT_KEY
         data_type: NUMBER(38,0)
       - name: CUSTOMER_ID
