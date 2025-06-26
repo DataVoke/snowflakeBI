@@ -53,7 +53,7 @@ por_ent as (
 locations_intacct as (
     select * from {{ source('sage_intacct','location') }} where _fivetran_deleted = false
 ),
-forex_filtered as ( select * from {{ ref('ref_forex_metrics')}} where to_curr = 'USD' )
+forex_filtered as ( select * from {{ ref('ref_fx_rates_timeseries')}} where to_curr = 'USD' )
 
 select
     current_timestamp as dts_created_at,
@@ -156,9 +156,10 @@ select
     pts.pmo_comments,
     pts.pnm_notes,
     pts.pnm_revision,
-    coalesce(ex.close,1) as to_usd_close_p, 
-    coalesce(round(int.amt_po,2),0) as amt_po , 
-    coalesce(round(int.amt_po/to_usd_close_p,2),0) as amt_po_usd,
+    coalesce(ex.fx_rate_div,1) as rate_div,
+    coalesce(ex.fx_rate_mul,1) as rate_mul,
+    coalesce(round(int.amt_po,2),0) as amt_po ,
+    coalesce(round(case when rate_div >=0.09 then int.amt_po/rate_div else int.amt_po * rate_mul end,2),0) as amt_po_usd,
     int.po_number,
     pts.portal_project_code,
     int.project_category,
@@ -189,6 +190,6 @@ left join por_ent on por_loc.entity_id = por_ent.id
 left join locations_intacct on int.project_location_key = locations_intacct.recordno
 left join forex_filtered ex on (int.currency_iso_code = ex.frm_curr )
         and ex.to_curr = 'USD'
-        and ex.run_date <= date(int.dts_src_created)
+        and ex.date <= date(int.dts_src_created)
 where lower(int.project_type) <> 'client site'
-qualify row_number() over ( partition by int.key order by ex.run_date desc ) =1
+qualify row_number() over ( partition by int.key order by ex.date desc ) =1
