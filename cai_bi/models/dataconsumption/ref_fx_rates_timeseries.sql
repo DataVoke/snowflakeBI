@@ -15,7 +15,7 @@ inverted_fx AS (
     f2.frm_currency_name as to_currency_name,
     f1.frm_currency_name as frm_currency_name,
     f1.date date,
-    cast((1 / f1.value) * f2.value as number(38,18) ) AS fx_rate_mul,
+    cast((1 / f1.value) * f2.value as number(38,17) ) AS fx_rate_mul,
     1/fx_rate_mul as fx_rate_div
   FROM fx f1
   JOIN fx f2 ON f1.frm_curr != f2.frm_curr and f1.date =f2.date
@@ -23,6 +23,6 @@ inverted_fx AS (
 SELECT frm_curr,to_curr,to_currency_name,frm_currency_name,date,fx_rate_div,fx_rate_mul
 FROM inverted_fx
 union
-(select frm_curr,to_curr,to_currency_name,frm_currency_name,date,cast(value as number(38,18) ) as fx_rate_div, cast(1/fx_rate_div as number(38,18)) as fx_rate_mul  from fx)
+(select frm_curr,to_curr,to_currency_name,frm_currency_name,date,cast(value as number(38,17) ) as fx_rate_div, cast(1/fx_rate_div as number(38,17)) as fx_rate_mul  from fx)
 union
-(select to_curr as frm_curr,frm_curr as to_curr, frm_currency_name as to_currency_name ,to_currency_name as frm_currency_name,date,cast(1/value as number(38,18) )  as fx_rate_div, cast(1/fx_rate_div as number(38,18)) as fx_rate_mul from fx)
+(select to_curr as frm_curr,frm_curr as to_curr, frm_currency_name as to_currency_name ,to_currency_name as frm_currency_name,date,cast(1/value as number(38,17) )  as fx_rate_div, cast(1/fx_rate_div as number(38,17)) as fx_rate_mul from fx)
