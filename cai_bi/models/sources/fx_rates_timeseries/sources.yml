@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: finance_economics
+    description: This source contains the currency exchange rates by day for various currencies.
+    database: finance__economics
+    schema: cybersyn
+    tables:
+       - name: fx_rates_timeseries
