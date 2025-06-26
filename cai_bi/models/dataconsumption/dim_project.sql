@@ -189,6 +189,6 @@ left join por_ent on por_loc.entity_id = por_ent.id
 left join locations_intacct on int.project_location_key = locations_intacct.recordno
 left join forex_filtered ex on (int.currency_iso_code = ex.frm_curr )
         and ex.to_curr = 'USD'
-        and ex.run_date <= int.dts_src_created
+        and ex.run_date <= date(int.dts_src_created)
 where lower(int.project_type) <> 'client site'
 qualify row_number() over ( partition by int.key order by ex.run_date desc ) =1
