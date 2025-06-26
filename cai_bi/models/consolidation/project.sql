@@ -148,7 +148,7 @@ salesforce as (
         null as assistant_project_manager_id,
         null as billto_key,
         sf_project.intacct_client_site_id_c as client_site_id,
-        sf_account.client_manager_id as client_manager_id,
+        sf_account.client_manager_c as client_manager_id,
         null as contact_key,
         null as customer_id,
         null as customer_key,
@@ -246,7 +246,7 @@ salesforce as (
     left join opportunity on opportunity.id = sf_project.pse_opportunity_c
     left join sf_pse_grp on sf_pse_grp.id = sf_project.pse_group_c
     left join practice on practice.id = sf_project.pse_practice_c
-    left join sf_account on sf_account.id = p.pse_account_c
+    left join sf_account on sf_account.id = sf_project.pse_account_c
 ),
 
 psatools as (
