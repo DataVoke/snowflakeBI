@@ -17,7 +17,6 @@ pts as (
 sfc as (
     select * from {{ ref('project') }} where src_sys_key = 'sfc'
 ),
-
 employee_int as (
     select * from {{ ref('employee') }} where src_sys_key = 'int'
 ),
@@ -66,6 +65,8 @@ select
     pts.assistant_project_manager_id,
     int.billto_key,
     int.client_site_id,
+    sfc.client_manager_id,
+    sfc.client_manager_name,
     int.contact_key,
     int.customer_id,
     int.customer_key,
