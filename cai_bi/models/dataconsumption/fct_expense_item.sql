@@ -199,9 +199,9 @@ final as (
         int_e.total_trx_due exp_total_trx_due,
         int_e.total_trx_entered exp_total_trx_entered,
         int_e.total_trx_paid exp_total_trx_paid,
-        int_e.dts_when_paid exp_dts_when_paid,
-        int_e.dts_when_posted exp_dts_when_posted,
-        int_e.dts_when_submitted exp_dts_when_submitted
+        int_e.dte_when_paid exp_dte_when_paid,
+        int_e.dte_when_posted exp_dte_when_posted,
+        int_e.dte_when_submitted exp_dte_when_submitted
     from int_expense_item int_ei
     left join sfc_expense_item sfc_ei on int_ei.hash_link = sfc_ei.hash_link
     left join int_expense int_e on int_ei.key_expense = int_e.key
