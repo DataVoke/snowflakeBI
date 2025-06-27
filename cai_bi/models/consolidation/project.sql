@@ -10,6 +10,7 @@ with
     opportunity       as (select * from {{ source('salesforce', 'opportunity') }} where _fivetran_deleted = false),
     practice          as (select * from {{ source('salesforce', 'pse_practice_c') }} where _fivetran_deleted = false),
     psatools_projects as (select * from {{ source('psatools', 'projects') }} where _fivetran_deleted = false),
+    sf_contact        as (select * from {{ source('salesforce', 'contact') }} where _fivetran_deleted = false),
 
 sage_intacct as (
     select 
@@ -32,6 +33,7 @@ sage_intacct as (
         billtokey as billto_key,
         parentid as client_site_id,
         null as client_manager_id,
+        null as client_manager_name,
         contactkey as contact_key,
         customerid as customer_id,
         customerkey as customer_key,
@@ -149,6 +151,7 @@ salesforce as (
         null as billto_key,
         sf_project.intacct_client_site_id_c as client_site_id,
         sf_account.client_manager_c as client_manager_id,
+        sf_contact.name as client_manager_name,
         null as contact_key,
         null as customer_id,
         null as customer_key,
@@ -247,6 +250,7 @@ salesforce as (
     left join sf_pse_grp on sf_pse_grp.id = sf_project.pse_group_c
     left join practice on practice.id = sf_project.pse_practice_c
     left join sf_account on sf_account.id = sf_project.pse_account_c
+    left join sf_contact on sf_contact.id = sf_account.client_manager_c
 ),
 
 psatools as (
@@ -270,6 +274,7 @@ psatools as (
         null as billto_key,
         int_client_site_id as client_site_id,
         client_manager_id as client_manager_id,
+        null as client_manager_name,
         null as contact_key,
         int_customer_id as customer_id,
         null as customer_key,
@@ -394,6 +399,7 @@ select
     billto_key,
     client_site_id,
     client_manager_id,
+    client_manager_name,
     contact_key,
     customer_id,
     customer_key,
