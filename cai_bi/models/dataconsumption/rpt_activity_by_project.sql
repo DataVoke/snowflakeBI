@@ -260,7 +260,7 @@ select    * from activitybyproject_ap)
      coalesce(project_status,'') as project_status,
      coalesce(practice_area_name,'') as practice_area_name,
      dte_entry,
-     qty,
+     round(qty,2) as qty,
      coalesce(task_name,'') as task_name,
      coalesce(customer_id,'') as customer_id ,
      coalesce(customer_name,'') as customer_name,
