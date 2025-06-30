@@ -156,6 +156,7 @@ final as (
         abi.vendor_name,
 
         -- ap_bill fields
+        ab.record_id ap_record_id,
         ab.billto_payto_key ap_billto_payto_key ,
         ab.created_user_id ap_created_user_id,
         ab.mega_entity_id ap_mega_entity_id,

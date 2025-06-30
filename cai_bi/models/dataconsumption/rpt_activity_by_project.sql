@@ -87,7 +87,8 @@ expi_with_project as
               else 3
         end as curr_ind, p.amt_po, p.amt_po_usd, coalesce(round(ei.amt,2),0) as amt, coalesce(round(ei.amt_org,2),0) as amt_org, p.project_name, p.project_status, p.practice_area_name, 
         coalesce( ei.dte_org_exchrate,ei.dte_entry,ei.exp_dte_when_posted) as dte_exch_rate, ei.exp_dte_when_posted as dte_entry,
-        1 as qty, 'EXPENSE' as task_name, ei.customer_id , ei.customer_name , p.practice_id_intacct, p.billing_type, null as notes
+        1 as qty, 'EXPENSE' as task_name, ei.customer_id , ei.customer_name , p.practice_id_intacct, p.billing_type, null as notes,
+        exp_record_id
         from expense_item ei 
           inner join project p on ei.key_project = p.key
           left join employee ei_e on ei.key_employee = ei_e.key
