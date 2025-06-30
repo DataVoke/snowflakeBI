@@ -36,7 +36,7 @@ activitybyproject_te as
         te_e.email_address_work,
         te_e.display_name_lf,
         te.employee_name ,
-        --p.currency_iso_code,
+        p.currency_iso_code,
         --null as base_currency,
         --null as currency_code,
         --0 as curr_ind,
@@ -144,14 +144,14 @@ currency_iso_code,org_currency,currency ,curr_ind,amt_po, amt_po_usd, amt, amt_o
 agg_by_keyei as (     
         select key_project,key_expense,  location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,client_site_id,project_manager_email,project_manager_personal_email,
         client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,
-        --currency_iso_code,currency ,org_currency, curr_ind,
+        currency_iso_code,--currency ,org_currency, curr_ind,
         project_name,project_status,practice_area_name,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             amt_po,amt_po_usd , sum(rate) as rate,  sum(rate_project) as rate_project ,sum(rate_project_usd) as rate_project_usd, sum(cost) as cost ,sum(cost_project) as cost_project, sum(cost_project_usd) as cost_project_usd
         from exchange_matched_projcurr_ei group by all   
 ),
 activitybyproject_ei as (     
         select key_project,key_expense as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id, 
-        client_manager_id, client_manager_name,client_manager_email, ukg_employee_number,email_address_work,display_name_lf,employee_name ,
+        client_manager_id, client_manager_name,client_manager_email, ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,
         project_name,project_status,practice_area_name,dte_entry ,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             amt_po,amt_po_usd ,  rate ,rate_project, rate_project_usd,  cost ,cost_project, cost_project_usd
         from agg_by_keyei   )
@@ -217,13 +217,13 @@ exchange_matched_projcurr_api as
 ),
 agg_by_keyapbill as (     
 select key_project, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
-        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,--currency_iso_code,base_currency,currency_code,curr_ind,
+        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,--base_currency,currency_code,curr_ind,
         project_name,project_status,practice_area_name,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             amt_po,amt_po_usd , sum(rate) as rate,  sum(rate_project) as rate_project ,sum(rate_project_usd) as rate_project_usd, sum(cost) as cost ,sum(cost_project) as cost_project, sum(cost_project_usd) as cost_project_usd
         from exchange_matched_projcurr_api group by all   ), 
 activitybyproject_ap as 
 (select key_project,key_ap_bill as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
-        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,project_name,project_status,practice_area_name,dte_entry ,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
+        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,project_name,project_status,practice_area_name,dte_entry ,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             amt_po,amt_po_usd ,  rate ,rate_project, rate_project_usd,  cost ,cost_project, cost_project_usd
 from agg_by_keyapbill),
 final as 
@@ -256,6 +256,7 @@ select    * from activitybyproject_ap)
      coalesce(email_address_work,'') as email_address_work,
      coalesce(display_name_lf,'') as display_name_lf,
      coalesce(employee_name,'') as employee_name,
+     coalesce(currency_iso_code,'') as currency_iso_code,
      coalesce(project_name,'') as project_name,
      coalesce(project_status,'') as project_status,
      coalesce(practice_area_name,'') as practice_area_name,
