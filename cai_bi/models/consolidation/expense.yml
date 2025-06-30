@@ -95,12 +95,12 @@ models:
         data_type: TIMESTAMP_TZ(9)
       - name: DTS_SRC_MODIFIED
         data_type: TIMESTAMP_TZ(9)
-      - name: DTS_WHEN_PAID
-        data_type: TIMESTAMP_TZ(9)
-      - name: DTS_WHEN_POSTED
-        data_type: TIMESTAMP_TZ(9)
-      - name: DTS_WHEN_SUBMITTED
-        data_type: TIMESTAMP_TZ(9)
+      - name: DTE_WHEN_PAID
+        data_type: DATE
+      - name: DTE_WHEN_POSTED
+        data_type: DATE
+      - name: DTE_WHEN_SUBMITTED
+        data_type: DATE
       - name: CURRENCY
         data_type: VARCHAR(5000)
       - name: DESCRIPTION
