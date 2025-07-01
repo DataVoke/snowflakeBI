@@ -60,7 +60,7 @@ sage_intacct as (
         cc_transaction_entry.totalexpensed as amt_total_expensed,
         cc_transaction_entry.totalpaid as amt_total_paid,
         cc_transaction_entry.totalselected as amt_total_selected,
-        cc_transaction_entry.trx_amount as amt_trx_amount,
+        cc_transaction_entry.trx_amount as amt_trx,
         cc_transaction_entry.trx_totalpaid as amt_trx_total_paid,
         cc_transaction_entry.trx_totalselected as amt_trx_total_selected,
 
@@ -141,7 +141,7 @@ select
     amt_total_expensed,
     cast(amt_total_paid as number(38, 2)) as amt_total_paid,
     amt_total_selected,
-    cast(amt_trx_amount as number(38, 2)) as amt_trx_amount,
+    cast(amt_trx as number(38, 2)) as amt_trx,
     cast(amt_trx_total_paid as number(38, 2)) as amt_trx_total_paid,
     amt_trx_total_selected,
     base_currency,
