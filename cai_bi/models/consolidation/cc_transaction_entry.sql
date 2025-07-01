@@ -20,22 +20,22 @@ sage_intacct as (
         '9999-12-31' as dts_eff_end,
         true as bln_current,
 
-        cc_transaction_entry.recordno as key,
+        cast(cc_transaction_entry.recordno as string) as key,
         md5(cc_transaction_entry.recordno) as hash_key,
 
-        cc_transaction_entry.recordkey as key_cc_transaction,
+        cast(cc_transaction_entry.recordkey as string) as key_cc_transaction,
         md5(cc_transaction_entry.recordkey) as hash_key_cc_transaction,
 
-        cc_transaction_entry.projectdimkey as key_project,
+        cast(cc_transaction_entry.projectdimkey as string) as key_project,
         md5(cc_transaction_entry.projectdimkey) as hash_key_project,
 
-        coalesce(location.parentkey, location.recordno) as key_entity,
+        cast(coalesce(location.parentkey, location.recordno) as string) as key_entity,
         md5(coalesce(location.parentkey, location.recordno)) as hash_key_entity,
 
-        cc_transaction_entry.employeedimkey as key_employee,
+        cast(cc_transaction_entry.employeedimkey as string) as key_employee,
         md5(cc_transaction_entry.employeedimkey) as hash_key_employee,
 
-        location.recordno as key_location,
+        cast(location.recordno as string) as key_location,
         md5(location.recordno) as hash_key_location,
 
         cc_transaction_entry.accountkey as account_key,
@@ -108,7 +108,7 @@ select
     cast(dts_eff_start as timestamp_tz) as dts_eff_start,
     cast(dts_eff_end as timestamp_tz) as dts_eff_end,
     bln_current,
-    cast(key as number(38, 0)) as key,
+    key,
     hash_key,
     key_cc_transaction,
     hash_key_cc_transaction,
