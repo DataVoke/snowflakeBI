@@ -1,12 +1,12 @@
 name: Run dbt Build in Development
 
 on:
-  pull_request:
-    branches:
-      - development
+  # pull_request:
+  #   branches:
+  #     - development
   workflow_dispatch:
-  #schedule:
-  #  - cron: '0 13 * * *'  
+  schedule:
+   - cron: '0 13 * * *'  
 
 jobs:
   dbt-build:
