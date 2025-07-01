@@ -25,35 +25,35 @@ models:
       - name: bln_current
         data_type: boolean
       - name: key
-        data_type: number(38,0)
+        data_type: varchar(5000)
         tests:
           - not_null
           - unique
       - name: hash_key
-        data_type: varchar(5000)
+        data_type: varchar(32)
         tests:
           - not_null
           - unique
       - name: key_cc_transaction
-        data_type: number(38,0)
+        data_type: varchar(5000)
       - name: hash_key_cc_transaction
-        data_type: varchar(5000)
+        data_type: varchar(32)
       - name: key_project
-        data_type: number(38,0)
+        data_type: varchar(5000)
       - name: hash_key_project
-        data_type: varchar(5000)
+        data_type: varchar(32)
       - name: key_entity
-        data_type: number(38,0)
+        data_type: varchar(5000)
       - name: hash_key_entity
-        data_type: varchar(5000)
+        data_type: varchar(32)
       - name: key_employee
-        data_type: number(38,0)
+        data_type: varchar(5000)
       - name: hash_key_employee
-        data_type: varchar(5000)
+        data_type: varchar(32)
       - name: key_location
-        data_type: number(38,0)
-      - name: hash_key_location
         data_type: varchar(5000)
+      - name: hash_key_location
+        data_type: varchar(32)
       - name: account_key
         data_type: number(38,0)
       - name: base_location_id
@@ -96,7 +96,7 @@ models:
         data_type: number(38,17)
       - name: amt_total_selected
         data_type: number(38,17)
-      - name: amt_trx_amount
+      - name: amt_trx
         data_type: number(38,17)
       - name: amt_trx_total_paid
         data_type: number(38,17)
