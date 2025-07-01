@@ -92,7 +92,7 @@ final as (
         cte.amt_total_expensed,
         cte.amt_total_paid,
         cte.amt_total_selected,
-        cte.amt_trx_amount,
+        cte.amt_trx,
         cte.amt_trx_total_paid,
         cte.amt_trx_total_selected,
         cte.base_currency,

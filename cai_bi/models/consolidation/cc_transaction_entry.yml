@@ -96,7 +96,7 @@ models:
         data_type: number(38,17)
       - name: amt_total_selected
         data_type: number(38,17)
-      - name: amt_trx_amount
+      - name: amt_trx
         data_type: number(38,17)
       - name: amt_trx_total_paid
         data_type: number(38,17)

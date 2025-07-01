@@ -39,3 +39,5 @@ models:
       +materialized: table
       +schema: dataconsumption
       +transient: false
+vars:
+  rate_threshold: 0.09

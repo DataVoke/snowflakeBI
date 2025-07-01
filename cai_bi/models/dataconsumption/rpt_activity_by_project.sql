@@ -12,6 +12,7 @@ ap_bill_item as ( select * from {{ ref('fct_ap_bill_item') }} where bln_billable
 timesheet_entry as (select * from {{ ref('fct_timesheet_entry') }} ),
 employee as (select * from {{ ref('dim_employee') }}  ),
 expense_item as (select *  from {{ ref('fct_expense_item') }} where bln_billable =true ),
+ccte_entry as (select * from {{ ref('fct_cc_transaction_entry') }} where bln_billable =true ),
 forex_filtered as ( select * from {{ ref('ref_fx_rates_timeseries')}} where to_curr = 'USD' ),
 forex_projectcurr as ( select * from {{ ref('ref_fx_rates_timeseries')}} ),
 activitybyproject_te as
@@ -60,10 +61,10 @@ activitybyproject_te as
         p.amt_po_usd, 
         coalesce(round(te.bill_rate,2),0) as rate,
         coalesce(round(te.bill_rate,2),0) as rate_project,
-        round(case when rate_div >=0.09 then rate_project/rate_div else rate_project*rate_mul end ,2) as rate_project_usd,
+        round(case when rate_div >={{ var('rate_threshold') }} then rate_project/rate_div else rate_project*rate_mul end ,2) as rate_project_usd,
         round(coalesce( rate * te.qty,0),2) as cost,
         round(coalesce( rate * te.qty,0),2) as cost_project,
-        round(case when rate_div >=0.09 then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd
+        round(case when rate_div >={{ var('rate_threshold') }} then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd
         from timesheet_entry te  
         inner join project p on te.key_project = p.key
         left join employee te_e on te.key_employee = te_e.key
@@ -123,18 +124,18 @@ currency_iso_code,exp_currency,org_currency ,curr_ind,amt_po, amt_po_usd, amt, a
         end,2) as rate,    
         round(case when curr_ind =1 then amt_org 
              when curr_ind =2 then amt
-        else ( case when rate_div >=0.09 then amt_org/pcurr_rate_div else amt_org * pcurr_rate_mul end ) 
+        else ( case when rate_div >={{ var('rate_threshold') }} then amt_org/pcurr_rate_div else amt_org * pcurr_rate_mul end ) 
         end,2) as rate_project,
-        round(case when rate_div >=0.09 then rate_project/rate_div else rate_project*rate_mul end ,2) as rate_project_usd,
+        round(case when rate_div >={{ var('rate_threshold') }} then rate_project/rate_div else rate_project*rate_mul end ,2) as rate_project_usd,
         round(case when curr_ind =1 then amt_org 
              when curr_ind =2 then amt
         else amt_org
         end,2) as cost,
         round(case when curr_ind =1 then amt_org 
              when curr_ind =2 then amt
-        else ( case when rate_div >=0.09 then amt_org/pcurr_rate_div else amt_org * pcurr_rate_mul end) 
+        else ( case when rate_div >={{ var('rate_threshold') }} then amt_org/pcurr_rate_div else amt_org * pcurr_rate_mul end) 
         end,2) as cost_project,        
-        round(case when rate_div >=0.09 then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd
+        round(case when rate_div >={{ var('rate_threshold') }} then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd
           from exchange_matched_ei exm
           left join forex_projectcurr ex_pcurr
             on (exm.currency_iso_code = ex_pcurr.to_curr  )
@@ -198,18 +199,18 @@ exchange_matched_projcurr_api as
         end,2) as rate,            
         round(case when curr_ind =1 then amt 
              when curr_ind =2 then amt_trx
-        else ( case when rate_div >=0.09 then amt_trx/pcurr_rate_div else amt_trx * pcurr_rate_mul end)
+        else ( case when rate_div >={{ var('rate_threshold') }} then amt_trx/pcurr_rate_div else amt_trx * pcurr_rate_mul end)
         end,2) as rate_project,
-        round(case when rate_div >=0.09 then rate_project/rate_div else rate_project*rate_mul end ,2) as rate_project_usd,
+        round(case when rate_div >={{ var('rate_threshold') }} then rate_project/rate_div else rate_project*rate_mul end ,2) as rate_project_usd,
         round(case when curr_ind =1 then amt 
              when curr_ind =2 then amt_trx
         else amt_trx
         end,2) as cost,
         round(case when curr_ind =1 then amt 
              when curr_ind =2 then amt_trx
-        else ( case when rate_div >=0.09 then  amt_trx/pcurr_rate_div else amt_trx * pcurr_rate_mul end)
+        else ( case when rate_div >={{ var('rate_threshold') }} then  amt_trx/pcurr_rate_div else amt_trx * pcurr_rate_mul end)
         end,2) as cost_project,        
-        round(case when rate_div >=0.09 then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd
+        round(case when rate_div >={{ var('rate_threshold') }} then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd
           from exchange_matched_api exm
           left join forex_projectcurr ex_pcurr
             on (exm.currency_iso_code = ex_pcurr.to_curr  )
@@ -235,34 +236,35 @@ ccte_with_project as
         p.email_address_work as project_manager_email,
         p.email_address_personal as project_manager_personal_email,
         p.client_site_id, p.client_manager_id, p.client_manager_name,p.client_manager_email,
-        '' as ukg_employee_number, '' as email_address_work,'' as display_name_lf,cct_record_id as employee_name , p.currency_iso_code,ccte.base_currency, ccte.currency_code,
+        '' as ukg_employee_number, '' as email_address_work,'' as display_name_lf,cct_record_id as employee_name , p.currency_iso_code,ccte.base_currency, ccte.currency as currency_code,
         case
               when ccte.base_currency = p.currency_iso_code then 1
-              when ccte.currency_code = p.currency_iso_code then 2
+              when ccte.currency = p.currency_iso_code then 2
               else 3
         end as curr_ind, amt_po,amt_po_usd, coalesce(round(ccte.amt,2),0) as amt, coalesce(round(ccte.amt_trx,2),0) as amt_trx, p.project_name, p.project_status, p.practice_area_name, p.department_name,
-        coalesce( apbi.dte_exch_rate,apbi.dte_entry,apbi.ap_dte_when_posted) as dte_exch_rate, apbi.ap_dte_when_posted as dte_entry,
-        1 as qty, 'AP' as task_name, p.customer_id , p.customer_name , p.practice_id_intacct, p.billing_type, null as notes
-        from ap_bill_item ccte
+         ccte.dts_src_created as dte_exch_rate, ccte.cct_dts_src_created as dte_entry,
+        1 as qty, 'EXPENSE - CC' as task_name, p.customer_id , p.customer_name , p.practice_id_intacct, p.billing_type, null as notes
+        from ccte_entry ccte
           inner join project p on ccte.key_project = p.key 
 ),
 exchange_matched_ccte as 
-(  select key_project,key_api, key_ap_bill, p.location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
+(  select key_project,key_ccte, key_cc_transaction, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
         client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,amt_po,amt_po_usd, amt, amt_trx,project_name,project_status,practice_area_name,department_name,
         dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
         coalesce(ex.fx_rate_div,1) as rate_div,
         coalesce(ex.fx_rate_mul,1) as rate_mul, 
         ex.date
-          from ccte_with_project apbi
+          from ccte_with_project ccte
           left join forex_filtered ex
-            on (apbi.currency_iso_code = ex.frm_curr )
-            and ex.date <= apbi.dte_exch_rate
-             qualify row_number() over ( partition by apbi.key_api  order by ex.date desc ) =1
+            on (ccte.currency_iso_code = ex.frm_curr )
+            and ex.date <= ccte.dte_exch_rate
+             qualify row_number() over ( partition by ccte.key_ccte  order by ex.date desc ) =1
 ),
 exchange_matched_projcurr_ccte as 
 ( select 
-            key_project,key_api, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
-        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,project_name,project_status,practice_area_name,department_name,dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
+            key_project,key_ccte, key_cc_transaction, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
+        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,project_name,project_status,practice_area_name,department_name,
+        dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             exm.rate_div,exm.rate_mul, coalesce(ex_pcurr.fx_rate_div,1) as pcurr_rate_div, coalesce(ex_pcurr.fx_rate_mul,1) as pcurr_rate_mul,  exm.date, ex_pcurr.date as pcurr_date,
             amt_po, amt_po_usd,
         round(case when curr_ind =1 then amt 
@@ -271,33 +273,33 @@ exchange_matched_projcurr_ccte as
         end,2) as rate,            
         round(case when curr_ind =1 then amt 
              when curr_ind =2 then amt_trx
-        else ( case when rate_div >=0.09 then amt_trx/pcurr_rate_div else amt_trx * pcurr_rate_mul end)
+        else ( case when rate_div >={{ var('rate_threshold') }} then amt_trx/pcurr_rate_div else amt_trx * pcurr_rate_mul end)
         end,2) as rate_project,
-        round(case when rate_div >=0.09 then rate_project/rate_div else rate_project*rate_mul end ,2) as rate_project_usd,
+        round(case when rate_div >={{ var('rate_threshold') }} then rate_project/rate_div else rate_project * rate_mul end ,2) as rate_project_usd,
         round(case when curr_ind =1 then amt 
              when curr_ind =2 then amt_trx
         else amt_trx
         end,2) as cost,
         round(case when curr_ind =1 then amt 
              when curr_ind =2 then amt_trx
-        else ( case when rate_div >=0.09 then  amt_trx/pcurr_rate_div else amt_trx * pcurr_rate_mul end)
+        else ( case when rate_div >={{ var('rate_threshold') }} then  amt_trx/pcurr_rate_div else amt_trx * pcurr_rate_mul end)
         end,2) as cost_project,        
-        round(case when rate_div >=0.09 then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd
+        round(case when rate_div >={{ var('rate_threshold') }} then cost_project/rate_div else cost_project * rate_mul end ,2) as cost_project_usd
           from exchange_matched_ccte exm
           left join forex_projectcurr ex_pcurr
             on (exm.currency_iso_code = ex_pcurr.to_curr  )
             and ( ex_pcurr.frm_curr = exm.currency_code)
             and ex_pcurr.date <= exm.dte_exch_rate
-             qualify row_number() over ( partition by exm.key_api  order by ex_pcurr.date desc ) =1
+             qualify row_number() over ( partition by exm.key_ccte  order by ex_pcurr.date desc ) =1
 ),
 agg_by_keyccte as (     
-select key_project, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
+select key_project, key_cc_transaction, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
         client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,
         project_name,project_status,practice_area_name,department_name,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             amt_po,amt_po_usd , sum(rate) as rate,  sum(rate_project) as rate_project ,sum(rate_project_usd) as rate_project_usd, sum(cost) as cost ,sum(cost_project) as cost_project, sum(cost_project_usd) as cost_project_usd
         from exchange_matched_projcurr_ccte group by all   ), 
 activitybyproject_cct as 
-(select key_project,key_ap_bill as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
+(select key_project,key_cc_transaction as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
         client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,project_name,project_status,practice_area_name,department_name,
         dte_entry ,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             amt_po,amt_po_usd ,  rate ,rate_project, rate_project_usd,  cost ,cost_project, cost_project_usd
