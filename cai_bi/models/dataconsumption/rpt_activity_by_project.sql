@@ -81,7 +81,9 @@ expi_with_project as
         p.client_manager_id,
         p.client_manager_name,
         p.client_manager_email,
-        '' as ukg_employee_number, '' as email_address_work,'' as display_name_lf, exp_record_id as employee_name,
+        ei_e.ukg_employee_number as ukg_employee_number, ei_e.email_address_work as email_address_work,ei_e.display_name_lf as display_name_lf, 
+        case when ei.employee_name is null or ei.employee_name ='' then exp_record_id 
+        else ei.employee_name ||'-' || exp_record_id end as employee_name,
         p.currency_iso_code, ei.exp_currency , ei.org_currency ,
         case
               when ei.org_currency = p.currency_iso_code then 1
@@ -236,7 +238,10 @@ ccte_with_project as
         p.email_address_work as project_manager_email,
         p.email_address_personal as project_manager_personal_email,
         p.client_site_id, p.client_manager_id, p.client_manager_name,p.client_manager_email,
-        '' as ukg_employee_number, '' as email_address_work,'' as display_name_lf,cct_record_id as employee_name , p.currency_iso_code,ccte.base_currency, ccte.currency as currency_code,
+        ccte_e.ukg_employee_number as ukg_employee_number, ccte_e.email_address_work as email_address_work,ccte_e.display_name_lf as display_name_lf,
+        case when ccte.employee_name is null or ccte.employee_name ='' then cct_record_id 
+        else ccte.employee_name ||'-' || ccte.key end as employee_name,
+        p.currency_iso_code,ccte.base_currency, ccte.currency as currency_code,
         case
               when ccte.base_currency = p.currency_iso_code then 1
               when ccte.currency = p.currency_iso_code then 2
@@ -246,6 +251,7 @@ ccte_with_project as
         1 as qty, 'EXPENSE - CC' as task_name, p.customer_id , p.customer_name , p.practice_id_intacct, p.billing_type, null as notes
         from ccte_entry ccte
           inner join project p on ccte.key_project = p.key 
+          left join employee ccte_e on ccte.key_employee = ccte_e.key
 ),
 exchange_matched_ccte as 
 (  select key_project,key_ccte, key_cc_transaction, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
@@ -292,18 +298,12 @@ exchange_matched_projcurr_ccte as
             and ex_pcurr.date <= exm.dte_exch_rate
              qualify row_number() over ( partition by exm.key_ccte  order by ex_pcurr.date desc ) =1
 ),
-agg_by_keyccte as (     
-select key_project, key_cc_transaction, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
-        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,
-        project_name,project_status,practice_area_name,department_name,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
-            amt_po,amt_po_usd , sum(rate) as rate,  sum(rate_project) as rate_project ,sum(rate_project_usd) as rate_project_usd, sum(cost) as cost ,sum(cost_project) as cost_project, sum(cost_project_usd) as cost_project_usd
-        from exchange_matched_projcurr_ccte group by all   ), 
 activitybyproject_cct as 
 (select key_project,key_cc_transaction as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
         client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,project_name,project_status,practice_area_name,department_name,
         dte_entry ,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             amt_po,amt_po_usd ,  rate ,rate_project, rate_project_usd,  cost ,cost_project, cost_project_usd
-from agg_by_keyccte), 
+from exchange_matched_projcurr_ccte), 
 final as 
 (select   * from activitybyproject_te
 union

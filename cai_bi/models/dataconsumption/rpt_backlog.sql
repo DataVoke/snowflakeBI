@@ -27,7 +27,7 @@ group by all
 expense_cc as 
 (select key_project,project_id,project_name, location_id_intacct, location_name, project_manager_name, project_manager_email, project_manager_personal_email, department_name, currency_iso_code,
  max(dte_entry) as dte_entry, customer_id , customer_name,  amt_po , amt_po_usd ,   SUM(cost) as total_ap, SUM(cost_project) as total_ap_project, sum(cost_project_usd) as total_ap_usd 
-from {{ ref('rpt_activity_by_project') }} where task_name  in ('AP') 
+from {{ ref('rpt_activity_by_project') }} where task_name  in ('EXPENSE - CC') 
 group by all
 )
 , project_join as 
@@ -36,19 +36,26 @@ group by all
  total_labour_usd, coalesce(total_expense,0) as total_expense, coalesce(total_expense_project,0) as total_expense_project,
   coalesce(total_expense_usd,0) as total_expense_usd,
   coalesce(total_ap,0) as total_ap, coalesce(total_ap_project,0) as total_ap_project, coalesce(total_ap_usd,0) as total_ap_usd,
-  total_labour_project +total_expense_project +total_ap_project as total_worked_project ,
-   total_labour_usd +total_expense_usd +total_ap_usd as total_worked_usd,
-   te.amt_po - total_worked_project as total_remaining_project,
-   current_date() - te.dte_entry as age,
+  coalesce(total_labour_project +total_expense_project +total_ap_project,0) as total_worked_project ,
+  coalesce(total_labour_usd +total_expense_usd +total_ap_usd,0) as total_worked_usd,
+  coalesce(te.amt_po - total_worked_project,0) as total_remaining_project,
+  coalesce( te.amt_po_usd - total_worked_usd,0) as total_remaining_usd,
+  coalesce( current_date() - date(te.dte_entry),0) as age,
    case when age >90 then 0.1 
    when age > 60 then 0.2
    when age > 30 then 0.4
    when age > 14 then 0.8
    when age > 7 then 0.9 else 1 end as blprob,
-   total_remaining_project * blprob as backlog 
+  coalesce(total_remaining_project * blprob,0) as backlog_project,
+  coalesce(total_remaining_usd * blprob,0) as backlog_usd 
   from te 
   left join exp on te.key_project = exp.key_project
   left join ap on te.key_project = ap.key_project
   
   )
-select * from project_join
+select 
+    current_timestamp as dts_created_at,
+    'activity_by_project' as created_by,
+    current_timestamp as dts_updated_at,
+    'activity_by_project' as updated_by,
+* from project_join
