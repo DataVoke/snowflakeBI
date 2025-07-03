@@ -48,7 +48,9 @@ select
     practice_areas.display_name as practice_area_name,
     project.project_id as project_id,
     project.project_name as project_name,
+    project.currency_iso_code,
     employee_ukg.display_name as employee_name,
+    employee_ukg.display_name_lf as employee_name_lf,
     -- fields
     int.billu_acct_key,
     int.customer_id,
