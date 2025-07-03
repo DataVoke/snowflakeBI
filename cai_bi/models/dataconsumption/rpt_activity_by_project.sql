@@ -27,15 +27,17 @@ activitybyproject_te as
         p.entity_name,
         p.practice_name,
         p.project_manager_name,
+        p.project_manager_name_lf,
         p.email_address_work as project_manager_email,
         p.email_address_personal as project_manager_personal_email,
         p.client_site_id,
         p.client_manager_id,
         p.client_manager_name,
+        p.client_manager_name_lf,
         p.client_manager_email,
         te_e.ukg_employee_number,
         te_e.email_address_work,
-        te_e.display_name_lf,
+        te.employee_name_lf,
         te.employee_name ,
         p.currency_iso_code,
         null as base_currency,
@@ -74,16 +76,21 @@ activitybyproject_te as
 ),
 
 expi_with_project as 
-( select  p.key as key_project, ei.key key_expense_item, ei.key_expense as key_expense, p.location_id_intacct, p.project_id, p.location_name, p.group_name ,p.entity_name, p.practice_name, p.project_manager_name,
+( select  p.key as key_project, ei.key key_expense_item, ei.key_expense as key_expense, p.location_id_intacct, p.project_id, p.location_name, p.group_name ,p.entity_name, p.practice_name, 
+p.project_manager_name,
+p.project_manager_name_lf,
         p.email_address_work as project_manager_email,
         p.email_address_personal as project_manager_personal_email,
         p.client_site_id,
         p.client_manager_id,
         p.client_manager_name,
+        p.client_manager_name_lf,
         p.client_manager_email,
-        ei_e.ukg_employee_number as ukg_employee_number, ei_e.email_address_work as email_address_work,ei_e.display_name_lf as display_name_lf, 
+        ei_e.ukg_employee_number as ukg_employee_number, ei_e.email_address_work as email_address_work,
+        case when ei.employee_name_lf is null or ei.employee_name_lf ='' then exp_record_id 
+        else ei.employee_name_lf ||' - ' || exp_record_id end as employee_name_lf,        
         case when ei.employee_name is null or ei.employee_name ='' then exp_record_id 
-        else ei.employee_name ||'-' || exp_record_id end as employee_name,
+        else ei.employee_name ||' - ' || exp_record_id end as employee_name,
         p.currency_iso_code, ei.exp_currency , ei.org_currency ,
         case
               when ei.org_currency = p.currency_iso_code then 1
@@ -98,11 +105,11 @@ expi_with_project as
 
 ),
 exchange_matched_ei as 
-(  select key_project,key_expense_item, key_expense, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,
+(  select key_project,key_expense_item, key_expense, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,
         project_manager_email,project_manager_personal_email,
         client_site_id,
         client_manager_id,
-        client_manager_name,client_manager_email, ukg_employee_number,email_address_work,display_name_lf,employee_name ,
+        client_manager_name,client_manager_name_lf,client_manager_email, ukg_employee_number,email_address_work,employee_name_lf,employee_name ,
 currency_iso_code,exp_currency,org_currency ,curr_ind,amt_po, amt_po_usd, amt, amt_org,project_name,project_status,practice_area_name,department_name,dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
         coalesce(ex.fx_rate_div,1) as rate_div,
         coalesce(ex.fx_rate_mul,1) as rate_mul, 
@@ -114,9 +121,9 @@ currency_iso_code,exp_currency,org_currency ,curr_ind,amt_po, amt_po_usd, amt, a
              qualify row_number() over ( partition by ei.key_expense_item  order by ex.date desc ) =1
 ),
  exchange_matched_projcurr_ei as 
- ( select key_project, key_expense_item,key_expense, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,  client_site_id,
+ ( select key_project, key_expense_item,key_expense, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name, project_manager_name_lf, client_site_id,
  project_manager_email,project_manager_personal_email, client_manager_id,
-        client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,
+        client_manager_name,client_manager_name_lf,client_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,currency_iso_code,
  exp_currency,org_currency,curr_ind,project_name,project_status,practice_area_name,department_name,dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
         exm.rate_div,exm.rate_mul, coalesce(ex_pcurr.fx_rate_div,1) as pcurr_rate_div, coalesce(ex_pcurr.fx_rate_mul,1) as pcurr_rate_mul,  exm.date, ex_pcurr.date as pcurr_date,
             amt_po, amt_po_usd,
@@ -146,26 +153,26 @@ currency_iso_code,exp_currency,org_currency ,curr_ind,amt_po, amt_po_usd, amt, a
              qualify row_number() over ( partition by exm.key_expense_item  order by ex_pcurr.date desc ) =1
 ),
 agg_by_keyei as (     
-        select key_project,key_expense,  location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,client_site_id,project_manager_email,project_manager_personal_email,
-        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,
+        select key_project,key_expense,  location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,client_site_id,project_manager_email,project_manager_personal_email,
+        client_manager_id, client_manager_name,client_manager_name_lf,client_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,
         currency_iso_code,exp_currency as base_currency,org_currency as currency_code,
         project_name,project_status,practice_area_name,department_name,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             amt_po,amt_po_usd , sum(rate) as rate,  sum(rate_project) as rate_project ,sum(rate_project_usd) as rate_project_usd, sum(cost) as cost ,sum(cost_project) as cost_project, sum(cost_project_usd) as cost_project_usd
         from exchange_matched_projcurr_ei group by all   
 ),
 activitybyproject_ei as (     
-        select key_project,key_expense as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id, 
-        client_manager_id, client_manager_name,client_manager_email, ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,
+        select key_project,key_expense as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,project_manager_email,project_manager_personal_email,client_site_id, 
+        client_manager_id, client_manager_name,client_manager_name_lf,client_manager_email, ukg_employee_number,email_address_work,employee_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,
         project_name,project_status,practice_area_name,department_name,dte_entry ,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             amt_po,amt_po_usd ,  rate ,rate_project, rate_project_usd,  cost ,cost_project, cost_project_usd
         from agg_by_keyei   )
         ,
 apbi_with_project as  
-( select  p.key as key_project,apbi.key as key_api, apbi.key_ap_bill,  p.location_id_intacct, p.project_id, p.location_name, p.group_name ,p.entity_name, p.practice_name, p.project_manager_name,
+( select  p.key as key_project,apbi.key as key_api, apbi.key_ap_bill,  p.location_id_intacct, p.project_id, p.location_name, p.group_name ,p.entity_name, p.practice_name, p.project_manager_name, p.project_manager_name_lf,
         p.email_address_work as project_manager_email,
         p.email_address_personal as project_manager_personal_email,
-        p.client_site_id, p.client_manager_id, p.client_manager_name,p.client_manager_email,
-        '' as ukg_employee_number, '' as email_address_work,'' as display_name_lf,ap_record_id as employee_name , p.currency_iso_code,apbi.base_currency, apbi.currency_code,
+        p.client_site_id, p.client_manager_id, p.client_manager_name,p.client_manager_name_lf,p.client_manager_email,
+        '' as ukg_employee_number, '' as email_address_work,'' as employee_name_lf,ap_record_id as employee_name , p.currency_iso_code,apbi.base_currency, apbi.currency_code,
         case
               when apbi.base_currency = p.currency_iso_code then 1
               when apbi.currency_code = p.currency_iso_code then 2
@@ -177,8 +184,8 @@ apbi_with_project as
           inner join project p on apbi.key_project = p.key 
 ),
 exchange_matched_api as 
-(  select key_project,key_api, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
-        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,amt_po,amt_po_usd, amt, amt_trx,project_name,project_status,practice_area_name,department_name,
+(  select key_project,key_api, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,project_manager_email,project_manager_personal_email,client_site_id,
+        client_manager_id, client_manager_name,client_manager_name_lf,client_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,amt_po,amt_po_usd, amt, amt_trx,project_name,project_status,practice_area_name,department_name,
         dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
         coalesce(ex.fx_rate_div,1) as rate_div,
         coalesce(ex.fx_rate_mul,1) as rate_mul, 
@@ -191,8 +198,8 @@ exchange_matched_api as
 ),
 exchange_matched_projcurr_api as 
 ( select 
-            key_project,key_api, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
-        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,project_name,project_status,practice_area_name,department_name,dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
+            key_project,key_api, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,project_manager_email,project_manager_personal_email,client_site_id,
+        client_manager_id, client_manager_name,client_manager_name_lf,client_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,project_name,project_status,practice_area_name,department_name,dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             exm.rate_div,exm.rate_mul, coalesce(ex_pcurr.fx_rate_div,1) as pcurr_rate_div, coalesce(ex_pcurr.fx_rate_mul,1) as pcurr_rate_mul,  exm.date, ex_pcurr.date as pcurr_date,
             amt_po, amt_po_usd,
         round(case when curr_ind =1 then amt 
@@ -221,26 +228,28 @@ exchange_matched_projcurr_api as
              qualify row_number() over ( partition by exm.key_api  order by ex_pcurr.date desc ) =1
 ),
 agg_by_keyapbill as (     
-select key_project, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
-        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,
+select key_project, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,project_manager_email,project_manager_personal_email,client_site_id,
+        client_manager_id, client_manager_name,client_manager_name_lf,client_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,
         project_name,project_status,practice_area_name,department_name,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             amt_po,amt_po_usd , sum(rate) as rate,  sum(rate_project) as rate_project ,sum(rate_project_usd) as rate_project_usd, sum(cost) as cost ,sum(cost_project) as cost_project, sum(cost_project_usd) as cost_project_usd
         from exchange_matched_projcurr_api group by all   ), 
 activitybyproject_ap as 
-(select key_project,key_ap_bill as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
-        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,project_name,project_status,practice_area_name,department_name,
+(select key_project,key_ap_bill as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,project_manager_email,project_manager_personal_email,client_site_id,
+        client_manager_id, client_manager_name,client_manager_name_lf,client_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,project_name,project_status,practice_area_name,department_name,
         dte_entry ,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             amt_po,amt_po_usd ,  rate ,rate_project, rate_project_usd,  cost ,cost_project, cost_project_usd
 from agg_by_keyapbill),
 --
 ccte_with_project as  
-( select  p.key as key_project,ccte.key as key_ccte, ccte.key_cc_transaction,  p.location_id_intacct, p.project_id, p.location_name, p.group_name ,p.entity_name, p.practice_name, p.project_manager_name,
+( select  p.key as key_project,ccte.key as key_ccte, ccte.key_cc_transaction,  p.location_id_intacct, p.project_id, p.location_name, p.group_name ,p.entity_name, p.practice_name, p.project_manager_name,p.project_manager_name_lf,
         p.email_address_work as project_manager_email,
         p.email_address_personal as project_manager_personal_email,
-        p.client_site_id, p.client_manager_id, p.client_manager_name,p.client_manager_email,
-        ccte_e.ukg_employee_number as ukg_employee_number, ccte_e.email_address_work as email_address_work,ccte_e.display_name_lf as display_name_lf,
-        case when ccte.employee_name is null or ccte.employee_name ='' then cct_record_id 
-        else ccte.employee_name ||'-' || ccte.key end as employee_name,
+        p.client_site_id, p.client_manager_id, p.client_manager_name,p.client_manager_name_lf,p.client_manager_email,
+        ccte_e.ukg_employee_number as ukg_employee_number, ccte_e.email_address_work as email_address_work,
+        case when ccte.employee_name_lf is null or ccte.employee_name_lf ='' then ccte.key 
+        else ccte.employee_name_lf ||' - ' || ccte.key end as employee_name_lf,
+        case when ccte.employee_name is null or ccte.employee_name ='' then ccte.key 
+        else ccte.employee_name ||' - ' || ccte.key end as employee_name,
         p.currency_iso_code,ccte.base_currency, ccte.currency as currency_code,
         case
               when ccte.base_currency = p.currency_iso_code then 1
@@ -254,8 +263,8 @@ ccte_with_project as
           left join employee ccte_e on ccte.key_employee = ccte_e.key
 ),
 exchange_matched_ccte as 
-(  select key_project,key_ccte, key_cc_transaction, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
-        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,amt_po,amt_po_usd, amt, amt_trx,project_name,project_status,practice_area_name,department_name,
+(  select key_project,key_ccte, key_cc_transaction, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,project_manager_email,project_manager_personal_email,client_site_id,
+        client_manager_id, client_manager_name,client_manager_name_lf,client_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,amt_po,amt_po_usd, amt, amt_trx,project_name,project_status,practice_area_name,department_name,
         dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
         coalesce(ex.fx_rate_div,1) as rate_div,
         coalesce(ex.fx_rate_mul,1) as rate_mul, 
@@ -268,8 +277,8 @@ exchange_matched_ccte as
 ),
 exchange_matched_projcurr_ccte as 
 ( select 
-            key_project,key_ccte, key_cc_transaction, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
-        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,project_name,project_status,practice_area_name,department_name,
+            key_project,key_ccte, key_cc_transaction, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,project_manager_email,project_manager_personal_email,client_site_id,
+        client_manager_id, client_manager_name,client_manager_name_lf,client_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,curr_ind,project_name,project_status,practice_area_name,department_name,
         dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             exm.rate_div,exm.rate_mul, coalesce(ex_pcurr.fx_rate_div,1) as pcurr_rate_div, coalesce(ex_pcurr.fx_rate_mul,1) as pcurr_rate_mul,  exm.date, ex_pcurr.date as pcurr_date,
             amt_po, amt_po_usd,
@@ -299,8 +308,8 @@ exchange_matched_projcurr_ccte as
              qualify row_number() over ( partition by exm.key_ccte  order by ex_pcurr.date desc ) =1
 ),
 activitybyproject_cct as 
-(select key_project,key_cc_transaction as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_email,project_manager_personal_email,client_site_id,
-        client_manager_id, client_manager_name,client_manager_email,ukg_employee_number,email_address_work,display_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,project_name,project_status,practice_area_name,department_name,
+(select key_project,key_cc_transaction as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,project_manager_email,project_manager_personal_email,client_site_id,
+        client_manager_id, client_manager_name,client_manager_name_lf,client_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,currency_iso_code,base_currency,currency_code,project_name,project_status,practice_area_name,department_name,
         dte_entry ,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,notes,
             amt_po,amt_po_usd ,  rate ,rate_project, rate_project_usd,  cost ,cost_project, cost_project_usd
 from exchange_matched_projcurr_ccte), 
@@ -327,15 +336,17 @@ select    * from activitybyproject_cct
      coalesce(entity_name,'') as entity_name,
      coalesce(practice_name,'') as practice_name,
      coalesce(project_manager_name,'') as project_manager_name,
+     coalesce(project_manager_name_lf,'') as project_manager_name_lf,
      coalesce(project_manager_email,'') as project_manager_email,
      coalesce(project_manager_personal_email,'') as project_manager_personal_email,
      coalesce(client_site_id,'') as client_site_id,
      coalesce(client_manager_id,'') as client_manager_id, 
      coalesce(client_manager_name,'') as client_manager_name,
+     coalesce(client_manager_name_lf,'') as client_manager_name_lf,
      coalesce(client_manager_email,'') as client_manager_email,
      coalesce(ukg_employee_number,'') as ukg_employee_number,
      coalesce(email_address_work,'') as email_address_work,
-     coalesce(display_name_lf,'') as display_name_lf,
+     coalesce(employee_name_lf,'') as employee_name_lf,
      coalesce(employee_name,'') as employee_name,
      coalesce(currency_iso_code,'') as currency_iso_code,
      coalesce(base_currency,'') as base_currency,

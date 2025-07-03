@@ -64,6 +64,7 @@ final as (
         por_loc.display_name as location_name,
         por_ent.display_name as entity_name,
         employee_ukg.display_name as employee_name,
+        employee_ukg.display_name_lf as employee_name_lf,
         project.project_id,
         project.project_name,
 
