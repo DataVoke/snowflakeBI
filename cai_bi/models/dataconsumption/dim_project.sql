@@ -20,7 +20,9 @@ sfc as (
 employee_int as (
     select * from {{ ref('employee') }} where src_sys_key = 'int'
 ),
-
+employee_sfc as (
+    select * from {{ ref('employee') }} where src_sys_key = 'sfc'
+),
 employee_ukg as (
     select * from {{ ref('employee') }} where src_sys_key = 'ukg'
 ),
@@ -66,7 +68,8 @@ select
     int.billto_key,
     int.client_site_id,
     sfc.client_manager_id,
-    sfc.client_manager_name,
+    sfc.client_manager_name as client_manager_name,
+    client_manager_ukg.display_name_lf as client_manager_name_lf,
     sfc.client_manager_email,
     int.contact_key,
     int.customer_id,
@@ -112,6 +115,7 @@ select
     por_grp.display_name as group_name,
     por_pract.display_name as practice_name,
     employee_ukg.display_name as project_manager_name,
+    employee_ukg.display_name_lf as project_manager_name_lf,
     por_pract_area.display_name as practice_area_name,
 
     int.qty_actual,
@@ -184,7 +188,9 @@ from int
 left join pts on int.hash_link = pts.hash_link
 left join sfc on sfc.hash_link = pts.hash_link
 left join employee_int on int.project_manager_id = employee_int.intacct_employee_id
+left join employee_sfc on sfc.client_manager_id = employee_sfc.key
 left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
+left join employee_ukg client_manager_ukg on employee_sfc.hash_link = client_manager_ukg.hash_link
 left join por_dep on int.department_id = por_dep.intacct_id
 left join por_grp on sfc.group_id = por_grp.salesforce_id
 left join por_pract on por_pract.salesforce_id = sfc.practice_id

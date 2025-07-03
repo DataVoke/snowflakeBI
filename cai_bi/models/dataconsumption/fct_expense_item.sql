@@ -74,8 +74,10 @@ final as (
         por_loc.display_name as location_name,
         por_ent.display_name as entity_name,
         employee_ukg.display_name as employee_name,
+        employee_ukg.display_name_lf as employee_name_lf,
         project.project_id,
         project.project_name,
+        project.currency_iso_code,
 
         -- direct fields
         int_ei.account_key,
@@ -121,7 +123,7 @@ final as (
         int_ei.base_location,
         int_ei.bln_billable,
         int_ei.bln_billed,
-        sfc_ei.currency_iso_code,
+        --sfc_ei.currency_iso_code,
         int_ei.customer_name,
         int_ei.description,
         int_ei.description_2,
