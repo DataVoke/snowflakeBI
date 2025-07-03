@@ -172,7 +172,7 @@ apbi_with_project as
         p.email_address_work as project_manager_email,
         p.email_address_personal as project_manager_personal_email,
         p.client_site_id, p.client_manager_id, p.client_manager_name,p.client_manager_name_lf,p.client_manager_email,
-        '' as ukg_employee_number, '' as email_address_work,'' as employee_name_lf,ap_record_id as employee_name , p.currency_iso_code,apbi.base_currency, apbi.currency_code,
+        '' as ukg_employee_number, '' as email_address_work, ap_record_id as employee_name_lf,ap_record_id as employee_name , p.currency_iso_code,apbi.base_currency, apbi.currency_code,
         case
               when apbi.base_currency = p.currency_iso_code then 1
               when apbi.currency_code = p.currency_iso_code then 2
