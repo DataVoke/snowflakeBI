@@ -4,7 +4,7 @@ sources:
   - name: sage_intacct
     description: "source tables from sage intacct"
     database: prod_bi_raw
-    schema: sage_intacct_phase_1
+    schema: sage_intacct
     tables:
       - name: acct_range
       - name: ap_adjustment

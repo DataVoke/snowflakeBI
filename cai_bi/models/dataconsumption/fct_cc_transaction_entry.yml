@@ -1,0 +1,191 @@
+version: 2
+
+models:
+  - name: cc_transaction_entry
+    columns:
+      - name: key
+        description: Primary key for the transaction entry.
+        data_type: TEXT
+      - name: hash_key
+        description: Unique hash key for the transaction entry.
+        data_type: TEXT
+      - name: key_location
+        description: Surrogate key for the associated location.
+        data_type: NUMBER
+      - name: key_project
+        description: Surrogate key for the associated project.
+        data_type: TEXT
+      - name: key_department
+        description: Surrogate key for the associated department.
+        data_type: NUMBER
+      - name: key_entity
+        description: Surrogate key for the associated entity.
+        data_type: NUMBER
+      - name: key_employee
+        description: Surrogate key for the associated employee.
+        data_type: TEXT
+      - name: department_name
+        description: Display name of the department.
+        data_type: TEXT
+      - name: location_name
+        description: Display name of the location.
+        data_type: TEXT
+      - name: entity_name
+        description: Display name of the entity.
+        data_type: TEXT
+      - name: employee_name
+        description: Display name of the employee.
+        data_type: TEXT
+      - name: employee_name_lf
+        description: Display name of the employee in Last, First format.
+        data_type: TEXT
+      - name: project_id
+        description: ID of the project.
+        data_type: TEXT
+      - name: project_name
+        description: Name of the project.
+        data_type: TEXT
+      - name: key_cc_transaction
+        description: Key linking to the credit card transaction.
+        data_type: TEXT
+      - name: hash_key_cc_transaction
+        description: Hash key for the credit card transaction.
+        data_type: TEXT
+      - name: hash_key_project
+        description: Hash key for the project.
+        data_type: TEXT
+      - name: hash_key_entity
+        description: Hash key for the entity.
+        data_type: TEXT
+      - name: hash_key_location
+        description: Hash key for the location.
+        data_type: TEXT
+      - name: account_key
+        description: Account key for the entry.
+        data_type: NUMBER
+      - name: base_location_id
+        description: Base location ID.
+        data_type: NUMBER
+      - name: customer_dim_key
+        description: Customer dimension key.
+        data_type: NUMBER
+      - name: customer_id
+        description: Customer ID related to the entry.
+        data_type: TEXT
+      - name: department_id
+        description: Department ID from Intacct.
+        data_type: TEXT
+      - name: employee_id
+        description: Employee ID from Intacct.
+        data_type: TEXT
+      - name: exchange_rate_type_id
+        description: Exchange rate type identifier.
+        data_type: NUMBER
+      - name: gl_dim_vat_code
+        description: General ledger VAT code.
+        data_type: NUMBER
+      - name: item_dim_key
+        description: Item dimension key.
+        data_type: NUMBER
+      - name: item_id
+        description: Item ID.
+        data_type: TEXT
+      - name: location_id
+        description: Location ID.
+        data_type: TEXT
+      - name: src_created_by_id
+        description: Source created by ID.
+        data_type: NUMBER
+      - name: src_modified_by_id
+        description: Source modified by ID.
+        data_type: NUMBER
+      - name: vendor_dim_key
+        description: Vendor dimension key.
+        data_type: NUMBER
+      - name: vendor_id
+        description: Vendor ID.
+        data_type: TEXT
+      - name: account_title
+        description: Title of the account.
+        data_type: TEXT
+      - name: amt
+        description: Amount value of the line item.
+        data_type: NUMBER
+      - name: amt_total_expensed
+        description: Total expensed amount.
+        data_type: NUMBER
+      - name: amt_total_paid
+        description: Total paid amount.
+        data_type: NUMBER
+      - name: amt_total_selected
+        description: Total selected amount.
+        data_type: NUMBER
+      - name: amt_trx
+        description: Transaction amount.
+        data_type: NUMBER
+      - name: amt_trx_total_paid
+        description: Total transaction amount paid.
+        data_type: NUMBER
+      - name: amt_trx_total_selected
+        description: Total transaction amount selected.
+        data_type: NUMBER
+      - name: base_currency
+        description: Base currency code.
+        data_type: TEXT
+      - name: bln_billable
+        description: Indicates if the line item is billable.
+        data_type: BOOLEAN
+      - name: bln_billed
+        description: Indicates if the line item has been billed.
+        data_type: BOOLEAN
+      - name: bln_is_tax
+        description: Indicates if the line item is a tax line.
+        data_type: BOOLEAN
+      - name: bln_line_item
+        description: Indicates if this is a line item.
+        data_type: BOOLEAN
+      - name: cc_txn_payee
+        description: Payee on the credit card transaction.
+        data_type: TEXT
+      - name: currency
+        description: Transaction currency.
+        data_type: TEXT
+      - name: customer_name
+        description: Name of the customer associated.
+        data_type: TEXT
+      - name: description
+        description: Description of the transaction.
+        data_type: TEXT
+      - name: dte_exchange_rate
+        description: Date of exchange rate used.
+        data_type: DATE
+      - name: dts_src_created
+        description: Datetime when the source record was created.
+        data_type: TIMESTAMP_NTZ
+      - name: dts_src_modified
+        description: Datetime when the source record was modified.
+        data_type: TIMESTAMP_NTZ
+      - name: exchange_rate
+        description: Exchange rate used.
+        data_type: NUMBER
+      - name: financial_entity
+        description: Associated financial entity.
+        data_type: TEXT
+      - name: item_name
+        description: Name of the item associated.
+        data_type: TEXT
+      - name: line_no
+        description: Line number.
+        data_type: NUMBER
+      - name: record_type
+        description: Record type of the entry.
+        data_type: TEXT
+      - name: record_url
+        description: URL to the record.
+        data_type: TEXT
+      - name: status
+        description: Status of the line item.
+        data_type: TEXT
+      - name: vendor_name
+        description: Name of the vendor associated.
+        data_type: TEXT
