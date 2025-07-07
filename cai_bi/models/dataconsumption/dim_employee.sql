@@ -38,6 +38,7 @@ SELECT
     '{{ this.name }}' as updated_by,
     --keys
     ukg.key,
+    ukg.key_base_team,
     companies.record_id as key_company,
     continents.record_id as key_continent,
     contractor_companies.record_id as key_contractor_company,
@@ -168,6 +169,7 @@ SELECT
     ukg.weekly_pay_rate,
     ukg.work_phone_country,
     por.work_phone_number,
+    sin.mst_member,
 
     --target billing data
     users_forecasts.bill_rate as target_bill_rate_current,

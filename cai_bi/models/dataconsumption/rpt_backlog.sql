@@ -36,18 +36,18 @@ group by all
  total_labour_usd, coalesce(total_expense,0) as total_expense, coalesce(total_expense_project,0) as total_expense_project,
   coalesce(total_expense_usd,0) as total_expense_usd,
   coalesce(total_ap,0) as total_ap, coalesce(total_ap_project,0) as total_ap_project, coalesce(total_ap_usd,0) as total_ap_usd,
-  coalesce(total_labour_project +total_expense_project +total_ap_project,0) as total_worked_project ,
-  coalesce(total_labour_usd +total_expense_usd +total_ap_usd,0) as total_worked_usd,
-  coalesce(te.amt_po - total_worked_project,0) as total_remaining_project,
-  coalesce( te.amt_po_usd - total_worked_usd,0) as total_remaining_usd,
-  coalesce( current_date() - date(te.dte_entry),0) as age,
-   case when age >90 then 0.1 
+  coalesce(total_labour_project,0) + coalesce(total_expense_project,0) +coalesce(total_ap_project,0) as total_worked_project ,
+  coalesce(total_labour_usd,0) + coalesce(total_expense_usd,0) + coalesce(total_ap_usd,0) as total_worked_usd,
+  coalesce(te.amt_po,0) - coalesce(total_worked_project,0) as total_remaining_project,
+  coalesce( te.amt_po_usd,0) - coalesce(total_worked_usd,0) as total_remaining_usd,
+  --coalesce( current_date() - date(te.dte_entry),0) as age,
+  /* case when age >90 then 0.1 
    when age > 60 then 0.2
    when age > 30 then 0.4
    when age > 14 then 0.8
    when age > 7 then 0.9 else 1 end as blprob,
   coalesce(total_remaining_project * blprob,0) as backlog_project,
-  coalesce(total_remaining_usd * blprob,0) as backlog_usd 
+  coalesce(total_remaining_usd * blprob,0) as backlog_usd */
   from te 
   left join exp on te.key_project = exp.key_project
   left join ap on te.key_project = ap.key_project
