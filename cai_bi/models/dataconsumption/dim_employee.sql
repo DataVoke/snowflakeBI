@@ -19,6 +19,9 @@ with
     labor_categories     as (select * from {{ source('portal', 'labor_categories') }} where _fivetran_deleted = false),
     genders              as (select * from {{ source('portal', 'genders') }} where _fivetran_deleted = false),
     locations_intacct    as (select * from {{ source('portal', 'locations_intacct') }} where _fivetran_deleted = false),
+    sageint_locations as (
+    select * from {{ source('sage_intacct','location') }} where _fivetran_deleted = false
+),
     locations_ukg        as (select * from {{ source('portal', 'locations_ukg') }} where _fivetran_deleted = false),
     locations            as (select * from {{ source('portal', 'locations') }} where _fivetran_deleted = false),
     location_regions     as (select * from {{ source('portal', 'location_regions') }} where _fivetran_deleted = false),
@@ -29,7 +32,8 @@ with
     position_families    as (select * from {{ source('portal', 'position_families') }} where _fivetran_deleted = false),
     practices            as (select * from {{ source('portal', 'practices') }} where _fivetran_deleted = false),
     termination_types    as (select * from {{ source('portal', 'termination_types') }} where _fivetran_deleted = false),
-    users_forecasts      as (select * from {{ source('portal', 'users_forecasts') }} where _fivetran_deleted = false)
+    users_forecasts      as (select * from {{ source('portal', 'users_forecasts') }} where _fivetran_deleted = false),
+    base_teams      as (select * from {{ source('portal', 'base_teams') }} where _fivetran_deleted = false)
 
 SELECT 
     current_timestamp as dts_created_at,
@@ -72,6 +76,7 @@ SELECT
     sin.intacct_employee_id,
     sin.key as intacct_employee_key,
     por.intacct_override_entity_id,
+    ifnull(nullif(sageint_locations.parentid,''),sin.location_id) as entity_id,
     ukg.national_id,
     ukg.national_id_country,
     por.key as portal_id,
@@ -111,6 +116,7 @@ SELECT
     supervisors.display_name as supervisor_name,
     termination_types.display_name as termination_type_name,
     termination_types.addressable_type as termination_addressable_type,
+    base_teams.display_name as base_team_name,
 
 -- other fields
     ukg.address_city,
@@ -183,7 +189,7 @@ SELECT
     users_forecasts_last_year.plan_bill_amount_week as target_bill_amount_week_last,
     users_forecasts_last_year.plan_bill_amount_year as target_bill_amount_year_last
 from ukg_employee ukg 
-left join ukg_employee sin on ukg.link = sin.link and sin.src_sys_key = 'sin'
+left join ukg_employee sin on ukg.link = sin.link and sin.src_sys_key = 'int'
 left join ukg_employee por on ukg.link = por.link and por.src_sys_key = 'por'
 left join ukg_employee sfc on ukg.link = sfc.link and sfc.src_sys_key = 'sfc'
 left join states as states on ukg.state_id = states.ukg_id
@@ -194,7 +200,9 @@ left join dol_statuses as dol on ukg.dol_status_id = dol.ukg_id
 left join employee_types as employee_types on ukg.employee_type_id = employee_types.ukg_id
 left join entities as companies on ukg.key_entity = companies.ukg_id
 left join ethnic_backgrounds as ethnic on ukg.ethnic_background_id = ethnic.ukg_id
-left join entities entities on sin.location_id_intacct = entities.id
+left join sageint_locations on sin.location_id_intacct = sageint_locations.recordno
+left join entities entities on ifnull(sageint_locations.parentkey,sin.location_id_intacct) = entities.id
+--left join entities entities on sin.location_id_intacct = entities.id
 left join labor_categories as labor_categories on por.labor_category_id = labor_categories.id
 left join genders as genders on ukg.gender_id = genders.ukg_id
 left join locations_intacct as locations_intacct on ukg.location_id_intacct = locations_intacct.ukg_id
@@ -211,4 +219,5 @@ left join ukg_employee as supervisors on ukg.supervisor_id =supervisors.key
 left join termination_types as termination_types on ukg.termination_type_id = termination_types.ukg_id
 left join users_forecasts as users_forecasts on por.key = users_forecasts.user_id and users_forecasts.timeframe_id = year(current_date())
 left join users_forecasts as users_forecasts_last_year on por.key = users_forecasts_last_year.user_id and users_forecasts_last_year.timeframe_id = year(current_date())-1
+left join base_teams as base_teams on base_teams.ukg_id = ukg.key_base_team
 where ukg.src_sys_key = 'ukg'
