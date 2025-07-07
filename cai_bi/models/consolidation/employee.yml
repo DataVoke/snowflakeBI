@@ -251,3 +251,5 @@ models:
         data_type: VARCHAR(5000)
       - name: WORK_PHONE_NUMBER
         data_type: VARCHAR(5000)
+      - name: MST_MEMBER
+        data_type: BOOLEAN

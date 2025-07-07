@@ -71,8 +71,8 @@ activitybyproject_te as
         inner join project p on te.key_project = p.key
         left join employee te_e on te.key_employee = te_e.key
         left join  forex_filtered ex on (p.currency_iso_code = ex.frm_curr )
-            and ex.date <= te.dte_entry
-             qualify row_number() over ( partition by te.key  order by ex.date desc ) =1
+            and ex.date = te.dte_entry
+             --qualify row_number() over ( partition by te.key  order by ex.date desc ) =1
 ),
 
 expi_with_project as 
@@ -117,8 +117,8 @@ currency_iso_code,exp_currency,org_currency ,curr_ind,amt_po, amt_po_usd, amt, a
           from expi_with_project ei
           left join forex_filtered ex
             on (ei.currency_iso_code = ex.frm_curr )
-            and ex.date <= ei.dte_exch_rate
-             qualify row_number() over ( partition by ei.key_expense_item  order by ex.date desc ) =1
+            and ex.date = ei.dte_exch_rate
+            -- qualify row_number() over ( partition by ei.key_expense_item  order by ex.date desc ) =1
 ),
  exchange_matched_projcurr_ei as 
  ( select key_project, key_expense_item,key_expense, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name, project_manager_name_lf, client_site_id,
@@ -149,8 +149,8 @@ currency_iso_code,exp_currency,org_currency ,curr_ind,amt_po, amt_po_usd, amt, a
           left join forex_projectcurr ex_pcurr
             on (exm.currency_iso_code = ex_pcurr.to_curr  )
             and ( ex_pcurr.frm_curr = exm.org_currency)
-            and ex_pcurr.date <= exm.dte_exch_rate
-             qualify row_number() over ( partition by exm.key_expense_item  order by ex_pcurr.date desc ) =1
+            and ex_pcurr.date = exm.dte_exch_rate
+            -- qualify row_number() over ( partition by exm.key_expense_item  order by ex_pcurr.date desc ) =1
 ),
 agg_by_keyei as (     
         select key_project,key_expense,  location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,client_site_id,project_manager_email,project_manager_personal_email,
@@ -193,8 +193,8 @@ exchange_matched_api as
           from apbi_with_project apbi
           left join forex_filtered ex
             on (apbi.currency_iso_code = ex.frm_curr )
-            and ex.date <= apbi.dte_exch_rate
-             qualify row_number() over ( partition by apbi.key_api  order by ex.date desc ) =1
+            and ex.date = apbi.dte_exch_rate
+            -- qualify row_number() over ( partition by apbi.key_api  order by ex.date desc ) =1
 ),
 exchange_matched_projcurr_api as 
 ( select 
@@ -224,8 +224,8 @@ exchange_matched_projcurr_api as
           left join forex_projectcurr ex_pcurr
             on (exm.currency_iso_code = ex_pcurr.to_curr  )
             and ( ex_pcurr.frm_curr = exm.currency_code)
-            and ex_pcurr.date <= exm.dte_exch_rate
-             qualify row_number() over ( partition by exm.key_api  order by ex_pcurr.date desc ) =1
+            and ex_pcurr.date = exm.dte_exch_rate
+             --qualify row_number() over ( partition by exm.key_api  order by ex_pcurr.date desc ) =1
 ),
 agg_by_keyapbill as (     
 select key_project, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,project_manager_email,project_manager_personal_email,client_site_id,
@@ -272,8 +272,8 @@ exchange_matched_ccte as
           from ccte_with_project ccte
           left join forex_filtered ex
             on (ccte.currency_iso_code = ex.frm_curr )
-            and ex.date <= ccte.dte_exch_rate
-             qualify row_number() over ( partition by ccte.key_ccte  order by ex.date desc ) =1
+            and ex.date = ccte.dte_exch_rate
+            -- qualify row_number() over ( partition by ccte.key_ccte  order by ex.date desc ) =1
 ),
 exchange_matched_projcurr_ccte as 
 ( select 
@@ -304,8 +304,8 @@ exchange_matched_projcurr_ccte as
           left join forex_projectcurr ex_pcurr
             on (exm.currency_iso_code = ex_pcurr.to_curr  )
             and ( ex_pcurr.frm_curr = exm.currency_code)
-            and ex_pcurr.date <= exm.dte_exch_rate
-             qualify row_number() over ( partition by exm.key_ccte  order by ex_pcurr.date desc ) =1
+            and ex_pcurr.date = exm.dte_exch_rate
+            -- qualify row_number() over ( partition by exm.key_ccte  order by ex_pcurr.date desc ) =1
 ),
 activitybyproject_cct as 
 (select key_project,key_cc_transaction as key_parent, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,project_manager_email,project_manager_personal_email,client_site_id,

@@ -154,7 +154,8 @@ ukg as (
         null as utilization_target_hours,
         ukg_compensation.weekly_pay_rate as weekly_pay_rate,
         ukg_employment.work_phone_country as work_phone_country,
-        null as work_phone_number
+        null as work_phone_number,
+        null as mst_member
     from ukg_employee
     left join ukg_employment on ukg_employee.id = ukg_employment.employee_id
     left join ukg_job on ukg_employment.primary_job_id = ukg_job.id
@@ -280,7 +281,8 @@ portal as (
         null as utilization_target_hours,
         null as weekly_pay_rate,
         null as work_phone_country,
-        phone_number_work as work_phone_number
+        phone_number_work as work_phone_number,
+        null as mst_member
     from portal_users
 ),
 
@@ -402,7 +404,8 @@ sage_intacct as (
         null as utilization_target_hours,
         null as weekly_pay_rate,
         null as work_phone_country,
-        si_contact.phone_1 as work_phone_number
+        si_contact.phone_1 as work_phone_number,
+        mst_member as mst_member
     from si_employee
     left join si_location on si_employee.locationkey = si_location.recordno
     left join si_contact on si_contact.recordno = si_employee.contactkey
@@ -525,7 +528,8 @@ salesforce as (
         sf_contact.pse_utilization_target_hours_c as utilization_target_hours,
         null as weekly_pay_rate,
         null as work_phone_country,
-        sf_contact.mobile_phone as work_phone_number
+        sf_contact.mobile_phone as work_phone_number,
+        null as mst_member
     from sf_contact
     left join sf_user on sf_user.id = sf_contact.pse_salesforce_user_c
 ),
@@ -656,5 +660,6 @@ select
     cast(utilization_target_hours as number(19, 4)) as utilization_target_hours,
     cast(weekly_pay_rate as number(19, 4)) as weekly_pay_rate,
     work_phone_country,
-    work_phone_number
+    work_phone_number,
+    mst_member
 from final
