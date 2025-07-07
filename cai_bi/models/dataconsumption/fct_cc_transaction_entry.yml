@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: cc_transaction_entry
+  - name: fct_cc_transaction_entry
     columns:
       - name: key
         description: Primary key for the transaction entry.
