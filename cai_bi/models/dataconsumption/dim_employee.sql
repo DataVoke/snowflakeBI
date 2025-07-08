@@ -68,6 +68,7 @@ SELECT
     termination_types.record_id as key_termination_type,
 
     -- ids
+    ukg.employee_id,
     sfc.account_id,
     por.azure_id,
     sin.intacct_contact_key,
@@ -76,7 +77,7 @@ SELECT
     sin.intacct_employee_id,
     sin.key as intacct_employee_key,
     por.intacct_override_entity_id,
-    ifnull(nullif(sageint_locations.parentid,''),sin.location_id) as entity_id,
+    coalesce(coalesce(sageint_locations.parentid,sin.location_id),'') as entity_id,
     ukg.national_id,
     ukg.national_id_country,
     por.key as portal_id,
