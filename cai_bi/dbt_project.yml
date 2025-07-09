@@ -41,3 +41,7 @@ models:
       +transient: false
 vars:
   rate_threshold: 0.09
+
+seeds:
+  cai_bi:
+    +schema: consolidation
