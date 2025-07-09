@@ -50,7 +50,7 @@ SELECT
     departments.record_id as key_department,
     dol.record_id as key_dol_status,
     employee_types.record_id as key_employee_type,
-    entities.record_id as key_entity,
+    coalesce(entities.record_id, por_entities.record_id) as key_entity,
     ethnic.record_id as key_ethnic_background_id,
     genders.record_id as key_gender,
     labor_categories.record_id as key_labor_categories,
@@ -77,7 +77,7 @@ SELECT
     sin.intacct_employee_id,
     sin.key as intacct_employee_key,
     por.intacct_override_entity_id,
-    coalesce(coalesce(sageint_locations.parentid,sin.location_id),'') as entity_id,
+   coalesce(coalesce(nullif(sageint_locations.parentid,''),sin.location_id),por_entities.display_name) as entity_id,
     ukg.national_id,
     ukg.national_id_country,
     por.key as portal_id,
@@ -100,7 +100,7 @@ SELECT
     departments.display_name as department_name,
     dol.display_name as dol_status_name,
     employee_types.display_name as employee_type_name,
-    entities.display_name as entity_name,
+    case when entities.display_name is null or entities.display_name = '' then por_entities.display_name else entities.display_name end as entity_name,
     ethnic.display_name as ethnic_background_name,  
     genders.display_name as gender_name,
     labor_categories.display_name as labor_category_name,
@@ -203,6 +203,7 @@ left join entities as companies on ukg.key_entity = companies.ukg_id
 left join ethnic_backgrounds as ethnic on ukg.ethnic_background_id = ethnic.ukg_id
 left join sageint_locations on sin.location_id_intacct = sageint_locations.recordno
 left join entities entities on ifnull(sageint_locations.parentkey,sin.location_id_intacct) = entities.id
+left join entities por_entities on por.key_entity = por_entities.id
 --left join entities entities on sin.location_id_intacct = entities.id
 left join labor_categories as labor_categories on por.labor_category_id = labor_categories.id
 left join genders as genders on ukg.gender_id = genders.ukg_id
