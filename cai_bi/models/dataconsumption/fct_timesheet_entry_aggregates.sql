@@ -27,14 +27,33 @@ WITH
     sage_intacct_department as (select * from {{ source("sage_intacct", "department") }}),
 
     date_listings_flattened as (
-        select dte, date_group_id_week as date_group_id, dg.date_group_type_id from date_listings as dl
-            left join date_groups as dg on dl.date_group_id_week = dg.id
-        union(select dte, date_group_id_month as date_group_id, dg.date_group_type_id from date_listings as dl
-            left join date_groups as dg on dl.date_group_id_month = dg.id)
-        union(select dte, date_group_id_quarter as date_group_id, dg.date_group_type_id from date_listings as dl
-            left join date_groups as dg on dl.date_group_id_quarter = dg.id)
-        union(select dte, date_group_id_year as date_group_id, dg.date_group_type_id from date_listings as dl
-            left join date_groups as dg on dl.date_group_id_year = dg.id)
+        select 
+            dte, 
+            date_group_id_week as date_group_id, 
+            dg.date_group_type_id 
+        from date_listings as dl
+        left join date_groups as dg on dl.date_group_id_week = dg.id
+        union
+        select 
+            dte, 
+            date_group_id_month as date_group_id, 
+            dg.date_group_type_id 
+        from date_listings as dl
+        left join date_groups as dg on dl.date_group_id_month = dg.id
+        union
+        select 
+            dte, 
+            date_group_id_quarter as date_group_id, 
+            dg.date_group_type_id 
+        from date_listings as dl
+        left join date_groups as dg on dl.date_group_id_quarter = dg.id
+        union
+        select 
+            dte, 
+            date_group_id_year as date_group_id, 
+            dg.date_group_type_id 
+        from date_listings as dl
+        left join date_groups as dg on dl.date_group_id_year = dg.id
     ),
 
     currency_conversion as (
@@ -161,42 +180,30 @@ WITH
             te.date_group_type_id,
             sum(te.qty) as hours,
             case
-                when te.date_group_type_id = 'W'
-                    then ifnull(entities.work_hours_per_week,0)
-                when te.date_group_type_id = 'M'
-                    then ifnull(entities.work_hours_per_week,0) * 52 / 12
-                when te.date_group_type_id = 'Q'
-                    then ifnull(entities.work_hours_per_week,0) * 52 / 4
-                when te.date_group_type_id = 'Y'
-                    then ifnull(entities.work_hours_per_week,0) * 52
+                when te.date_group_type_id = 'W' then ifnull(entities.work_hours_per_week,0)
+                when te.date_group_type_id = 'M' then ifnull(entities.work_hours_per_week,0) * 52 / 12
+                when te.date_group_type_id = 'Q' then ifnull(entities.work_hours_per_week,0) * 52 / 4
+                when te.date_group_type_id = 'Y' then ifnull(entities.work_hours_per_week,0) * 52
             end as expected_hours,
-            iff(sum(iff(te.bill_rate>0,te.qty,0)) >0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate>0,1,0)),0) as avg_rate_employee,
-            ifnull(f.bill_rate_employee,0) as expected_rate_employee,
-            iff(sum(iff(te.bill_rate>0,te.qty,0)) >0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate>0,1,0)),0) as avg_rate_usd,
-            ifnull(f.bill_rate_usd,0) as expected_rate_usd,
+            iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_employee,
+            ifnull(f.bill_rate_employee, 0) as expected_rate_employee,
+            iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_usd,
+            ifnull(f.bill_rate_usd, 0) as expected_rate_usd,
             sum(te.amount_employee) as amount_employee,
             case
-                when te.date_group_type_id = 'W'
-                    then ifnull(f.plan_bill_amount_week_employee,0)
-                when te.date_group_type_id = 'M'
-                    then ifnull(f.plan_bill_amount_year_employee,0) / 12
-                when te.date_group_type_id = 'Q'
-                    then ifnull(f.plan_bill_amount_year_employee,0) / 4
-                when te.date_group_type_id = 'Y'
-                    then ifnull(f.plan_bill_amount_year_employee,0)
+                when te.date_group_type_id = 'W' then ifnull(f.plan_bill_amount_week_employee, 0)
+                when te.date_group_type_id = 'M' then ifnull(f.plan_bill_amount_year_employee, 0) / 12
+                when te.date_group_type_id = 'Q' then ifnull(f.plan_bill_amount_year_employee, 0) / 4
+                when te.date_group_type_id = 'Y' then ifnull(f.plan_bill_amount_year_employee, 0)
             end as expected_amount_employee,
             sum(te.amount_usd) as amount_usd,
             case
-                when te.date_group_type_id = 'W'
-                    then ifnull(f.plan_bill_amount_week_usd,0)
-                when te.date_group_type_id = 'M'
-                    then ifnull(f.plan_bill_amount_year_usd,0) / 12
-                when te.date_group_type_id = 'Q'
-                    then ifnull(f.plan_bill_amount_year_usd,0) / 4
-                when te.date_group_type_id = 'Y'
-                    then ifnull(f.plan_bill_amount_year_usd,0)
+                when te.date_group_type_id = 'W' then ifnull(f.plan_bill_amount_week_usd, 0)
+                when te.date_group_type_id = 'M' then ifnull(f.plan_bill_amount_year_usd, 0) / 12
+                when te.date_group_type_id = 'Q' then ifnull(f.plan_bill_amount_year_usd, 0) / 4
+                when te.date_group_type_id = 'Y' then ifnull(f.plan_bill_amount_year_usd, 0)
             end as expected_amount_usd
-        FROM base_timesheet_entry AS TE
+        FROM base_timesheet_entry as te
         left join users_forecast as f on te.key_employee = f.key_employee and yearofweek(te.dte_entry) = f.year
         left join portal_entities entities on te.key_entity = entities.id
         group by all
@@ -211,40 +218,28 @@ WITH
             te.date_group_type_id,
             sum(te.qty) as hours,
             case
-                when te.date_group_type_id = 'W'
-                    then ifnull(f.plan_hours_week_employee,0)
-                when te.date_group_type_id = 'M'
-                    then ifnull(f.plan_hours_year_employee,0) / 12
-                when te.date_group_type_id = 'Q'
-                    then ifnull(f.plan_hours_year_employee,0) / 4
-                when te.date_group_type_id = 'Y'
-                    then ifnull(f.plan_hours_year_employee,0)
+                when te.date_group_type_id = 'W' then ifnull(f.plan_hours_week_employee, 0)
+                when te.date_group_type_id = 'M' then ifnull(f.plan_hours_year_employee, 0) / 12
+                when te.date_group_type_id = 'Q' then ifnull(f.plan_hours_year_employee, 0) / 4
+                when te.date_group_type_id = 'Y' then ifnull(f.plan_hours_year_employee, 0)
             end as expected_hours,
-            iff(sum(iff(te.bill_rate>0,te.qty,0)) >0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate>0,1,0)),0) as avg_rate_employee,
-            ifnull(f.bill_rate_employee,0) as expected_rate_employee,
-            iff(sum(iff(te.bill_rate>0,te.qty,0)) >0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate>0,1,0)),0) as avg_rate_usd,
-            ifnull(f.bill_rate_usd,0) as expected_rate_usd,
+            iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_employee,
+            ifnull(f.bill_rate_employee, 0) as expected_rate_employee,
+            iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_usd,
+            ifnull(f.bill_rate_usd, 0) as expected_rate_usd,
             sum(te.amount_employee) as amount_employee,
             case
-                when te.date_group_type_id = 'W'
-                    then ifnull(f.plan_bill_amount_week_employee,0)
-                when te.date_group_type_id = 'M'
-                    then ifnull(f.plan_bill_amount_year_employee,0) / 12
-                when te.date_group_type_id = 'Q'
-                    then ifnull(f.plan_bill_amount_year_employee,0) / 4
-                when te.date_group_type_id = 'Y'
-                    then ifnull(f.plan_bill_amount_year_employee,0)
+                when te.date_group_type_id = 'W' then ifnull(f.plan_bill_amount_week_employee, 0)
+                when te.date_group_type_id = 'M' then ifnull(f.plan_bill_amount_year_employee, 0) / 12
+                when te.date_group_type_id = 'Q' then ifnull(f.plan_bill_amount_year_employee, 0) / 4
+                when te.date_group_type_id = 'Y' then ifnull(f.plan_bill_amount_year_employee, 0)
             end as expected_amount_employee,
             sum(te.amount_usd) as amount_usd,
             case
-                when te.date_group_type_id = 'W'
-                    then ifnull(f.plan_bill_amount_week_usd,0)
-                when te.date_group_type_id = 'M'
-                    then ifnull(f.plan_bill_amount_year_usd,0) / 12
-                when te.date_group_type_id = 'Q'
-                    then ifnull(f.plan_bill_amount_year_usd,0) / 4
-                when te.date_group_type_id = 'Y'
-                    then ifnull(f.plan_bill_amount_year_usd,0)
+                when te.date_group_type_id = 'W' then ifnull(f.plan_bill_amount_week_usd, 0)
+                when te.date_group_type_id = 'M' then ifnull(f.plan_bill_amount_year_usd, 0) / 12
+                when te.date_group_type_id = 'Q' then ifnull(f.plan_bill_amount_year_usd, 0) / 4
+                when te.date_group_type_id = 'Y' then ifnull(f.plan_bill_amount_year_usd, 0)
             end as expected_amount_usd
         from base_timesheet_entry as te
         left join users_forecast as f on te.key_employee = f.key_employee and yearofweek(te.dte_entry) = f.year
@@ -261,9 +256,9 @@ WITH
             te.date_group_type_id,
             sum(te.qty) as hours,
             0 as expected_hours,
-            iff(sum(iff(te.bill_rate>0,te.qty,0)) >0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate>0,1,0)),0) as avg_rate_employee,
+            iff(sum(iff(te.bill_rate > 0,te.qty, 0)) > 0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_employee,
             0 as expected_rate_employee,
-            iff(sum(iff(te.bill_rate>0,te.qty,0)) >0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate>0,1,0)),0) as avg_rate_usd,
+            iff(sum(iff(te.bill_rate > 0,te.qty, 0)) > 0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_usd,
             0 as expected_rate_usd,
             sum(te.amount_employee) as amount_employee,
             0 as expected_amount_employee,
@@ -271,8 +266,8 @@ WITH
             0 as expected_amount_usd
         from base_timesheet_entry as te
         where (te.task_name in (select phase_code from time_type_phase_codes where time_type = 'internaltvl'))
-            or (te.task_name in (select phase_code from time_type_phase_codes where time_type = 'tvl') and te.bln_billable=false)
-            or (te.task_name not in (select phase_code from time_type_phase_codes where time_type = 'internal') and te.bln_billable=false)
+        or (te.task_name in (select phase_code from time_type_phase_codes where time_type = 'tvl') and te.bln_billable=false)
+        or (te.task_name not in (select phase_code from time_type_phase_codes where time_type = 'internal') and te.bln_billable=false)
         group by all
     ),
 
@@ -285,16 +280,16 @@ WITH
             te.date_group_type_id,
             sum(te.qty) as hours,
             0 as expected_hours,
-            iff(sum(iff(te.bill_rate>0,te.qty,0)) >0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate>0,1,0)),0) as avg_rate_employee,
+            iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_employee,
             0 as expected_rate_employee,
-            iff(sum(iff(te.bill_rate>0,te.qty,0)) >0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate>0,1,0)),0) as avg_rate_usd,
+            iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_usd,
             0 as expected_rate_usd,
             sum(te.amount_employee) as amount_employee,
             0 as expected_amount_employee,
             sum(te.amount_usd) as amount_usd,
             0 as expected_amount_usd
         from base_timesheet_entry as te
-        where te.task_name in (select phase_code from {{ ref("time_type_phase_codes")}} where time_type = 'tvl') and te.bln_billable = true
+        where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'tvl') and te.bln_billable = true
         group by all
     ),
 
@@ -307,16 +302,16 @@ WITH
             te.date_group_type_id,
             sum(te.qty) as hours,
             0 as expected_hours,
-            iff(sum(iff(te.bill_rate>0,te.qty,0)) >0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate>0,1,0)),0) as avg_rate_employee,
+            iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_employee,
             0 as expected_rate_employee,
-            iff(sum(iff(te.bill_rate>0,te.qty,0)) >0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate>0,1,0)),0) as avg_rate_usd,
+            iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_usd,
             0 as expected_rate_usd,
             sum(te.amount_employee) as amount_employee,
             0 as expected_amount_employee,
             sum(te.amount_usd) as amount_usd,
             0 as expected_amount_usd
         from base_timesheet_entry as te
-        where te.task_name in (select phase_code from {{ ref("time_type_phase_codes")}} where time_type = 'pto')
+        where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'pto')
         group by all
     ),
 
@@ -329,27 +324,52 @@ WITH
             te.date_group_type_id,
             sum(te.qty) as hours,
             0 as expected_hours,
-            iff(sum(iff(te.bill_rate>0,te.qty,0)) >0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate>0,1,0)),0) as avg_rate_employee,
+            iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_employee,
             0 as expected_rate_employee,
-            iff(sum(iff(te.bill_rate>0,te.qty,0)) >0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate>0,1,0)),0) as avg_rate_usd,
+            iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_usd,
             0 as expected_rate_usd,
             sum(te.amount_employee) as amount_employee,
             0 as expected_amount_employee,
             sum(te.amount_usd) as amount_usd,
             0 as expected_amount_usd
         from base_timesheet_entry as te
-        where te.task_name in (select phase_code from {{ ref("time_type_phase_codes")}} where time_type = 'disfun')
+        where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'disfun')
         group by all
     ),
 
     combined as (
-        select 0 as pto_hours, t.*  from total_data t
-        union(select p.hours pto_hours, b.* from billable_data b left join pto_data p on b.employee_id = p.employee_id and b.date_group_id=p.date_group_id and
-        b.date_group_type_id = p.date_group_type_id)
-        union(select 0 as pto_hours, i.* from internal_data i)
-        union(select 0 as pto_hours, t.* from tvl_data t)
-        union(select 0 as pto_hours, p.* from pto_data p)
-        union(select 0 as pto_hours, d.* from disfun_data d)
+        select 
+            0 as pto_hours, 
+            t.* 
+        from total_data t
+        union
+        select 
+            p.hours pto_hours, 
+            b.* 
+        from billable_data b 
+        left join pto_data p on b.employee_id = p.employee_id 
+        and b.date_group_id=p.date_group_id 
+        and b.date_group_type_id = p.date_group_type_id
+        union
+        select 
+            0 as pto_hours, 
+            i.* 
+        from internal_data i
+        union 
+        select 
+            0 as pto_hours, 
+            t.* 
+        from tvl_data t
+        union
+        select 
+            0 as pto_hours, 
+            p.* 
+        from pto_data p
+        union
+        select 
+            0 as pto_hours, 
+            d.* 
+        from disfun_data d
     )
 
     select pto_hours,
@@ -365,12 +385,12 @@ WITH
         dg.display_name_1 as date_group_display_name_1,
         te.employee_id,
         e.ukg_employee_number,
-        initcap(ifnull(nullif(e.display_name,''),intacct_employees.personalinfo_printas)) as employee_name,
-        initcap(ifnull(nullif(e.display_name_lf,''),intacct_employees.contact_name)) as employee_name_lf,
-        ifnull(intacct_locations.parentkey,intacct_locations.recordno) as entity_key,
+        initcap(ifnull(nullif(e.display_name, ''), intacct_employees.personalinfo_printas)) as employee_name,
+        initcap(ifnull(nullif(e.display_name_lf, ''), intacct_employees.contact_name)) as employee_name_lf,
+        ifnull(intacct_locations.parentkey, intacct_locations.recordno) as entity_key,
         ifnull(e.entity_name, portal_entities.display_name) as entity_name,
         intacct_employees.locationid as location_id,
-        initcap(ifnull(e.location_name,intacct_locations.name)) as location_name,
+        initcap(ifnull(e.location_name, intacct_locations.name)) as location_name,
         intacct_employees.departmentid as department_id,
         initcap(ifnull(e.department_name, intacct_departments.title)) as department_name,
         intacct_employees.home_region as base_team_id,
