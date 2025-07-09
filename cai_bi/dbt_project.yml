@@ -44,4 +44,4 @@ vars:
 
 seeds:
   cai_bi:
-    +schema: consolidation
+    +schema: reference
