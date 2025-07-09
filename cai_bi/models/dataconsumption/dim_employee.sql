@@ -176,7 +176,6 @@ SELECT
     ukg.weekly_pay_rate,
     ukg.work_phone_country,
     por.work_phone_number,
-    sin.mst_member,
 
     --target billing data
     users_forecasts.bill_rate as target_bill_rate_current,
