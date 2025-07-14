@@ -77,7 +77,7 @@ SELECT
     sin.intacct_employee_id,
     sin.key as intacct_employee_key,
     por.intacct_override_entity_id,
-   coalesce(coalesce(nullif(sageint_locations.parentid,''),sin.location_id),por_entities.display_name) as entity_id,
+   coalesce(nullif(sageint_locations.parentid,''),nullif(sin.location_id,''),nullif(por_entities.display_name,'')) as entity_id,
     ukg.national_id,
     ukg.national_id_country,
     por.key as portal_id,
