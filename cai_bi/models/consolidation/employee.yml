@@ -49,6 +49,10 @@ models:
         data_type: VARCHAR(5000)
       - name: HASH_KEY_BASE_TEAM
         data_type: VARCHAR(32)
+      - name: KEY_EMPLOYEE_JOB_HISTORY
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_EMPLOYEE_JOB_HISTORY
+        data_type: VARCHAR(32)        
       - name: EMPLOYMENT_ID
         data_type: VARCHAR(5000)
       - name: EMPLOYEE_ID
@@ -191,7 +195,7 @@ models:
         data_type: VARCHAR(5000)
       - name: EMAIL_ADDRESS_WORK
         data_type: VARCHAR(5000)
-      - name: EMPL_STATUS
+      - name: EMPLOYEE_STATUS
         data_type: VARCHAR(5000)
       - name: FIRST_NAME
         data_type: VARCHAR(5000)
