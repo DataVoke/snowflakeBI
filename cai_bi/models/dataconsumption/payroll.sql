@@ -9,6 +9,10 @@ with
     timesheet_entry as (select * from {{ ref('fct_timesheet_entry')}} ),
 final as (
     select
+        current_timestamp as dts_created_at,
+        '{{ this.name }}' as created_by,
+        current_timestamp as dts_updated_at,
+        '{{ this.name }}' as updated_by,
         te.key,
         ts.key_location,
         ts.key_department,
