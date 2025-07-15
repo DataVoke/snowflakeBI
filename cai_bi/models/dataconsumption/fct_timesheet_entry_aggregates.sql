@@ -373,6 +373,10 @@ WITH
     )
 
     select pto_hours,
+        current_timestamp as dts_created_at,
+        '{{ this.name }}' as created_by,
+        current_timestamp as dts_updated_at,
+        '{{ this.name }}' as updated_by,
         concat(te.employee_id, te.date_group_id, te.type) as id,
         te.key_employee,
         te.type,
