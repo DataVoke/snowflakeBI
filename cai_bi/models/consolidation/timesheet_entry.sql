@@ -259,7 +259,7 @@ salesforce as (
         null as record_url,
         null as stat_gl_entry_line_no,
         null as state,
-        tt.name as task_name
+        tt.phase_code_name_c as task_name
     from (
         select
             tt.id,
@@ -274,7 +274,8 @@ salesforce as (
             tt.created_date,
             th.pse_end_date_c,
             th.last_modified_date,
-            tt.name
+            tt.name,
+            tt.phase_code_name_c
         from sf_tasktime tt
         left join sf_timecardheader th
             on tt.pse_timecard_c = th.id
@@ -297,7 +298,8 @@ salesforce as (
             tt.created_date,
             th.pse_end_date_c,
             th.last_modified_date,
-            tt.name
+            tt.name,
+            tt.phase_code_name_c
         from sf_tasktime tt
         left join sf_timecardheader th
             on tt.pse_timecard_c = th.id
@@ -320,7 +322,8 @@ salesforce as (
             tt.created_date,
             th.pse_end_date_c,
             th.last_modified_date,
-            tt.name
+            tt.name,
+            tt.phase_code_name_c
         from sf_tasktime tt
         left join sf_timecardheader th
             on tt.pse_timecard_c = th.id
@@ -343,7 +346,8 @@ salesforce as (
             tt.created_date,
             th.pse_end_date_c,
             th.last_modified_date,
-            tt.name
+            tt.name,
+            tt.phase_code_name_c
         from sf_tasktime tt
         left join sf_timecardheader th
             on tt.pse_timecard_c = th.id
@@ -366,7 +370,8 @@ salesforce as (
             tt.created_date,
             th.pse_end_date_c,
             th.last_modified_date,
-            tt.name
+            tt.name,
+            tt.phase_code_name_c
         from sf_tasktime tt
         left join sf_timecardheader th
             on tt.pse_timecard_c = th.id
@@ -389,7 +394,8 @@ salesforce as (
             tt.created_date,
             th.pse_end_date_c,
             th.last_modified_date,
-            tt.name
+            tt.name,
+            tt.phase_code_name_c
         from sf_tasktime tt
         left join sf_timecardheader th
             on tt.pse_timecard_c = th.id
@@ -412,7 +418,8 @@ salesforce as (
             tt.created_date,
             th.pse_end_date_c,
             th.last_modified_date,
-            tt.name
+            tt.name,
+            tt.phase_code_name_c
         from sf_tasktime tt
         left join sf_timecardheader th
             on tt.pse_timecard_c = th.id

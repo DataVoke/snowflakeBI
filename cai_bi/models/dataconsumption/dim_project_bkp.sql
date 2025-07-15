@@ -1,7 +1,7 @@
 {{ config(
     materialized = "table",
     schema = "dataconsumption",
-    alias="project"
+    alias="project_bkp"
 ) }}
 
 with
@@ -54,9 +54,6 @@ por_ent as (
 locations_intacct as (
     select * from {{ source('sage_intacct','location') }} where _fivetran_deleted = false
 ),
-dim_employee as (
-    select * from {{ref('dim_employee' )}}
-),
 forex_filtered as ( select * from {{ ref('ref_fx_rates_timeseries')}} where to_curr = 'USD' )
 
 select
@@ -83,7 +80,7 @@ select
     int.location_id,
     int.location_id_intacct,
     int.manager_key,
-    coalesce(nullif(locations_intacct.parentid, ''), nullif(int.location_id,''), nullif(dim_employee.entity_id,'')) as entity_id,
+    ifnull(nullif(locations_intacct.parentid, ''), int.location_id) as entity_id,
     sfc.opportunity_id,
     sfc.owner_id,
     int.parent_key,
@@ -106,7 +103,7 @@ select
 
     por_dep.record_id as key_department,
     por_loc.record_id as key_location,
-    coalesce(por_ent.record_id,dim_employee.key_entity) as key_entity,
+    por_ent.record_id as key_entity,
     por_grp.record_id as key_group,
     por_pract.record_id as key_practice,
     employee_ukg.key as key_project_manager,
@@ -114,7 +111,7 @@ select
 
     por_dep.display_name as department_name,
     por_loc.display_name as location_name,
-    coalesce(por_ent.display_name,dim_employee.entity_name ) as entity_name,
+    por_ent.display_name as entity_name,
     por_grp.display_name as group_name,
     por_pract.display_name as practice_name,
     employee_ukg.display_name as project_manager_name,
@@ -186,6 +183,7 @@ select
     sfc.total_earned_value,
     sfc.total_number_of_tasks,
     pts.travel_rate
+
 from int
 left join pts on int.hash_link = pts.hash_link
 left join sfc on sfc.hash_link = pts.hash_link
@@ -200,7 +198,6 @@ left join por_pract_area on int.department_id = por_pract_area.intacct_id
 left join por_loc on por_loc.intacct_id = int.location_id
 left join locations_intacct on int.project_location_key = locations_intacct.recordno
 left join por_ent on coalesce(locations_intacct.parentkey,int.project_location_key) = por_ent.id
-left join dim_employee on dim_employee.key = employee_ukg.key
 --left join por_ent on por_loc.entity_id = por_ent.id
 left join forex_filtered ex on (int.currency_iso_code = ex.frm_curr )
         and ex.to_curr = 'USD'

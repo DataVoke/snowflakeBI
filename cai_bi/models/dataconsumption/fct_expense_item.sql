@@ -85,6 +85,7 @@ final as (
         int_ei.customer_key,
         int_ei.customer_id,
         int_ei.department_id,
+        ifnull(nullif(locations_intacct.parentid, ''), int_ei.location_id) as entity_id,
         int_ei.detail_key,
         int_ei.employee_id,
         int_ei.expense_item_id,
@@ -211,6 +212,7 @@ final as (
     left join portal_departments por_dep on int_ei.department_id = por_dep.intacct_id
     left join portal_locations por_loc on por_loc.intacct_id = int_ei.location_id
     left join portal_entities por_ent on por_loc.entity_id = por_ent.id
+    left join portal_entities por_ent on coalesce(locations_intacct.parentkey,int_ei.baselocation) = entities.id
     left join locations_intacct on int_ei.location_id = locations_intacct.locationid
     left join project on int_ei.key_project = project.key
     left join employee_int on int_ei.employee_id = employee_int.intacct_employee_id

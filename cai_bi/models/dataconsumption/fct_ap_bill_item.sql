@@ -74,6 +74,7 @@ final as (
         abi.customer_key,
         abi.customer_id,
         abi.department_id,
+        ifnull(nullif(locations_intacct.parentid, ''), abi.location_id) as entity_id,
         abi.detail_key,
         abi.employee_id,
         abi.exch_rate_type_id,
@@ -211,8 +212,9 @@ final as (
     left join ap_bill ab on abi.key_ap_bill = ab.key
     left join portal_departments por_dep on abi.department_id = por_dep.intacct_id
     left join portal_locations por_loc on por_loc.intacct_id = abi.location_id
-    left join portal_entities por_ent on por_loc.entity_id = por_ent.id
     left join locations_intacct on abi.location_id = locations_intacct.locationid
+    --left join portal_entities por_ent on por_loc.entity_id = por_ent.id
+    left join portal_entities por_ent on coalesce(locations_intacct.parentkey,abi.baselocation) = por_ent.id
     left join project on abi.key_project = project.key
     left join employee_int on abi.employee_id = employee_int.intacct_employee_id
     left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
