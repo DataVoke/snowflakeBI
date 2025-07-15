@@ -35,6 +35,10 @@ with
             order by date_in_job desc
         ) = 1
     ),
+    ukg_employee_job_history as (select * from {{ source('ukg_pro', 'employee_job_history') }} where _fivetran_deleted = false
+    qualify row_number() over 
+            (partition by employee_id order by date_time_created desc )
+    =1),
 
 ukg as (
     select 
@@ -54,6 +58,8 @@ ukg as (
         md5(ukg_employment.company_id) as hash_key_entity,
         ukg_employment.organization_level_3_id as key_base_team,
         md5(ukg_employment.organization_level_3_id) as hash_key_base_team,
+        ukg_employee_job_history.id as key_employee_job_history,
+        md5(ukg_employee_job_history.id) as hash_key_employee_job_history,
         ukg_employment.id as employment_id,
         ukg_employee.id as employee_id,
         null as account_id,
@@ -103,7 +109,7 @@ ukg as (
         ukg_employee.address_zip_code as address_postal_code,
         ukg_employee.address_state as address_state,
         ukg_employee.address_line_1 as address_street,
-        ukg_compensation.annual_salary as annual_salary,
+        coalesce( ukg_employee_job_history.annual_salary , ukg_compensation.annual_salary) as annual_salary,
         null as bln_exclude_from_resource_planner,
         case when ukg_employment.employee_status_code in ('A', 'L', 'O') then true else false end as bln_is_active,
         null as bln_is_hourly,
@@ -125,25 +131,25 @@ ukg as (
         cast(ukg_employee.date_time_changed as timestamp_tz) as dts_src_modified,
         ukg_employee.email_address_alternate as email_address_personal,
         ukg_employee.email_address as email_address_work,
-        ukg_compensation.empl_status as empl_status,
+        coalesce( ukg_employee_job_history.employee_status , ukg_compensation.empl_status) as employee_status,
         ukg_employee.first_name as first_name,
         concat(ukg_employee.preferred_name, ' ', ukg_employee.first_name) as first_name_display,
         ukg_employee.former_name as former_name,
         null as historical_utilization_target_hours,
         ukg_employee.home_phone as home_phone,
         ukg_employee.home_phone_country as home_phone_country,
-        ukg_compensation.hourly_pay_rate as hourly_pay_rate,
+        coalesce( ukg_employee_job_history.hourly_pay_rate,ukg_compensation.hourly_pay_rate) as hourly_pay_rate,
         null as intacct_contact_name,
         ukg_compensation.job_salary_grade as job_salary_grade,
         ukg_employment.job_title as job_title,
         ukg_employee.last_name as last_name,
         ukg_employee.middle_name as middle_name,
-        ukg_compensation.other_rate_1 as other_rate_1,
-        ukg_compensation.other_rate_2 as other_rate_2,
-        ukg_compensation.other_rate_3 as other_rate_3,
-        ukg_compensation.other_rate_4 as other_rate_4,
-        ukg_compensation.pay_group as pay_group,
-        ukg_compensation.pay_period_pay_rate as pay_period_pay_rate,
+        coalesce( ukg_employee_job_history.other_rate_1,ukg_compensation.other_rate_1 ) as other_rate_1,
+        coalesce( ukg_employee_job_history.other_rate_2,ukg_compensation.other_rate_2 ) as other_rate_2,
+        coalesce( ukg_employee_job_history.other_rate_3,ukg_compensation.other_rate_3 ) as other_rate_3,
+        coalesce( ukg_employee_job_history.other_rate_4, ukg_compensation.other_rate_4 ) as other_rate_4,
+        coalesce( ukg_employee_job_history.pay_group_id,ukg_compensation.pay_group ) as pay_group,
+        coalesce( ukg_employee_job_history.period_pay_rate, ukg_compensation.pay_period_pay_rate ) as pay_period_pay_rate,
         ukg_employment.employee_status_code as status,
         ukg_employment.term_type as term_type,
         ukg_employment.termination_reason_description as termination_reason_description,
@@ -153,7 +159,7 @@ ukg as (
         ukg_employment.employee_status_code as ukg_status,
         null as utilization_target,
         null as utilization_target_hours,
-        ukg_compensation.weekly_pay_rate as weekly_pay_rate,
+        coalesce( ukg_employee_job_history.weekly_pay_rate,ukg_compensation.weekly_pay_rate ) as weekly_pay_rate,
         ukg_employment.work_phone_country as work_phone_country,
         null as work_phone_number
     from ukg_employee
@@ -162,6 +168,7 @@ ukg as (
     left join ukg_compensation on ukg_compensation.employee_id = ukg_employee.id
     left join ukg_employee_change on ukg_employee_change.employee_id = ukg_employee.id 
         and ukg_employee_change.company_id = ukg_employee.company_id
+    left join ukg_employee_job_history on ukg_employee_job_history.employee_id = ukg_employee.id
 ),
 portal as (
     select
@@ -181,6 +188,8 @@ portal as (
         md5(entity_id) as hash_key_entity,
         baseteam_id as key_base_team,
         md5(baseteam_id) as hash_key_base_team,
+        null as key_employee_job_history,
+        null as hash_key_employee_job_history,      
         null as employment_id,
         ukg_id as employee_id,
         null as account_id,
@@ -252,7 +261,7 @@ portal as (
         null as dts_src_modified,
         email_address_personal as email_address_personal,
         email_address_work as email_address_work,
-        null as empl_status,
+        null as employee_status,
         first_name as first_name,
         first_name_display as first_name_display,
         null as former_name,
@@ -304,6 +313,8 @@ sage_intacct as (
         md5(ifnull(si_location.parentkey, si_employee.locationkey)) as hash_key_entity,
         si_employee.home_region as key_base_team,
         md5(si_employee.home_region) as hash_key_base_team,
+        null as key_employee_job_history,
+        null as hash_key_employee_job_history,        
         null as employment_id,
         cast(si_employee.payroll_ee_id as string) as employee_id,
         null as account_id,
@@ -375,7 +386,7 @@ sage_intacct as (
         cast(si_employee.whenmodified as timestamp_tz) as dts_src_modified,
         si_contact.email_2 as email_address_personal,
         si_contact.email_1 as email_address_work,
-        null as empl_status,
+        null as employee_status,
         si_contact.firstname as first_name,
         si_contact.firstname as first_name_display,
         null as former_name,
@@ -428,6 +439,8 @@ salesforce as (
         md5(sf_contact.pse_group_c) as hash_key_entity,
         sf_contact.base_team_c as key_base_team,
         md5(sf_contact.base_team_c) as hash_key_base_team,
+        null as key_employee_job_history,
+        null as hash_key_employee_job_history,        
         null as employment_id,
         sf_user.ukg_employee_id_c as employee_id,
         sf_contact.account_id as account_id,
@@ -499,7 +512,7 @@ salesforce as (
         sf_contact.last_modified_date as dts_src_modified,
         null as email_address_personal,
         sf_contact.email as email_address_work,
-        null as empl_status,
+        null as employee_status,
         sf_contact.first_name as first_name,
         sf_contact.first_name as first_name_display,
         null as former_name,
@@ -560,6 +573,8 @@ select
     hash_key_entity,
     key_base_team,
     hash_key_base_team,
+    key_employee_job_history,
+    hash_key_employee_job_history,    
     employment_id,
     employee_id,
     account_id,
@@ -631,7 +646,7 @@ select
     dts_src_modified,
     email_address_personal,
     email_address_work,
-    empl_status,
+    employee_status,
     first_name,
     first_name_display,
     former_name,
