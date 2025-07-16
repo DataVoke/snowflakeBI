@@ -1,12 +1,15 @@
 {{
     config(
-        schema="dataconsumption"
+        schema="dataconsumption",
+        materialized="table",
+        alias="payroll",
     )
 }}
 
 with 
     timesheet       as (select * from {{ ref('fct_timesheet')}} ),
     timesheet_entry as (select * from {{ ref('fct_timesheet_entry')}} ),
+    time_type_phase_codes   as (select * from {{ ref("time_type_phase_codes") }}),
 final as (
     select
         current_timestamp as dts_created_at,
@@ -101,7 +104,13 @@ final as (
         te.state,
         te.task_key,
         te.timesheet_entry_ref,
-        te.task_name
+        te.task_name,
+        case when te.task_name in (select phase_code from time_type_phase_codes where time_type ='sicktime') then '1'
+        when te.task_name in (select phase_code from time_type_phase_codes where time_type ='vacholtime') then '2'
+        when te.task_name in (select phase_code from time_type_phase_codes where time_type ='dulltime') then '3'
+        when te.task_name in (select phase_code from time_type_phase_codes where time_type ='tvltime') then '4'
+        when te.task_name not in (select phase_code from time_type_phase_codes where time_type ='excludepayroll') then '4'
+        else '0' end as time_type_ind 
     from timesheet ts
     inner join timesheet_entry te on te.key_timesheet = ts.key
 )

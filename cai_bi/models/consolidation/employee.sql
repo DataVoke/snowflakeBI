@@ -35,9 +35,9 @@ with
             order by date_in_job desc
         ) = 1
     ),
-    ukg_employee_job_history as (select * from {{ source('ukg_pro', 'employee_job_history') }} where _fivetran_deleted = false
+    ukg_employee_job_history as (select * from {{ source('ukg_pro', 'employee_job_history') }} where is_rate_change = true and _fivetran_deleted = false
     qualify row_number() over 
-            (partition by employee_id order by date_time_created desc )
+            ( partition by employee_id order by date_time_created desc )
     =1),
 
 ukg as (
@@ -120,10 +120,10 @@ ukg as (
         ukg_compensation.currency_code as currency_code,
         concat(ifnull(nullif(ukg_employee.preferred_name, ''), ukg_employee.first_name), ' ', ukg_employee.last_name) as display_name,
         concat(ukg_employee.last_name, ', ', ifnull(nullif(ukg_employee.first_name, ''), ukg_employee.first_name)) as display_name_lf,
-        cast(ukg_employee.date_of_birth as timestamp_tz) as dte_birth,
+        cast(ukg_employee.date_of_birth as date) as dte_birth,
         null as dte_of_industry_experience,
-        cast(ukg_employment.date_of_termination as timestamp_tz) as dte_src_end,
-        cast(ukg_employment.original_hire_date as timestamp_tz) as dte_src_start,
+        cast(ukg_employment.date_of_termination as date) as dte_src_end,
+        cast(ukg_employment.original_hire_date as date) as dte_src_start,
         cast(ukg_compensation.date_in_job as timestamp_tz) as dts_in_job,
         cast(ukg_employment.last_hire_date as timestamp_tz) as dts_last_hire,
         cast(ukg_compensation.date_last_paid as timestamp_tz) as dts_last_paid,
@@ -161,7 +161,8 @@ ukg as (
         null as utilization_target_hours,
         coalesce( ukg_employee_job_history.weekly_pay_rate,ukg_compensation.weekly_pay_rate ) as weekly_pay_rate,
         ukg_employment.work_phone_country as work_phone_country,
-        null as work_phone_number
+        null as work_phone_number,
+        cast(ukg_employee_job_history.job_effective_date as date) as dte_pay_last_changed
     from ukg_employee
     left join ukg_employment on ukg_employee.id = ukg_employment.employee_id
     left join ukg_job on ukg_employment.primary_job_id = ukg_job.id
@@ -252,8 +253,8 @@ portal as (
         display_name_lf as display_name_lf,
         null as dte_birth,
         null as dte_of_industry_experience,
-        cast(end_date as timestamp_tz) as dte_src_end,
-        cast(start_date as timestamp_tz) as dte_src_start,
+        cast(end_date as date) as dte_src_end,
+        cast(start_date as date) as dte_src_start,
         null as dts_in_job,
         cast(last_hire_date as timestamp_tz) as dts_last_hire,
         null as dts_last_paid,
@@ -291,7 +292,8 @@ portal as (
         null as utilization_target_hours,
         null as weekly_pay_rate,
         null as work_phone_country,
-        phone_number_work as work_phone_number
+        phone_number_work as work_phone_number,
+        null as dte_pay_last_changed,
     from portal_users
 ),
 
@@ -377,8 +379,8 @@ sage_intacct as (
         si_contact.contactname as display_name_lf,
         null as dte_birth,
         null as dte_of_industry_experience,
-        cast(si_employee.enddate as timestamp_tz) as dte_src_end,
-        cast(si_employee.startdate as timestamp_tz) as dte_src_start,
+        cast(si_employee.enddate as date) as dte_src_end,
+        cast(si_employee.startdate as date) as dte_src_start,
         null as dts_in_job,
         null as dts_last_hire,
         null as dts_last_paid,
@@ -416,7 +418,8 @@ sage_intacct as (
         null as utilization_target_hours,
         null as weekly_pay_rate,
         null as work_phone_country,
-        si_contact.phone_1 as work_phone_number
+        si_contact.phone_1 as work_phone_number,
+        null as dte_pay_last_changed
     from si_employee
     left join si_location on si_employee.locationkey = si_location.recordno
     left join si_contact on si_contact.recordno = si_employee.contactkey
@@ -542,7 +545,8 @@ salesforce as (
         sf_contact.pse_utilization_target_hours_c as utilization_target_hours,
         null as weekly_pay_rate,
         null as work_phone_country,
-        sf_contact.mobile_phone as work_phone_number
+        sf_contact.mobile_phone as work_phone_number,
+        null as dte_pay_last_changed
     from sf_contact
     left join sf_user on sf_user.id = sf_contact.pse_salesforce_user_c
 ),
@@ -676,5 +680,6 @@ select
     cast(utilization_target_hours as number(19, 4)) as utilization_target_hours,
     cast(weekly_pay_rate as number(19, 4)) as weekly_pay_rate,
     work_phone_country,
-    work_phone_number
+    work_phone_number,
+    cast(dte_pay_last_changed as date) as dte_pay_last_changed
 from final

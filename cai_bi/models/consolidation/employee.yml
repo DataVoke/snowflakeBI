@@ -257,3 +257,6 @@ models:
         data_type: VARCHAR(5000)
       - name: WORK_PHONE_NUMBER
         data_type: VARCHAR(5000)
+      - name: DTE_PAY_LAST_CHANGED
+        data_type: DATE
+
