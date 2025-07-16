@@ -1,7 +1,7 @@
 name: Run dbt Build for adhoc cases
 
 on:
-  pull_request:
+  push:
     branches:
         - feature_neelima_dev1_clean
   workflow_dispatch:
