@@ -77,7 +77,7 @@ SELECT
     sin.intacct_employee_id,
     sin.key as intacct_employee_key,
     por.intacct_override_entity_id,
-   coalesce(nullif(sageint_locations.parentid,''),nullif(sin.location_id,''),nullif(por_entities.display_name,'')) as entity_id,
+   coalesce(nullif(sageint_locations.parentid,''),nullif(sin.location_id,''),nullif(entities.display_name,''),nullif(por_entities.display_name,'')) as entity_id,
     ukg.national_id,
     ukg.national_id_country,
     por.key as portal_id,
@@ -145,7 +145,7 @@ SELECT
     ukg.dts_last_paid,
     ukg.email_address_personal,
     ukg.email_address_work,
-    ukg.empl_status,
+    ukg.employee_status,
     ukg.first_name,
     ukg.first_name_display,
     ukg.former_name,
@@ -189,9 +189,9 @@ SELECT
     users_forecasts_last_year.plan_bill_amount_week as target_bill_amount_week_last,
     users_forecasts_last_year.plan_bill_amount_year as target_bill_amount_year_last
 from ukg_employee ukg 
-left join ukg_employee sin on ukg.link = sin.link and sin.src_sys_key = 'int'
-left join ukg_employee por on ukg.link = por.link and por.src_sys_key = 'por'
-left join ukg_employee sfc on ukg.link = sfc.link and sfc.src_sys_key = 'sfc'
+left join ukg_employee sin on ukg.hash_link = sin.hash_link and sin.src_sys_key = 'int'
+left join ukg_employee por on ukg.hash_link = por.hash_link and por.src_sys_key = 'por'
+left join ukg_employee sfc on ukg.hash_link = sfc.hash_link and sfc.src_sys_key = 'sfc'
 left join states as states on ukg.state_id = states.ukg_id
 left join contractor_companies as contractor_companies on por.contractor_company_id = contractor_companies.id
 left join countries as countries on ukg.address_country = countries.ukg_id

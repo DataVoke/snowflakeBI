@@ -94,7 +94,7 @@ select
 from int
 left join por_dep on int.employee_department_id = por_dep.intacct_id
 left join por_loc on por_loc.intacct_id = int.employee_location_id
-left join por_ent on por_loc.entity_id = por_ent.id
 left join locations_intacct on int.employee_location_id = locations_intacct.locationid
+left join por_ent on ifnull(nullif(locations_intacct.parentid, ''), int.employee_location_id) = por_ent.display_name
 left join employee_int on int.employee_id = employee_int.intacct_employee_id and employee_int.src_sys_key = 'int'
 left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link and employee_ukg.src_sys_key = 'ukg'
