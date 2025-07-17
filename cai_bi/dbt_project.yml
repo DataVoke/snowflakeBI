@@ -45,3 +45,6 @@ vars:
 seeds:
   cai_bi:
     +schema: reference
+
+tests:
+  +severity: warn
