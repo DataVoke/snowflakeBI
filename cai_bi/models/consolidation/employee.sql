@@ -338,7 +338,7 @@ sage_intacct as (
         null as intacct_override_entity_id,
         null as labor_category_id,
         null as location_id,
-        cast(si_employee.locationkey as string) as location_id_intacct,
+        cast(si_employee.locationid as string) as location_id_intacct,
         null as location_id_ukg,
         null as national_id,
         null as national_id_country,
