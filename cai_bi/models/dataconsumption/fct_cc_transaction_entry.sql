@@ -79,6 +79,7 @@ final as (
         cte.customer_id,
         cte.department_id,
         cte.employee_id,
+        ifnull(nullif(locations_intacct.parentid,''),cte.location_id) as entity_id,
         cte.exchange_rate_type_id,
         cte.gl_dim_vat_code,
         cte.item_dim_key,
@@ -159,8 +160,9 @@ final as (
     left join cc_transaction cct on cte.key_cc_transaction = cct.key
     left join portal_departments por_dep on cte.department_id = por_dep.intacct_id
     left join portal_locations por_loc on por_loc.intacct_id = cte.location_id
-    left join portal_entities por_ent on por_loc.entity_id = por_ent.id
+    --left join portal_entities por_ent on por_loc.entity_id = por_ent.id
     left join locations_intacct on cte.location_id = locations_intacct.locationid
+    left join portal_entities por_ent on coalesce(locations_intacct.parentkey,cte.BASE_LOCATION_ID) = por_ent.id
     left join project on cte.key_project = project.key
     left join employee_int on cte.employee_id = employee_int.intacct_employee_id
     left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
