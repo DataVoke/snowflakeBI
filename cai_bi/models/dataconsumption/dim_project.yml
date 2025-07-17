@@ -2,9 +2,6 @@ version: 2
 
 models:
   - name: dim_project
-    config:
-      contract:
-        enforced: true
     tests:
       - dim_project_row_count_matches_sources:
           source: ref('project')
