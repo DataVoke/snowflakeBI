@@ -204,7 +204,8 @@ WITH
                 when te.date_group_type_id = 'Y' then ifnull(f.plan_bill_amount_year_usd, 0)
             end as expected_amount_usd
         FROM base_timesheet_entry as te
-        left join users_forecast as f on te.key_employee = f.key_employee and yearofweek(te.dte_entry) = f.year
+        left join users_forecast as f on te.key_employee = f.key_employee and case when te.date_group_type_id = 'W' then weekofyear(te.dte_entry)
+        else year(te.dte_entry) end = f.year
         left join portal_entities entities on te.key_entity = entities.id
         group by all
     ),
@@ -240,9 +241,10 @@ WITH
                 when te.date_group_type_id = 'M' then ifnull(f.plan_bill_amount_year_usd, 0) / 12
                 when te.date_group_type_id = 'Q' then ifnull(f.plan_bill_amount_year_usd, 0) / 4
                 when te.date_group_type_id = 'Y' then ifnull(f.plan_bill_amount_year_usd, 0)
-            end as expected_amount_usd
+            end  as expected_amount_usd
         from base_timesheet_entry as te
-        left join users_forecast as f on te.key_employee = f.key_employee and yearofweek(te.dte_entry) = f.year
+        left join users_forecast as f on te.key_employee = f.key_employee and case when te.date_group_type_id = 'W' then weekofyear(te.dte_entry)
+        else year(te.dte_entry) end = f.year
         where te.task_name not in (select phase_code from time_type_phase_codes where time_type = 'billable') and te.bln_billable = true
         group by all
     ),
