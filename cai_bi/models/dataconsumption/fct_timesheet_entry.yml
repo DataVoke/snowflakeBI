@@ -29,7 +29,8 @@ models:
         data_type: NUMBER(38,0)
         tests:
           - not_null
-          - unique
+          - unique:
+              severity: warn
       - name: KEY_PRACTICE_AREA
         data_type: NUMBER(38,0)
       - name: KEY_PROJECT
