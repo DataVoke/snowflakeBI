@@ -190,21 +190,22 @@ WITH
             iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_usd,
             ifnull(f.bill_rate_usd, 0) as expected_rate_usd,
             sum(te.amount_employee) as amount_employee,
-            sum(case
+            case
                 when te.date_group_type_id = 'W' then ifnull(f.plan_bill_amount_week_employee, 0)
                 when te.date_group_type_id = 'M' then ifnull(f.plan_bill_amount_year_employee, 0) / 12
                 when te.date_group_type_id = 'Q' then ifnull(f.plan_bill_amount_year_employee, 0) / 4
                 when te.date_group_type_id = 'Y' then ifnull(f.plan_bill_amount_year_employee, 0)
-            end) as expected_amount_employee,
+            end as expected_amount_employee,
             sum(te.amount_usd) as amount_usd,
-            sum(case
+            case
                 when te.date_group_type_id = 'W' then ifnull(f.plan_bill_amount_week_usd, 0)
                 when te.date_group_type_id = 'M' then ifnull(f.plan_bill_amount_year_usd, 0) / 12
                 when te.date_group_type_id = 'Q' then ifnull(f.plan_bill_amount_year_usd, 0) / 4
                 when te.date_group_type_id = 'Y' then ifnull(f.plan_bill_amount_year_usd, 0)
-            end) as expected_amount_usd
+            end as expected_amount_usd
         FROM base_timesheet_entry as te
-        left join users_forecast as f on te.key_employee = f.key_employee and yearofweek(te.dte_entry) = f.year
+        left join users_forecast as f on te.key_employee = f.key_employee and case when te.date_group_type_id = 'W' then weekofyear(te.dte_entry)
+        else year(te.dte_entry) end = f.year
         left join portal_entities entities on te.key_entity = entities.id
         group by all
     ),
@@ -217,32 +218,33 @@ WITH
             te.date_group_id,
             te.date_group_type_id,
             sum(te.qty) as hours,
-            max(case
+            case
                 when te.date_group_type_id = 'W' then ifnull(f.plan_hours_week_employee, 0)
                 when te.date_group_type_id = 'M' then ifnull(f.plan_hours_year_employee, 0) / 12
                 when te.date_group_type_id = 'Q' then ifnull(f.plan_hours_year_employee, 0) / 4
                 when te.date_group_type_id = 'Y' then ifnull(f.plan_hours_year_employee, 0)
-            end) as expected_hours,
+            end as expected_hours,
             iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_employee,
             ifnull(f.bill_rate_employee, 0) as expected_rate_employee,
             iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_usd,
             ifnull(f.bill_rate_usd, 0) as expected_rate_usd,
             sum(te.amount_employee) as amount_employee,
-            sum(case
+            case
                 when te.date_group_type_id = 'W' then ifnull(f.plan_bill_amount_week_employee, 0)
                 when te.date_group_type_id = 'M' then ifnull(f.plan_bill_amount_year_employee, 0) / 12
                 when te.date_group_type_id = 'Q' then ifnull(f.plan_bill_amount_year_employee, 0) / 4
                 when te.date_group_type_id = 'Y' then ifnull(f.plan_bill_amount_year_employee, 0)
-            end) as expected_amount_employee,
+            end as expected_amount_employee,
             sum(te.amount_usd) as amount_usd,
-            sum(case
+            case
                 when te.date_group_type_id = 'W' then ifnull(f.plan_bill_amount_week_usd, 0)
                 when te.date_group_type_id = 'M' then ifnull(f.plan_bill_amount_year_usd, 0) / 12
                 when te.date_group_type_id = 'Q' then ifnull(f.plan_bill_amount_year_usd, 0) / 4
                 when te.date_group_type_id = 'Y' then ifnull(f.plan_bill_amount_year_usd, 0)
-            end ) as expected_amount_usd
+            end  as expected_amount_usd
         from base_timesheet_entry as te
-        left join users_forecast as f on te.key_employee = f.key_employee and yearofweek(te.dte_entry) = f.year
+        left join users_forecast as f on te.key_employee = f.key_employee and case when te.date_group_type_id = 'W' then weekofyear(te.dte_entry)
+        else year(te.dte_entry) end = f.year
         where te.task_name not in (select phase_code from time_type_phase_codes where time_type = 'billable') and te.bln_billable = true
         group by all
     ),
