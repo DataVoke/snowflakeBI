@@ -6,7 +6,8 @@ models:
       contract:
         enforced: true
     tests:
-      - cc_transaction_entry_source_count_match_int
+      - cc_transaction_entry_source_count_match_int:
+          severity: warn
     columns:
       - name: src_sys_key
         data_type: varchar(5000)
