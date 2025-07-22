@@ -26,6 +26,9 @@ employee_sfc as (
 employee_ukg as (
     select * from {{ ref('employee') }} where src_sys_key = 'ukg'
 ),
+employee_por as (
+    select * from {{ ref('employee') }} where src_sys_key = 'por'
+),
 
 por_dep as (
     select * from {{ source('portal','departments') }} where _fivetran_deleted = false
@@ -124,7 +127,9 @@ select
     int.qty_actual,
     int.amt_total_billable,
     int.amt_total_budget,
-    pts.assistant_project_manager_name,
+    asst_manager_por.display_name as assistant_project_manager_name,
+    asst_manager_por.display_name_lf as assistant_project_manager_name_lf,
+    asst_manager_por.email_address_work as assistant_project_manager_email,
     int.billing_over_max,
     int.billing_type,
     sfc.bln_allow_expenses_without_assignments,
@@ -193,6 +198,7 @@ left join employee_int on int.project_manager_id = employee_int.intacct_employee
 left join employee_sfc on sfc.client_manager_id = employee_sfc.key
 left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
 left join employee_ukg client_manager_ukg on employee_sfc.hash_link = client_manager_ukg.hash_link
+left join employee_por asst_manager_por on pts.assistant_project_manager_id = asst_manager_por.key
 left join por_dep on int.department_id = por_dep.intacct_id
 left join por_grp on sfc.group_id = por_grp.salesforce_id
 left join por_pract on por_pract.salesforce_id = sfc.practice_id
