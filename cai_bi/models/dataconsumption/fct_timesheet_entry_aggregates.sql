@@ -169,8 +169,7 @@ WITH
         left join currency_conversion as cc_employee on (te.dte_entry = cc_employee.date and te.currency_iso_code = cc_employee.frm_curr and intacct_employee.currency = cc_employee.to_curr)
         left join date_listings_flattened as w on te.dte_entry = w.dte
     ),
-
-    blank_data as (
+blank_data as (
         select
             te.key_employee,
             te.employee_id,
@@ -193,6 +192,7 @@ WITH
         --********************WEEK TOTAL*********************
         select
             'Total' as type,
+            1 as type_sort,
             te.key_employee,
             te.employee_id,
             te.date_group_id,
@@ -229,7 +229,7 @@ WITH
         group by all
     ),
     billable_data as (
-        select 'Billable' as type, key_employee, employee_id, date_group_id, date_group_type_id,
+        select 'Billable' as type, 2 as type_sort, key_employee, employee_id, date_group_id, date_group_type_id,
             sum(hours) as hours, sum(expected_hours) as expected_hours, sum(avg_rate_employee) as avg_rate_employee, sum(expected_rate_employee) as expected_rate_employee, 
             sum(avg_rate_usd) as avg_rate_usd, sum(expected_rate_usd) as expected_rate_usd, sum(amount_employee) as amount_employee, sum(expected_amount_employee) as expected_amount_employee, 
             sum(amount_usd) as amount_usd, sum(expected_amount_usd) as expected_amount_usd
@@ -280,7 +280,7 @@ WITH
     ),
 
     internal_data as (
-        select 'Internal' as type, key_employee, employee_id, date_group_id, date_group_type_id,
+        select 'Internal' as type, 3 as type_sort, key_employee, employee_id, date_group_id, date_group_type_id,
             sum(hours) as hours, sum(expected_hours) as expected_hours, sum(avg_rate_employee) as avg_rate_employee, sum(expected_rate_employee) as expected_rate_employee, 
             sum(avg_rate_usd) as avg_rate_usd, sum(expected_rate_usd) as expected_rate_usd, sum(amount_employee) as amount_employee, sum(expected_amount_employee) as expected_amount_employee, 
             sum(amount_usd) as amount_usd, sum(expected_amount_usd) as expected_amount_usd
@@ -316,7 +316,7 @@ WITH
     ),
 
     tvl_data as (
-        select 'TVL' as type, key_employee, employee_id, date_group_id, date_group_type_id,
+        select 'TVL' as type, 4 as type_sort, key_employee, employee_id, date_group_id, date_group_type_id,
             sum(hours) as hours, sum(expected_hours) as expected_hours, sum(avg_rate_employee) as avg_rate_employee, sum(expected_rate_employee) as expected_rate_employee, 
             sum(avg_rate_usd) as avg_rate_usd, sum(expected_rate_usd) as expected_rate_usd, sum(amount_employee) as amount_employee, sum(expected_amount_employee) as expected_amount_employee, 
             sum(amount_usd) as amount_usd, sum(expected_amount_usd) as expected_amount_usd
@@ -350,7 +350,7 @@ WITH
     ),
 
     pto_data as (
-        select 'PTO' as type, key_employee, employee_id, date_group_id, date_group_type_id,
+        select 'PTO' as type, 5 as type_sort, key_employee, employee_id, date_group_id, date_group_type_id,
             sum(hours) as hours, sum(expected_hours) as expected_hours, sum(avg_rate_employee) as avg_rate_employee, sum(expected_rate_employee) as expected_rate_employee, 
             sum(avg_rate_usd) as avg_rate_usd, sum(expected_rate_usd) as expected_rate_usd, sum(amount_employee) as amount_employee, sum(expected_amount_employee) as expected_amount_employee, 
             sum(amount_usd) as amount_usd, sum(expected_amount_usd) as expected_amount_usd
@@ -384,7 +384,7 @@ WITH
     ),
 
     disfun_data as (
-        select 'DISFUN' as type, key_employee, employee_id, date_group_id, date_group_type_id,
+        select 'DISFUN' as type, 6 as type_sort, key_employee, employee_id, date_group_id, date_group_type_id,
             sum(hours) as hours, sum(expected_hours) as expected_hours, sum(avg_rate_employee) as avg_rate_employee, sum(expected_rate_employee) as expected_rate_employee, 
             sum(avg_rate_usd) as avg_rate_usd, sum(expected_rate_usd) as expected_rate_usd, sum(amount_employee) as amount_employee, sum(expected_amount_employee) as expected_amount_employee, 
             sum(amount_usd) as amount_usd, sum(expected_amount_usd) as expected_amount_usd
@@ -460,6 +460,7 @@ WITH
         concat(te.employee_id, te.date_group_id, te.type) as id,
         te.key_employee,
         te.type,
+        te.type_sort,
         te.date_group_id,
         dgt.id as date_group_type_id,
         dgt.name as date_group_type_name,
