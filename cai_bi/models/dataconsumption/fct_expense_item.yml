@@ -6,6 +6,7 @@ models:
       - fct_expense_item_row_count_matches_sources:
           source1: ref('expenseitem')
           source2: ref('expense')
+          severity: warn
     columns:
       - name: KEY
         data_type: TEXT

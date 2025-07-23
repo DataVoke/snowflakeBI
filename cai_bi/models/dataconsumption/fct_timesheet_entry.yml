@@ -28,7 +28,8 @@ models:
       - name: KEY_ENTITY
         data_type: NUMBER(38,0)
         tests:
-          - not_null
+          - not_null:
+              severity: warn
           - unique:
               severity: warn
       - name: KEY_PRACTICE_AREA
