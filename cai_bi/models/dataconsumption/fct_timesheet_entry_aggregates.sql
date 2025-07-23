@@ -278,9 +278,43 @@ blank_data as (
         ) as b
         group by all
     ),
+    
+     pto_data as (
+        select 'PTO' as type, 3 as type_sort, key_employee, employee_id, date_group_id, date_group_type_id,
+            sum(hours) as hours, sum(expected_hours) as expected_hours, sum(avg_rate_employee) as avg_rate_employee, sum(expected_rate_employee) as expected_rate_employee, 
+            sum(avg_rate_usd) as avg_rate_usd, sum(expected_rate_usd) as expected_rate_usd, sum(amount_employee) as amount_employee, sum(expected_amount_employee) as expected_amount_employee, 
+            sum(amount_usd) as amount_usd, sum(expected_amount_usd) as expected_amount_usd
+        from (
+            select
+                te.key_employee,
+                te.employee_id,
+                te.date_group_id,
+                te.date_group_type_id,
+                sum(te.qty) as hours,
+                0 as expected_hours,
+                iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_employee,
+                0 as expected_rate_employee,
+                iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_usd,
+                0 as expected_rate_usd,
+                sum(te.amount_employee) as amount_employee,
+                0 as expected_amount_employee,
+                sum(te.amount_usd) as amount_usd,
+                0 as expected_amount_usd
+            from base_timesheet_entry as te
+            where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'pto')
+            group by all
+            union (
+                select 
+                    key_employee, employee_id, date_group_id, date_group_type_id, hours, expected_hours, avg_rate_employee, expected_rate_employee, avg_rate_usd, expected_rate_usd,
+                    amount_employee, expected_amount_employee, amount_usd, expected_amount_usd
+                from blank_data
+            )
+        ) as p
+        group by all
+    ),
 
     internal_data as (
-        select 'Internal' as type, 3 as type_sort, key_employee, employee_id, date_group_id, date_group_type_id,
+        select 'Internal' as type, 4 as type_sort, key_employee, employee_id, date_group_id, date_group_type_id,
             sum(hours) as hours, sum(expected_hours) as expected_hours, sum(avg_rate_employee) as avg_rate_employee, sum(expected_rate_employee) as expected_rate_employee, 
             sum(avg_rate_usd) as avg_rate_usd, sum(expected_rate_usd) as expected_rate_usd, sum(amount_employee) as amount_employee, sum(expected_amount_employee) as expected_amount_employee, 
             sum(amount_usd) as amount_usd, sum(expected_amount_usd) as expected_amount_usd
@@ -316,7 +350,7 @@ blank_data as (
     ),
 
     tvl_data as (
-        select 'TVL' as type, 4 as type_sort, key_employee, employee_id, date_group_id, date_group_type_id,
+        select 'TVL' as type, 5 as type_sort, key_employee, employee_id, date_group_id, date_group_type_id,
             sum(hours) as hours, sum(expected_hours) as expected_hours, sum(avg_rate_employee) as avg_rate_employee, sum(expected_rate_employee) as expected_rate_employee, 
             sum(avg_rate_usd) as avg_rate_usd, sum(expected_rate_usd) as expected_rate_usd, sum(amount_employee) as amount_employee, sum(expected_amount_employee) as expected_amount_employee, 
             sum(amount_usd) as amount_usd, sum(expected_amount_usd) as expected_amount_usd
@@ -349,39 +383,7 @@ blank_data as (
         group by all
     ),
 
-    pto_data as (
-        select 'PTO' as type, 5 as type_sort, key_employee, employee_id, date_group_id, date_group_type_id,
-            sum(hours) as hours, sum(expected_hours) as expected_hours, sum(avg_rate_employee) as avg_rate_employee, sum(expected_rate_employee) as expected_rate_employee, 
-            sum(avg_rate_usd) as avg_rate_usd, sum(expected_rate_usd) as expected_rate_usd, sum(amount_employee) as amount_employee, sum(expected_amount_employee) as expected_amount_employee, 
-            sum(amount_usd) as amount_usd, sum(expected_amount_usd) as expected_amount_usd
-        from (
-            select
-                te.key_employee,
-                te.employee_id,
-                te.date_group_id,
-                te.date_group_type_id,
-                sum(te.qty) as hours,
-                0 as expected_hours,
-                iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_employee,
-                0 as expected_rate_employee,
-                iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_usd,
-                0 as expected_rate_usd,
-                sum(te.amount_employee) as amount_employee,
-                0 as expected_amount_employee,
-                sum(te.amount_usd) as amount_usd,
-                0 as expected_amount_usd
-            from base_timesheet_entry as te
-            where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'pto')
-            group by all
-            union (
-                select 
-                    key_employee, employee_id, date_group_id, date_group_type_id, hours, expected_hours, avg_rate_employee, expected_rate_employee, avg_rate_usd, expected_rate_usd,
-                    amount_employee, expected_amount_employee, amount_usd, expected_amount_usd
-                from blank_data
-            )
-        ) as p
-        group by all
-    ),
+   
 
     disfun_data as (
         select 'DISFUN' as type, 6 as type_sort, key_employee, employee_id, date_group_id, date_group_type_id,
