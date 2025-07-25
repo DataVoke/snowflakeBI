@@ -1,6 +1,9 @@
 name: Run dbt Build in Development
 
 on:
+  push:
+    branches:
+      - feature/notification_system_for_pipeline
   workflow_dispatch:
   schedule:
     - cron: '0 7 * * *'
