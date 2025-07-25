@@ -48,7 +48,7 @@ jobs:
           to: itsupport@cagents.com,evan.gutzwiller@cagents.com 
           from: GitHub Actions <${{ secrets.NOTIFICATION_MAIL_USERNAME }}>
           body: |
-            ❌ TEST - The dbt build failed in your GitHub Actions workflow.
+            ❌ The dbt build failed in your GitHub Actions workflow.
 
             • Workflow: ${{ github.workflow }}
             • Job: ${{ github.job }}
