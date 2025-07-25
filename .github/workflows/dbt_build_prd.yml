@@ -35,3 +35,23 @@ jobs:
       - name: Run dbt build
         run: dbt build --profiles-dir ./profiles --target prd
         working-directory: cai_bi
+
+      - name: Send email on failure
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.office365.com
+          server_port: 587
+          username: ${{ secrets.NOTIFICATION_MAIL_USERNAME }}
+          password: ${{ secrets.NOTIFICATION_MAIL_PASSWORD }}
+          subject: "🚨 dbt Build Failed in GitHub Actions"
+          to: itsupport@cagents.com,evan.gutzwiller@cagents.com 
+          from: GitHub Actions <${{ secrets.NOTIFICATION_MAIL_USERNAME }}>
+          body: |
+            ❌ The dbt build failed in your GitHub Actions workflow.
+
+            • Workflow: ${{ github.workflow }}
+            • Job: ${{ github.job }}
+            • Branch: ${{ github.ref }}
+            • Commit: ${{ github.sha }}
+            • Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
