@@ -1,38 +1,57 @@
 name: Run dbt Build in Development
 
 on:
-  # pull_request:
-  #   branches:
-  #     - development
   workflow_dispatch:
-
   schedule:
-   - cron: '0 7 * * *'  
+    - cron: '0 7 * * *'
 
 jobs:
   dbt-build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # - name: Checkout repository
+      #   uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      # - name: Set up Python
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: '3.10'
+
+      # - name: Install dependencies
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install dbt-core dbt-snowflake
+
+      # - name: Decode Snowflake private key
+      #   run: |
+      #     mkdir -p ~/.ssh
+      #     echo "${{ secrets.SNOWFLAKE_PK_BASE64 }}" | base64 -d > ~/.ssh/snowflake_key.pem
+      #     chmod 600 ~/.ssh/snowflake_key.pem
+
+      - name: Intentionally fail the job (for testing)
+        run: exit 1
+
+      # - name: Run dbt build
+      #   run: dbt build --profiles-dir ./profiles --target dev
+      #   working-directory: cai_bi
+
+      - name: Send email on failure
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
         with:
-          python-version: '3.10'
+          server_address: smtp.office365.com
+          server_port: 587
+          username: ${{ secrets.NOTIFICATION_MAIL_USERNAME }}
+          password: ${{ secrets.NOTIFICATION_MAIL_PASSWORD }}
+          subject: "🚨 dbt Build Failed in GitHub Actions"
+          to: ehamers@phdata.io
+          from: GitHub Actions <${{ secrets.NOTIFICATION_MAIL_USERNAME }}>
+          body: |
+            ❌ The dbt build failed in your GitHub Actions workflow.
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install dbt-core dbt-snowflake
-
-      - name: Decode Snowflake private key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SNOWFLAKE_PK_BASE64 }}" | base64 -d > ~/.ssh/snowflake_key.pem
-          chmod 600 ~/.ssh/snowflake_key.pem
-
-      - name: Run dbt build
-        run: dbt build --profiles-dir ./profiles --target dev
-        working-directory: cai_bi
+            • Workflow: ${{ github.workflow }}
+            • Job: ${{ github.job }}
+            • Branch: ${{ github.ref }}
+            • Commit: ${{ github.sha }}
+            • Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
