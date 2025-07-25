@@ -48,10 +48,10 @@ jobs:
           username: ${{ secrets.NOTIFICATION_MAIL_USERNAME }}
           password: ${{ secrets.NOTIFICATION_MAIL_PASSWORD }}
           subject: "🚨 dbt Build Failed in GitHub Actions"
-          to: ehamers@phdata.io
+          to: itsupport@cagents.com,evan.gutzwiller@cagents.com 
           from: GitHub Actions <${{ secrets.NOTIFICATION_MAIL_USERNAME }}>
           body: |
-            ❌ The dbt build failed in your GitHub Actions workflow.
+            ❌ TEST - The dbt build failed in your GitHub Actions workflow.
 
             • Workflow: ${{ github.workflow }}
             • Job: ${{ github.job }}
