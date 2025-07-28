@@ -7,7 +7,7 @@
 }}
 
 with
-project as ( select * from {{ ref('dim_project') }} where lower(project_type) in ('billable', 'coactive billable') and dte_src_start is not null),
+project as ( select * from {{ ref('dim_project') }} where dte_src_start is not null),
 ap_bill_item as ( select * from {{ ref('fct_ap_bill_item') }} where bln_billable =true  ),
 timesheet_entry as (select * from {{ ref('fct_timesheet_entry') }} ),
 employee as (select * from {{ ref('dim_employee') }}  ),
