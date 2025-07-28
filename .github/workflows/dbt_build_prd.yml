@@ -5,8 +5,8 @@ on:
     branches:
       - main
   workflow_dispatch:
-  # schedule:
-  #   - cron: '0 13 * * *' 
+  schedule:
+    - cron: '0 9 * * *' 
 
 jobs:
   dbt-build:
@@ -44,7 +44,7 @@ jobs:
           server_port: 587
           username: ${{ secrets.NOTIFICATION_MAIL_USERNAME }}
           password: ${{ secrets.NOTIFICATION_MAIL_PASSWORD }}
-          subject: "🚨 dbt Build Failed in GitHub Actions"
+          subject: "🚨 dbt Build Failed in GitHub Actions (production)"
           to: itsupport@cagents.com,evan.gutzwiller@cagents.com 
           from: GitHub Actions <${{ secrets.NOTIFICATION_MAIL_USERNAME }}>
           body: |
