@@ -1,0 +1,153 @@
+version: 2
+
+models:
+  - name: cc_transaction_entry
+    config:
+      contract:
+        enforced: true
+    tests:
+      - cc_transaction_entry_source_count_match_int:
+          severity: warn
+    columns:
+      - name: src_sys_key
+        data_type: varchar(5000)
+      - name: dts_created_at
+        data_type: timestamp_tz(9)
+      - name: created_by
+        data_type: varchar(250)
+      - name: dts_updated_at
+        data_type: timestamp_tz(9)
+      - name: updated_by
+        data_type: varchar(250)
+      - name: dts_eff_start
+        data_type: timestamp_tz(9)
+      - name: dts_eff_end
+        data_type: timestamp_tz(9)
+      - name: bln_current
+        data_type: boolean
+      - name: key
+        data_type: varchar(5000)
+        tests:
+          - not_null
+          - unique
+      - name: hash_key
+        data_type: varchar(32)
+        tests:
+          - not_null
+          - unique
+      - name: key_cc_transaction
+        data_type: varchar(5000)
+      - name: hash_key_cc_transaction
+        data_type: varchar(32)
+      - name: key_project
+        data_type: varchar(5000)
+      - name: hash_key_project
+        data_type: varchar(32)
+      - name: key_entity
+        data_type: varchar(5000)
+      - name: hash_key_entity
+        data_type: varchar(32)
+      - name: key_employee
+        data_type: varchar(5000)
+      - name: hash_key_employee
+        data_type: varchar(32)
+      - name: key_location
+        data_type: varchar(5000)
+      - name: hash_key_location
+        data_type: varchar(32)
+      - name: account_key
+        data_type: number(38,0)
+      - name: base_location_id
+        data_type: number(38,0)
+      - name: customer_dim_key
+        data_type: number(38,0)
+      - name: customer_id
+        data_type: varchar(5000)
+      - name: department_id
+        data_type: varchar(5000)
+      - name: employee_id
+        data_type: varchar(5000)
+      - name: exchange_rate_type_id
+        data_type: number(38,0)
+      - name: gl_dim_vat_code
+        data_type: number(38,0)
+      - name: item_dim_key
+        data_type: number(38,0)
+      - name: item_id
+        data_type: varchar(5000)
+      - name: location_id
+        data_type: varchar(5000)
+      - name: project_id
+        data_type: varchar(5000)
+      - name: src_created_by_id
+        data_type: number(38,0)
+      - name: src_modified_by_id
+        data_type: number(38,0)
+      - name: vendor_dim_key
+        data_type: number(38,0)
+      - name: vendor_id
+        data_type: varchar(5000)
+      - name: account_title
+        data_type: varchar(5000)
+      - name: amt
+        data_type: number(38,17)
+      - name: amt_total_expensed
+        data_type: number(38,17)
+      - name: amt_total_paid
+        data_type: number(38,17)
+      - name: amt_total_selected
+        data_type: number(38,17)
+      - name: amt_trx
+        data_type: number(38,17)
+      - name: amt_trx_total_paid
+        data_type: number(38,17)
+      - name: amt_trx_total_selected
+        data_type: number(38,17)
+      - name: base_currency
+        data_type: varchar(5000)
+      - name: bln_billable
+        data_type: boolean
+      - name: bln_billed
+        data_type: boolean
+      - name: bln_is_tax
+        data_type: boolean
+      - name: bln_line_item
+        data_type: boolean
+      - name: cc_txn_payee
+        data_type: varchar(5000)
+      - name: currency
+        data_type: varchar(5000)
+      - name: customer_name
+        data_type: varchar(5000)
+      - name: department_name
+        data_type: varchar(5000)
+      - name: description
+        data_type: varchar(5000)
+      - name: dte_exchange_rate
+        data_type: date
+      - name: dts_src_created
+        data_type: timestamp_ntz(9)
+      - name: dts_src_modified
+        data_type: timestamp_ntz(9)
+      - name: employee_name
+        data_type: varchar(5000)
+      - name: exchange_rate
+        data_type: number(38,17)
+      - name: financial_entity
+        data_type: varchar(5000)
+      - name: item_name
+        data_type: varchar(5000)
+      - name: line_no
+        data_type: number(38,0)
+      - name: location_name
+        data_type: varchar(5000)
+      - name: project_name
+        data_type: varchar(5000)
+      - name: record_type
+        data_type: varchar(5000)
+      - name: record_url
+        data_type: varchar(5000)
+      - name: status
+        data_type: varchar(5000)
+      - name: vendor_name
+        data_type: varchar(5000)

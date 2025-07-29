@@ -1,0 +1,38 @@
+name: Run dbt Build for adhoc cases
+
+on:
+  push:
+    branches:
+        - feature_neelima_dev1_clean
+  workflow_dispatch:
+
+  #schedule:
+  # - cron: '0 7 * * *'  
+
+jobs:
+  dbt-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install dbt-core dbt-snowflake
+
+      - name: Decode Snowflake private key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SNOWFLAKE_PK_BASE64 }}" | base64 -d > ~/.ssh/snowflake_key.pem
+          chmod 600 ~/.ssh/snowflake_key.pem
+
+      - name: Run dbt build
+        run: dbt build --select dim_employee --profiles-dir ./profiles --target dev
+        working-directory: cai_bi

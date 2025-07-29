@@ -1,0 +1,153 @@
+version: 2
+
+models:
+  - name: expense
+    config:
+      contract:
+        enforced: true
+    tests:
+      - expense_source_count_match_sage
+      - expense_source_count_match_sf
+    columns:
+      - name: SRC_SYS_KEY
+        data_type: VARCHAR(250)
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_EFF_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EFF_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: BLN_CURRENT
+        data_type: BOOLEAN
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - not_null
+          - unique
+      - name: HASH_KEY
+        data_type: VARCHAR(32)
+        tests:
+          - not_null
+          - unique
+      - name: LINK
+        data_type: VARCHAR(5000)
+      - name: HASH_LINK
+        data_type: VARCHAR(32)
+      - name: KEY_EMPLOYEEE
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_EMPLOYEE
+        data_type: VARCHAR(32)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_ENTITY
+        data_type: VARCHAR(32)
+      - name: APPROVER_ID
+        data_type: VARCHAR(5000)
+      - name: ASSIGNMENT_ID
+        data_type: VARCHAR(5000)
+      - name: CONTACT_ID
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_ID
+        data_type: VARCHAR(5000)
+      - name: ENTITY_ID
+        data_type: VARCHAR(5000)
+      - name: PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: RECORD_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY
+        data_type: VARCHAR(250)
+      - name: SRC_MODIFIED_BY
+        data_type: VARCHAR(250)
+      - name: TAX_SOLUTION_ID
+        data_type: VARCHAR(5000)
+      - name: AMT_TOTAL_BILLABLE
+        data_type: NUMBER(38,17)
+      - name: AMT_TOTAL_NON_REIMBURSEMENT
+        data_type: NUMBER(38,17)
+      - name: AMT_TOTAL_REIMBURSEMENT
+        data_type: NUMBER(38,17)
+      - name: AUDIT_NOTES
+        data_type: VARCHAR(5000)
+      - name: BASE_CURRENCY
+        data_type: VARCHAR(5000)
+      - name: BLN_APPROVED
+        data_type: BOOLEAN
+      - name: BLN_PR_BATCH_NOGL
+        data_type: BOOLEAN
+      - name: BLN_INCLUSIVE_TAX
+        data_type: BOOLEAN
+      - name: BLN_SUBMITTED
+        data_type: BOOLEAN
+      - name: DTS_AUDIT_WHEN_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTE_FIRST_EXPENSE
+        data_type: DATE
+      - name: DTE_LAST_EXPENSE
+        data_type: DATE
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTE_WHEN_PAID
+        data_type: DATE
+      - name: DTE_WHEN_POSTED
+        data_type: DATE
+      - name: DTE_WHEN_SUBMITTED
+        data_type: DATE
+      - name: CURRENCY
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME
+        data_type: VARCHAR(5000)
+      - name: FIRST_NAME
+        data_type: VARCHAR(5000)
+      - name: LAST_NAME
+        data_type: VARCHAR(5000)
+      - name: MEGA_ENTITY_NAME
+        data_type: VARCHAR(5000)
+      - name: MEMO
+        data_type: VARCHAR(5000)
+      - name: PR_BATCH
+        data_type: VARCHAR(5000)
+      - name: PR_BATCH_KEY
+        data_type: NUMBER(38,0)
+      - name: PR_BATCH_OPEN
+        data_type: VARCHAR(5000)
+      - name: PSA_URL
+        data_type: VARCHAR(5000)
+      - name: RAW_STATE
+        data_type: VARCHAR(5000)
+      - name: RECORD_TYPE
+        data_type: VARCHAR(5000)
+      - name: STATE
+        data_type: VARCHAR(5000)
+      - name: SYNC_STATUS
+        data_type: VARCHAR(5000)
+      # - name: TAX_METHOD
+      #   data_type: VARCHAR(5000)
+      - name: TOTAL_DUE
+        data_type: NUMBER(38,17)
+      - name: TOTAL_ENTERED
+        data_type: NUMBER(38,17)
+      - name: TOTAL_NR_ENTERED
+        data_type: NUMBER(38,17)
+      - name: TOTAL_NR_TRX_ENTERED
+        data_type: NUMBER(38,17)
+      - name: TOTAL_PAID
+        data_type: NUMBER(38,17)
+      - name: TOTAL_SELECTED
+        data_type: NUMBER(38,17)
+      - name: TOTAL_TRX_DUE
+        data_type: NUMBER(38,17)
+      - name: TOTAL_TRX_ENTERED
+        data_type: NUMBER(38,17)
+      - name: TOTAL_TRX_PAID
+        data_type: NUMBER(38,17)

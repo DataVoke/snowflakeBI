@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: ukg_pro
-    database: fivetran_database
+    database: prod_bi_raw
     schema: ukg_pro
     tables:
       - name: company

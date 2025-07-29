@@ -2,126 +2,261 @@ version: 2
 
 models:
   - name: employee
-    config:
-      materialized: table
-      schema: consolidation
+    description: "Consolidated employee dimension combining UKG, Salesforce, Sage Intacct, and Portal sources."
+    contract:
+      enforced: true
+    tests:
+      - employee_source_count_match_portal
+      - employee_source_count_match_sage
+      - employee_source_count_match_sf
+      - employee_source_count_match_ukg
     columns:
-      - name: src_sys_key
-      - name: dts_created_at
-      - name: created_by
-      - name: dts_updated_at
-      - name: updated_by
-      - name: dts_eff_start
-      - name: dts_eff_end
-      - name: bln_current
-      - name: key
-      - name: hash_key
-      - name: link
-      - name: hash_link
-      - name: key_entity
-      - name: hash_key_entity
-      - name: key_base_team
-      - name: hash_key_base_team
-      - name: key_employment
-      - name: hash_key_employment
-      - name: account_id
-      - name: azure_id
-      - name: contact_id
-      - name: continent_id
-      - name: contractor_company_id
-      - name: country_id
-      - name: department_id
-      - name: dol_satus_id
-      - name: employee_type_id
-      - name: ethnic_background_id
-      - name: gender_id
-      - name: intacct_contact_key
-      - name: intacct_department_key
-      - name: intacct_location_key
-      - name: intacct_employee_id
-      - name: intacct_employee_key
-      - name: intacct_override_entity_id
-      - name: labor_category_id
-      - name: location_id
-      - name: location_id_intacct
-      - name: location_id_ukg
-      - name: national_id
-      - name: national_id_country
-      - name: pay_type_id
-      - name: payroll_company_id
-      - name: position_family_id
-      - name: position_id
-      - name: practice_id
-      - name: profile_id
-      - name: region_id
-      - name: salesforce_sandbox_contact_id
-      - name: salesforce_sandbox_user_id
-      - name: salesforce_user_id
-      - name: src_created_by_id
-      - name: src_modified_by_id
-      - name: state_id
-      - name: supervisor_id
-      - name: system_id
-      - name: termination_type_id
-      - name: tracker_record_id
-      - name: ukg_override_payroll_company_id
-      - name: ukg_person_id
-      - name: work_calendar_id
-      - name: address_city
-      - name: address_country
-      - name: address_postal_code
-      - name: address_state
-      - name: address_street
-      - name: annual_salary
-      - name: bln_exclude_from_resource_planner
-      - name: bln_is_active
-      - name: bln_is_hourly
-      - name: bln_mst
-      - name: bln_pm_qualified
-      - name: bln_is_resource
-      - name: closed_won_goal
-      - name: currency_code
-      - name: display_name
-      - name: display_name_lf
-      - name: dte_birth
-      - name: dte_of_industry_experience
-      - name: dte_src_end
-      - name: dte_src_start
-      - name: dts_in_job
-      - name: dts_last_hire
-      - name: dts_last_paid
-      - name: dts_src_created
-      - name: dts_src_modified
-      - name: email_address_personal
-      - name: email_address_work
-      - name: empl_status
-      - name: first_name
-      - name: first_name_display
-      - name: former_name
-      - name: historical_utilization_target_hours
-      - name: home_phone
-      - name: home_phone_country
-      - name: hourly_pay_rate
-      - name: intacct_contact_name
-      - name: job_salary_grade
-      - name: job_title
-      - name: last_name
-      - name: middle_name
-      - name: other_rate_1
-      - name: other_rate_2
-      - name: other_rate_3
-      - name: other_rate_4
-      - name: pay_group
-      - name: pay_period_pay_rate
-      - name: status
-      - name: term_type
-      - name: term_reason_description
-      - name: total_ann_salary
-      - name: ukg_employee_number
-      - name: ukg_override_job_title
-      - name: ukg_status
-      - name: utilization_target
-      - name: utilization_target_hours
-      - name: weekly_pay_rate
-      - name: work_phone_country
-      - name: work_phone_number
+      - name: SRC_SYS_KEY
+        data_type: VARCHAR(250)
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_EFF_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EFF_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: BLN_CURRENT
+        data_type: BOOLEAN
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - not_null
+          - unique
+      - name: HASH_KEY
+        data_type: VARCHAR(32)
+        tests:
+          - not_null
+          - unique
+      - name: LINK
+        data_type: VARCHAR(5000)
+      - name: HASH_LINK
+        data_type: VARCHAR(32)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_ENTITY
+        data_type: VARCHAR(32)
+      - name: KEY_BASE_TEAM
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_BASE_TEAM
+        data_type: VARCHAR(32)
+      - name: KEY_EMPLOYEE_JOB_HISTORY
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_EMPLOYEE_JOB_HISTORY
+        data_type: VARCHAR(32)        
+      - name: EMPLOYMENT_ID
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_ID
+        data_type: VARCHAR(5000)        
+      - name: ACCOUNT_ID
+        data_type: VARCHAR(5000)
+      - name: AZURE_ID
+        data_type: VARCHAR(5000)
+      - name: CONTACT_ID
+        data_type: VARCHAR(5000)
+      - name: CONTINENT_ID
+        data_type: VARCHAR(5000)
+      - name: CONTRACTOR_COMPANY_ID
+        data_type: VARCHAR(5000)
+      - name: COUNTRY_ID
+        data_type: VARCHAR(5000)
+      - name: DEPARTMENT_ID
+        data_type: VARCHAR(5000)
+      - name: DOL_STATUS_ID
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_TYPE_ID
+        data_type: VARCHAR(5000)
+      - name: ETHNIC_BACKGROUND_ID
+        data_type: VARCHAR(5000)
+      - name: GENDER_ID
+        data_type: VARCHAR(5000)
+      - name: INTACCT_CONTACT_KEY
+        data_type: VARCHAR(5000)
+      - name: INTACCT_DEPARTMENT_KEY
+        data_type: VARCHAR(5000)
+      - name: INTACCT_LOCATION_KEY
+        data_type: VARCHAR(5000)
+      - name: INTACCT_EMPLOYEE_ID
+        data_type: VARCHAR(5000)
+      - name: INTACCT_EMPLOYEE_KEY
+        data_type: VARCHAR(5000)
+      - name: INTACCT_OVERRIDE_ENTITY_ID
+        data_type: VARCHAR(5000)
+      - name: LABOR_CATEGORY_ID
+        data_type: VARCHAR(5000)
+      - name: LOCATION_ID
+        data_type: VARCHAR(5000)
+      - name: LOCATION_ID_INTACCT
+        data_type: VARCHAR(5000)
+      - name: LOCATION_ID_UKG
+        data_type: VARCHAR(5000)
+      - name: NATIONAL_ID
+        data_type: VARCHAR(5000)
+      - name: NATIONAL_ID_COUNTRY
+        data_type: VARCHAR(5000)
+      - name: PAY_TYPE_ID
+        data_type: VARCHAR(5000)
+      - name: PAYROLL_COMPANY_ID
+        data_type: VARCHAR(5000)
+      - name: POSITION_FAMILY_ID
+        data_type: VARCHAR(5000)
+      - name: POSITION_ID
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_ID
+        data_type: VARCHAR(5000)
+      - name: PROFILE_ID
+        data_type: VARCHAR(5000)
+      - name: REGION_ID
+        data_type: VARCHAR(5000)
+      - name: SALESFORCE_SANDBOX_CONTACT_ID
+        data_type: VARCHAR(5000)
+      - name: SALESFORCE_SANDBOX_USER_ID
+        data_type: VARCHAR(5000)
+      - name: SALESFORCE_USER_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(250)
+      - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(250)
+      - name: STATE_ID
+        data_type: VARCHAR(5000)
+      - name: SUPERVISOR_ID
+        data_type: VARCHAR(5000)
+      - name: TERMINATION_TYPE_ID
+        data_type: VARCHAR(5000)
+      - name: TRACKER_RECORD_ID
+        data_type: VARCHAR(5000)
+      - name: UKG_OVERRIDE_PAYROLL_COMPANY_ID
+        data_type: VARCHAR(5000)
+      - name: UKG_PERSON_ID
+        data_type: VARCHAR(5000)
+      - name: WORK_CALENDAR_ID
+        data_type: VARCHAR(5000)
+      - name: ADDRESS_CITY
+        data_type: VARCHAR(5000)
+      - name: ADDRESS_COUNTRY
+        data_type: VARCHAR(5000)
+      - name: ADDRESS_POSTAL_CODE
+        data_type: VARCHAR(5000)
+      - name: ADDRESS_STATE
+        data_type: VARCHAR(5000)
+      - name: ADDRESS_STREET
+        data_type: VARCHAR(5000)
+      - name: ANNUAL_SALARY
+        data_type: NUMBER(38,17)
+      - name: BLN_EXCLUDE_FROM_RESOURCE_PLANNER
+        data_type: BOOLEAN
+      - name: BLN_IS_ACTIVE
+        data_type: BOOLEAN
+      - name: BLN_IS_HOURLY
+        data_type: BOOLEAN
+      - name: BLN_MST
+        data_type: BOOLEAN
+      - name: BLN_PM_QUALIFIED
+        data_type: BOOLEAN
+      - name: BLN_IS_RESOURCE
+        data_type: BOOLEAN
+      - name: CLOSED_WON_GOAL
+        data_type: NUMBER(38,17)
+      - name: CURRENCY_CODE
+        data_type: VARCHAR(20)
+      - name: DISPLAY_NAME
+        data_type: VARCHAR(5000)
+      - name: DISPLAY_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: DTE_BIRTH
+        data_type: DATE
+      - name: DTE_OF_INDUSTRY_EXPERIENCE
+        data_type: DATE
+      - name: DTE_SRC_END
+        data_type: DATE
+      - name: DTE_SRC_START
+        data_type: DATE
+      - name: DTS_IN_JOB
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_LAST_HIRE
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_LAST_PAID
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: EMAIL_ADDRESS_PERSONAL
+        data_type: VARCHAR(5000)
+      - name: EMAIL_ADDRESS_WORK
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_STATUS
+        data_type: VARCHAR(5000)
+      - name: FIRST_NAME
+        data_type: VARCHAR(5000)
+      - name: FIRST_NAME_DISPLAY
+        data_type: VARCHAR(5000)
+      - name: FORMER_NAME
+        data_type: VARCHAR(5000)
+      - name: HISTORICAL_UTILIZATION_TARGET_HOURS
+        data_type: NUMBER(38,17)
+      - name: HOME_PHONE
+        data_type: VARCHAR(5000)
+      - name: HOME_PHONE_COUNTRY
+        data_type: VARCHAR(5000)
+      - name: HOURLY_PAY_RATE
+        data_type: NUMBER(38,17)
+      - name: INTACCT_CONTACT_NAME
+        data_type: VARCHAR(5000)
+      - name: JOB_SALARY_GRADE
+        data_type: VARCHAR(5000)
+      - name: JOB_TITLE
+        data_type: VARCHAR(5000)
+      - name: LAST_NAME
+        data_type: VARCHAR(5000)
+      - name: MIDDLE_NAME
+        data_type: VARCHAR(5000)
+      - name: OTHER_RATE_1
+        data_type: NUMBER(38,17)
+      - name: OTHER_RATE_2
+        data_type: NUMBER(38,17)
+      - name: OTHER_RATE_3
+        data_type: NUMBER(38,17)
+      - name: OTHER_RATE_4
+        data_type: NUMBER(38,17)
+      - name: PAY_GROUP
+        data_type: VARCHAR(5000)
+      - name: PAY_PERIOD_PAY_RATE
+        data_type: NUMBER(38,17)
+      - name: STATUS
+        data_type: VARCHAR(5000)
+      - name: TERM_TYPE
+        data_type: VARCHAR(5000)
+      - name: TERMINATION_REASON_DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: TOTAL_ANN_SALARY
+        data_type: NUMBER(38,17)
+      - name: UKG_EMPLOYEE_NUMBER
+        data_type: VARCHAR(5000)
+      - name: UKG_OVERRIDE_JOB_TITLE
+        data_type: VARCHAR(5000)
+      - name: UKG_STATUS
+        data_type: VARCHAR(5000)
+      - name: UTILIZATION_TARGET
+        data_type: NUMBER(38,17)
+      - name: UTILIZATION_TARGET_HOURS
+        data_type: NUMBER(38,17)
+      - name: WEEKLY_PAY_RATE
+        data_type: NUMBER(38,17)
+      - name: WORK_PHONE_COUNTRY
+        data_type: VARCHAR(5000)
+      - name: WORK_PHONE_NUMBER
+        data_type: VARCHAR(5000)
+      - name: DTE_PAY_LAST_CHANGED
+        data_type: DATE
+

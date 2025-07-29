@@ -33,3 +33,15 @@ models:
   cai_bi:
     consolidation:
       +materialized: table
+      +schema: consolidation
+      +transient: false
+    dataconsumption:
+      +materialized: table
+      +schema: dataconsumption
+      +transient: false
+vars:
+  rate_threshold: 0.09
+
+seeds:
+  cai_bi:
+    +schema: reference

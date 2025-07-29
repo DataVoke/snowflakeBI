@@ -1,0 +1,318 @@
+version: 2
+
+models:
+  - name: fct_ap_bill_item
+    tests:
+      - fct_ap_bill_item_row_count_matches_sources:
+          apbillitem: ref('apbillitem')
+          apbill: ref('apbill')
+    columns:
+      - name: KEY
+        data_type: TEXT
+        tests:
+          - not_null
+          - unique
+      - name: KEY_AP_BILL
+        data_type: TEXT
+      - name: KEY_LOCATION
+        data_type: NUMBER(38,0)
+      - name: KEY_PROJECT
+        data_type: TEXT
+      - name: KEY_DEPARTMENT
+        data_type: NUMBER(38,0)
+      - name: KEY_ENTITY
+        data_type: NUMBER(38,0)
+        tests:
+          - not_null
+          - unique:
+              severity: warn
+      - name: KEY_EMPLOYEE
+        data_type: TEXT
+      - name: DEPARTMENT_NAME
+        data_type: TEXT
+      - name: LOCATION_NAME
+        data_type: TEXT
+      - name: ENTITY_NAME
+        data_type: TEXT
+      - name: EMPLOYEE_NAME
+        data_type: TEXT
+      - name: EMPLOYEE_NAME_LF
+        data_type: TEXT
+      - name: PROJECT_ID
+        data_type: TEXT
+      - name: PROJECT_NAME
+        data_type: TEXT
+      - name: CURRENCY_ISO_CODE
+        data_type: TEXT
+      - name: ACCOUNT_KEY
+        data_type: NUMBER(38,0)
+      - name: CUSTOMER_KEY
+        data_type: NUMBER(38,0)
+      - name: CUSTOMER_ID
+        data_type: TEXT
+      - name: DEPARTMENT_ID
+        data_type: TEXT
+      - name: ENTITY_ID
+        data_type: TEXT
+      - name: DETAIL_KEY
+        data_type: NUMBER(38,0)
+      - name: EMPLOYEE_ID
+        data_type: TEXT
+      - name: EXCH_RATE_TYPE_ID
+        data_type: NUMBER(38,0)
+      - name: ITEM_KEY
+        data_type: NUMBER(38,0)
+      - name: ITEM_ID
+        data_type: TEXT
+      - name: LOCATION_ID
+        data_type: TEXT
+      - name: OFFSET_ACCOUNT_KEY
+        data_type: NUMBER(38,0)
+      - name: AP_BILL_PROJECT_ID
+        data_type: TEXT
+      - name: RECORD_ID
+        data_type: TEXT
+      - name: SRC_CREATED_BY_ID
+        data_type: TEXT
+      - name: SRC_MODIFIED_BY_ID
+        data_type: TEXT
+      - name: VENDOR_KEY
+        data_type: NUMBER(38,0)
+      - name: VENDOR_ID
+        data_type: TEXT
+      - name: DTE_EXCH_RATE
+        data_type: DATE
+      - name: AMT_NON_RECLAIM_VAT_BASE
+        data_type: NUMBER(38,17)
+      - name: ACCOUNT_NO
+        data_type: NUMBER(38,0)
+      - name: ACCOUNT_TITLE
+        data_type: TEXT
+      - name: AMT
+        data_type: NUMBER(38,17)
+      - name: AMT_BASE_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_NET_OF_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_NET_OF_VAT_BASE
+        data_type: NUMBER(38,17)
+      - name: AMT_NON_RECLAIM_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_RECLAIM_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_RECLAIM_VAT_BASE
+        data_type: NUMBER(38,17)
+      - name: AMT_RETAINED
+        data_type: NUMBER(38,0)
+      - name: AMT_REVERSE_TXN_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_REVERSE_TXN_VAT_BASE
+        data_type: NUMBER(38,17)
+      - name: AMT_TOTAL_PAID
+        data_type: NUMBER(38,17)
+      - name: AMT_TRX
+        data_type: NUMBER(38,17)
+      - name: AMT_TRX_TOTAL_PAID
+        data_type: NUMBER(38,17)
+      - name: BASE_CURRENCY
+        data_type: TEXT
+      - name: BASELOCATION
+        data_type: NUMBER(38,0)
+      - name: BLN_AMT_MANUAL_VAT
+        data_type: BOOLEAN
+      - name: BLN_BILLABLE
+        data_type: BOOLEAN
+      - name: BLN_BILLED
+        data_type: BOOLEAN
+      - name: BLN_INCLUDE_TAX_IN_ASSET_COST
+        data_type: BOOLEAN
+      - name: BLN_INDIA_CGST
+        data_type: BOOLEAN
+      - name: BLN_INDIA_IGST
+        data_type: BOOLEAN
+      - name: BLN_INDIA_RCM
+        data_type: BOOLEAN
+      - name: BLN_INDIA_SGST
+        data_type: BOOLEAN
+      - name: BLN_LINE_ITEM
+        data_type: BOOLEAN
+      - name: BLN_PARTIAL_EXEMPT
+        data_type: BOOLEAN
+      - name: BLN_PAYMENT_TAX_CAPTURE
+        data_type: BOOLEAN
+      - name: BLN_TAX_USE_IC_CODE
+        data_type: BOOLEAN
+      - name: CF_APBILLITEM_TEXT_PESNAME
+        data_type: TEXT
+      - name: CURRENCY_CODE
+        data_type: TEXT
+      - name: CUSTOMER_NAME
+        data_type: TEXT
+      - name: AP_BILL_DEPARTMENT_NAME
+        data_type: TEXT
+      - name: DTE_CF_APBILLITEM_EXPAMTSTART
+        data_type: DATE
+      - name: DTE_ENTRY
+        data_type: DATE
+      - name: DTE_SRC_START
+        data_type: DATE
+      - name: DTE_SRC_END
+        data_type: DATE
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ
+      - name: AP_BILL_EMPLOYEE_NAME
+        data_type: TEXT
+      - name: ENTRY_DESCRIPTION
+        data_type: TEXT
+      - name: EUROPE_VAT_RATE
+        data_type: TEXT
+      - name: EXCHANGE_RATE
+        data_type: NUMBER(38,17)
+      - name: FORM_1099
+        data_type: TEXT
+      - name: FORM_1099_BOX
+        data_type: NUMBER(38,0)
+      - name: FORM_1099_TYPE
+        data_type: TEXT
+      - name: GL_DIM_VAT_CODE
+        data_type: NUMBER(38,0)
+      - name: GL_DIMLINE_TAX_DETAIL
+        data_type: NUMBER(38,0)
+      - name: ITEM_NAME
+        data_type: TEXT
+      - name: LINE_NO
+        data_type: NUMBER(38,0)
+      - name: AP_BILL_LOCATION_NAME
+        data_type: TEXT
+      - name: OFFSET_GL_ACCOUNT_NO
+        data_type: NUMBER(38,0)
+      - name: OFFSET_GL_ACCOUNT_TITLE
+        data_type: TEXT
+      - name: PARENT_ENTRY
+        data_type: NUMBER(38,0)
+      - name: PRENTRY_OFFSET_ACCOUNT_NO
+        data_type: NUMBER(38,0)
+      - name: PREVIOUS_OFFSET_ACCOUNT
+        data_type: NUMBER(38,0)
+      - name: AP_BILL_PROJECT_NAME
+        data_type: TEXT
+      - name: RECLAIM
+        data_type: NUMBER(38,0)
+      - name: RECORD_TYPE
+        data_type: TEXT
+      - name: RECORD_URL
+        data_type: TEXT
+      - name: RETAIN_AGE_PERCENTAGE
+        data_type: NUMBER(38,0)
+      - name: RPEC
+        data_type: NUMBER(38,0)
+      - name: RPES
+        data_type: NUMBER(38,0)
+      - name: STATE
+        data_type: TEXT
+      - name: VAT_AMOUNT
+        data_type: NUMBER(38,17)
+      - name: VAT_RATE
+        data_type: NUMBER(38,17)
+      - name: VENDOR_NAME
+        data_type: TEXT
+      - name: AP_RECORD_ID
+        data_type: TEXT
+      - name: AP_BILLTO_PAYTO_KEY
+        data_type: NUMBER(38,0)
+      - name: AP_CREATED_USER_ID
+        data_type: TEXT
+      - name: AP_MEGA_ENTITY_ID
+        data_type: TEXT
+      - name: AP_MODULE_KEY
+        data_type: TEXT
+      - name: AP_PAYTO_TAX_ID
+        data_type: TEXT
+      - name: AP_PR_BATCH_KEY
+        data_type: NUMBER(38,0)
+      - name: AP_SCHOP_KEY
+        data_type: NUMBER(38,0)
+      - name: AP_SHIP_TO_RETURN_TO_KEY
+        data_type: NUMBER(38,0)
+      - name: AP_SUPDOC_ID
+        data_type: TEXT
+      - name: AP_TAX_SOLUTION_ID
+        data_type: TEXT
+      - name: AP_TERM_KEY
+        data_type: NUMBER(38,0)
+      - name: AP_USER_ID
+        data_type: TEXT
+      - name: AP_AMT_TOTAL_DUE
+        data_type: NUMBER(38,17)
+      - name: AP_AMT_TOTAL_ENTERED
+        data_type: NUMBER(38,17)
+      - name: AP_AMT_TRX_TOTAL_ENTERED
+        data_type: NUMBER(38,17)
+      - name: AP_BASE_CURRENCY_CODE
+        data_type: TEXT
+      - name: AP_BILL_BACK_TEMPLATE
+        data_type: TEXT
+      - name: AP_BILLTO_PAYTO_CONTACT_NAME
+        data_type: TEXT
+      - name: AP_BLN_DO_NOT_PROCESS_VAT
+        data_type: BOOLEAN
+      - name: AP_BLN_ON_HOLD
+        data_type: BOOLEAN
+      - name: AP_BLN_RETAIN_AGE_RELEASED
+        data_type: BOOLEAN
+      - name: AP_BLN_SYSTEM_GENERATED
+        data_type: BOOLEAN
+      - name: AP_CONTACT_TAX_GROUP
+        data_type: TEXT
+      - name: AP_DESCRIPTION
+        data_type: TEXT
+      - name: AP_DESCRIPTION_2
+        data_type: TEXT
+      - name: AP_DOC_NUMBER
+        data_type: TEXT
+      - name: AP_DTE_REC_PAYMENT
+        data_type: DATE
+      - name: AP_DTE_WHEN_DISCOUNT
+        data_type: DATE
+      - name: AP_DTE_WHEN_DUE
+        data_type: DATE
+      - name: AP_DTE_WHEN_PAID
+        data_type: DATE
+      - name: AP_DTE_WHEN_POSTED
+        data_type: DATE
+      - name: AP_DTS_AU_SRC_CREATED
+        data_type: TIMESTAMP_TZ
+      - name: AP_DUE_IN_DAYS
+        data_type: NUMBER(38,0)
+      - name: AP_FINANCIAL_ENTITY
+        data_type: TEXT
+      - name: AP_MEGAENTITY_NAME
+        data_type: TEXT
+      - name: AP_PAYMENT_PRIORITY
+        data_type: TEXT
+      - name: AP_PAYTO_TAXGROUP_NAME
+        data_type: TEXT
+      - name: AP_PAYTO_TAXGROUP_RECORDNO
+        data_type: NUMBER(38,0)
+      - name: AP_PR_BATCH
+        data_type: TEXT
+      - name: AP_RAW_STATE
+        data_type: TEXT
+      - name: AP_SENDER_EMAIL
+        data_type: TEXT
+      - name: AP_SHIPTO_RETURNTO_CONTACT_NAME
+        data_type: TEXT
+      - name: AP_TAX_ENTITY_NUMBER
+        data_type: TEXT
+      - name: AP_TAX_REVERSE_STATUS
+        data_type: TEXT
+      - name: AP_TERM_NAME
+        data_type: TEXT
+      - name: AP_TERM_VALUE
+        data_type: TEXT
+      - name: AP_TRX_ENTITY_DUE
+        data_type: NUMBER(38,17)
+      - name: AP_TRX_TOTAL_DUE
+        data_type: NUMBER(38,17)

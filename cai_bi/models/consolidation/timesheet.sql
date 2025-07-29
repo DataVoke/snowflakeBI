@@ -40,7 +40,6 @@ sage_intacct as (
 
         supdocid as sup_doc_id,
         supdockey as sup_doc_key,
-        recordno as system_id,
 
         actualcost as bln_cost_actual,
         config as config,
@@ -69,7 +68,7 @@ sage_intacct as (
 
 salesforce as (
     select
-        'sin' as src_sys_key,
+        'sfc' as src_sys_key,
         current_timestamp as dts_created_at,
         '{{ this.name }}' as created_by,
         current_timestamp as dts_updated_at,
@@ -100,7 +99,6 @@ salesforce as (
 
         null as sup_doc_id,
         null as sup_doc_key,
-        pse.id as system_id,
 
         null as bln_cost_actual,
         null as config,
@@ -127,8 +125,58 @@ salesforce as (
     from pse
     left join sf_contact c
         on pse.pse_resource_c = c.id
+),
+final as (
+    select * from sage_intacct
+    union all
+    select * from salesforce
 )
 
-select * from sage_intacct
-union all
-select * from salesforce
+select
+    src_sys_key,
+    cast(dts_created_at as timestamp_tz) as dts_created_at,
+    created_by,
+    cast(dts_updated_at as timestamp_tz) as dts_updated_at,
+    updated_by,
+    cast(dts_eff_start as timestamp_tz) as dts_eff_start,
+    cast(dts_eff_end as timestamp_tz) as dts_eff_end,
+    bln_current,
+    key,
+    hash_key,
+    link,
+    hash_link,
+    key_employee,
+    hash_key_employee,
+    key_entity,
+    hash_key_entity,
+    assignment_id,
+    employee_department_id,
+    employee_id_intacct,
+    employee_id,
+    employee_location_id,
+    location_key,
+    entity_id,
+    src_created_by_id,
+    src_modified_by_id,
+    sup_doc_id,
+    sup_doc_key,
+    bln_cost_actual,
+    config,
+    description,
+    dte_gl_post,
+    dte_src_end,
+    dte_src_start,
+    dts_src_created,
+    dts_src_modified,
+    employee_first_name,
+    employee_last_name,
+    employee_name,
+    hours_in_day,
+    mega_entity_name,
+    method,
+    record_url,
+    state_worked,
+    status,
+    uom
+from final
+

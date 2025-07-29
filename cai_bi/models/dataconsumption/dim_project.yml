@@ -1,0 +1,262 @@
+version: 2
+
+models:
+  - name: dim_project
+    tests:
+      - dim_project_row_count_matches_sources:
+          source: ref('project')
+    columns:
+      - name: KEY
+        data_type: TEXT
+        tests:
+          - unique
+          - not_null
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: TEXT
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: TEXT
+      - name: ACCOUNT_ID
+        data_type: TEXT
+      - name: ASSISTANT_PROJECT_MANAGER_ID
+        data_type: TEXT
+      - name: BILLTO_KEY
+        data_type: NUMBER(38, 0)
+      - name: CLIENT_SITE_ID
+        data_type: TEXT
+      - name: CLIENT_MANAGER_ID
+        data_type: TEXT
+      - name: CLIENT_MANAGER_NAME
+        data_type: TEXT
+      - name: CLIENT_MANAGER_NAME_LF
+        data_type: TEXT
+      - name: CLIENT_MANAGER_EMAIL
+        data_type: TEXT
+      - name: CONTACT_KEY
+        data_type: NUMBER(38, 0)
+      - name: CUSTOMER_ID
+        data_type: TEXT
+      - name: CUSTOMER_KEY
+        data_type: NUMBER(38, 0)
+      - name: DEPARTMENT_ID
+        data_type: TEXT
+      - name: ESTIMATE_ID
+        data_type: TEXT
+      - name: GROUP_ID
+        data_type: TEXT
+      - name: LOCATION_ID
+        data_type: TEXT
+      - name: LOCATION_ID_INTACCT
+        data_type: TEXT
+      - name: MANAGER_KEY
+        data_type: NUMBER(38, 0)
+      - name: ENTITY_ID
+        data_type: TEXT
+      - name: OPPORTUNITY_ID
+        data_type: TEXT
+      - name: OWNER_ID
+        data_type: TEXT
+      - name: PARENT_KEY
+        data_type: NUMBER(38, 0)
+      - name: PORTAL_PROJECT_ID
+        data_type: TEXT
+      - name: PRACTICE_ID_INTACCT
+        data_type: TEXT
+      - name: PROJECT_DEPT_KEY
+        data_type: NUMBER(38, 0)
+      - name: PROJECT_ID
+        data_type: TEXT
+      - name: PROJECT_LOCATION_KEY
+        data_type: NUMBER(38, 0)
+      - name: PROJECT_MANAGER_ID
+        data_type: TEXT
+      - name: EMAIL_ADDRESS_WORK
+        data_type: TEXT
+      - name: EMAIL_ADDRESS_PERSONAL
+        data_type: TEXT
+      - name: PROJECT_TYPE_KEY
+        data_type: NUMBER(38, 0)
+      - name: PURCHASE_ORDER_ID
+        data_type: TEXT
+      - name: ROOT_PARENT_ID
+        data_type: TEXT
+      - name: ROOT_PARENT_KEY
+        data_type: NUMBER(38, 0)
+      - name: SHIP_TO_KEY
+        data_type: NUMBER(38, 0)
+      - name: SRC_CREATED_BY_ID
+        data_type: TEXT
+      - name: SRC_MODIFIED_BY_ID
+        data_type: TEXT
+      - name: TERM_KEY
+        data_type: NUMBER(38, 0)
+      - name: KEY_DEPARTMENT
+        data_type: NUMBER(38, 0)
+      - name: KEY_LOCATION
+        data_type: NUMBER(38, 0)
+      - name: KEY_ENTITY
+        data_type: NUMBER(38, 0)
+        tests:
+          - not_null:
+              severity: warn
+          - unique:
+              severity: warn
+      - name: KEY_GROUP
+        data_type: NUMBER(38, 0)
+      - name: KEY_PRACTICE
+        data_type: NUMBER(38, 0)
+      - name: KEY_PROJECT_MANAGER
+        data_type: TEXT
+      - name: KEY_PRACTICE_AREA
+        data_type: NUMBER(38, 0)
+      - name: DEPARTMENT_NAME
+        data_type: TEXT
+      - name: LOCATION_NAME
+        data_type: TEXT
+      - name: ENTITY_NAME
+        data_type: TEXT
+      - name: GROUP_NAME
+        data_type: TEXT
+      - name: PRACTICE_NAME
+        data_type: TEXT
+      - name: PROJECT_MANAGER_NAME
+        data_type: TEXT
+      - name: PROJECT_MANAGER_NAME_LF
+        data_type: TEXT
+      - name: PRACTICE_AREA_NAME
+        data_type: TEXT
+      - name: QTY_ACTUAL
+        data_type: NUMBER(38, 0)
+      - name: AMT_TOTAL_BILLABLE
+        data_type: NUMBER(38, 0)
+      - name: AMT_TOTAL_BUDGET
+        data_type: NUMBER(38, 0)
+      - name: ASSISTANT_PROJECT_MANAGER_NAME
+        data_type: TEXT
+        name: ASSISTANT_PROJECT_MANAGER_NAME_LF
+        data_type: TEXT
+      - name: ASSISTANT_PROJECT_MANAGER_EMAIL
+        data_type: TEXT
+      - name: BILLING_OVER_MAX
+        data_type: TEXT
+      - name: BILLING_TYPE
+        data_type: TEXT
+      - name: BLN_ALLOW_EXPENSES_WITHOUT_ASSIGNMENTS
+        data_type: BOOLEAN
+      - name: BLN_ALLOW_TIME_WITHOUT_ASSIGNMENTS
+        data_type: BOOLEAN
+      - name: BLN_DAILY_TIMECARD_NOTES_REQUIRED
+        data_type: BOOLEAN
+      - name: BLN_EXCLUDE_FROM_PROJECT_PLANNER
+        data_type: BOOLEAN
+      - name: BLN_IS_ACTIVE
+        data_type: BOOLEAN
+      - name: BLN_IS_BILLABLE
+        data_type: BOOLEAN
+      - name: BLN_IS_BILLABLE_AP_PO
+        data_type: BOOLEAN
+      - name: BLN_IS_BILLABLE_EXPENSE
+        data_type: BOOLEAN
+      - name: BLN_PSE_CLOSED_FOR_EXPENSE_ENTRY
+        data_type: BOOLEAN
+      - name: BLN_PSE_CLOSED_FOR_TIME_ENTRY
+        data_type: BOOLEAN
+      - name: BLN_TOP_CONCERN
+        data_type: BOOLEAN
+      - name: BLN_TRAVEL_PROHIBITED
+        data_type: BOOLEAN
+      - name: CONCERN_TYPE
+        data_type: TEXT
+      - name: CONTACT_NAME
+        data_type: TEXT
+      - name: CONTRACT_TYPE
+        data_type: TEXT
+      - name: COST_EXPENSE
+        data_type: NUMBER(38, 0)
+      - name: CURRENCY_ISO_CODE
+        data_type: TEXT
+      - name: CUSTOMER_NAME
+        data_type: TEXT
+      - name: DTE_SRC_END
+        data_type: DATE
+      - name: DTE_SRC_START
+        data_type: DATE
+      - name: DTS_INT_LAST_ASSIGNMENT_SYNC
+        data_type: TIMESTAMP_NTZ
+      - name: DTS_INT_LAST_PHASE_CODE_SYNC
+        data_type: TIMESTAMP_NTZ
+      - name: DTS_INT_LAST_PROJECT_SYNC
+        data_type: TIMESTAMP_NTZ
+      - name: DTS_LAST_RESOURCE_PLAN_REVIEW
+        data_type: TIMESTAMP_NTZ
+      - name: DTS_PMO_DATA_MIGRATION
+        data_type: TIMESTAMP_NTZ
+      - name: DTS_SFC_LAST_ASSIGNMENT_SYNC
+        data_type: TIMESTAMP_NTZ
+      - name: DTS_SFC_LAST_PHASE_CODE_SYNC
+        data_type: TIMESTAMP_NTZ
+      - name: DTS_SFC_LAST_PROJECT_SYNC
+        data_type: TIMESTAMP_NTZ
+      - name: DTS_SFC_LAST_TASK_SYNC
+        data_type: TIMESTAMP_NTZ
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ
+      - name: INVOICE_CURRENCY
+        data_type: TEXT
+      - name: LAST_RESOURCE_PLAN_REVIEW_BY
+        data_type: TEXT
+      - name: LAST_SYNCED_STATUS
+        data_type: TEXT
+      - name: MEMO
+        data_type: TEXT
+      - name: PARENT_NAME
+        data_type: TEXT
+      - name: PMO_COMMENTS
+        data_type: TEXT
+      - name: PNM_NOTES
+        data_type: TEXT
+      - name: PNM_REVISION
+        data_type: NUMBER(38, 0)
+      - name: RATE_DIV
+        data_type: NUMBER(38, 0)
+      - name: RATE_MUL
+        data_type: NUMBER(38, 0)
+      - name: AMT_PO
+        data_type: NUMBER(38, 0)
+      - name: AMT_PO_USD
+        data_type: NUMBER(38, 0)
+      - name: PO_NUMBER
+        data_type: TEXT
+      - name: PORTAL_PROJECT_CODE
+        data_type: TEXT
+      - name: PROJECT_CATEGORY
+        data_type: TEXT
+      - name: PROJECT_DESCRIPTION
+        data_type: TEXT
+      - name: PROJECT_NAME
+        data_type: TEXT
+      - name: PROJECT_STATUS
+        data_type: TEXT
+      - name: PROJECT_TYPE
+        data_type: TEXT
+      - name: RISK_RATING
+        data_type: TEXT
+      - name: ROOT_PARENT_NAME
+        data_type: TEXT
+      - name: SHAREPOINT_URL
+        data_type: TEXT
+      - name: STATUS
+        data_type: TEXT
+      - name: TERM_NAME
+        data_type: TEXT
+      - name: TOTAL_EARNED_VALUE
+        data_type: NUMBER(38, 0)
+      - name: TOTAL_NUMBER_OF_TASKS
+        data_type: NUMBER(38, 0)
+      - name: TRAVEL_RATE
+        data_type: NUMBER(38, 0)

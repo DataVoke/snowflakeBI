@@ -1,0 +1,229 @@
+version: 2
+models:
+  - name: expenseitem
+    description: Model for consolidated expense data
+    config:
+      contract:
+        enforced: true
+    tests:
+      - expense_item_source_count_match_sage
+      - expense_item_source_count_match_sf
+    columns:
+      - name: SRC_SYS_KEY
+        data_type: VARCHAR(250)
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_EFF_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EFF_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: BLN_CURRENT
+        data_type: BOOLEAN
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - not_null
+          - unique
+      - name: HASH_KEY
+        data_type: VARCHAR(32)
+        tests:
+          - not_null
+          - unique
+      - name: LINK
+        data_type: VARCHAR(5000)
+      - name: HASH_LINK
+        data_type: VARCHAR(32)
+      - name: KEY_EXPENSE
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_EXPENSE
+        data_type: VARCHAR(32)
+      - name: KEY_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_EMPLOYEE
+        data_type: VARCHAR(32)
+      - name: KEY_PROJECT
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PROJECT
+        data_type: VARCHAR(32)
+      - name: ACCOUNT_KEY
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_LABEL_KEY
+        data_type: VARCHAR(5000)
+      - name: CUSTOMER_KEY
+        data_type: VARCHAR(5000)
+      - name: CUSTOMER_ID
+        data_type: VARCHAR(5000)
+      - name: DEPARTMENT_ID
+        data_type: VARCHAR(5000)
+      - name: DETAIL_KEY
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_ID
+        data_type: VARCHAR(5000)
+      - name: EXPENSE_ITEM_ID
+        data_type: VARCHAR(5000)
+      - name: EXP_PMT_TYPE_KEY
+        data_type: VARCHAR(5000)
+      - name: ITEM_KEY
+        data_type: VARCHAR(5000)
+      - name: ITEM_ID
+        data_type: VARCHAR(5000)
+      - name: LOCATION_ID
+        data_type: VARCHAR(5000)
+      - name: MILESTONE_ID
+        data_type: VARCHAR(5000)
+      - name: PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY
+        data_type: VARCHAR(250)
+      - name: SRC_MODIFIED_BY
+        data_type: VARCHAR(250)
+      - name: VENDOR_KEY
+        data_type: VARCHAR(5000)
+      - name: VENDOR_ID
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_LABEL
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_NO
+        data_type: VARCHAR(5000)
+      - name: AMT
+        data_type: NUMBER(38,17)
+      - name: AMT_BASE_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_GL_POSTING
+        data_type: NUMBER(38,17)
+      - name: AMT_MANUAL_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_NET_OF_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_NET_OF_VAT_BASE
+        data_type: NUMBER(38,17)
+      - name: AMT_NON_RECLAIM_VAT_BASE_AMOUNT
+        data_type: NUMBER(38,17)
+      - name: AMT_NR
+        data_type: NUMBER(38,17)
+      - name: AMT_RECLAIM_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_RECLAIM_VAT_BASE
+        data_type: NUMBER(38,17)
+      - name: AMT_REVERSE_TXN_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_REVERSE_TXN_VAT_BASE
+        data_type: NUMBER(38,17)
+      - name: AMT_VAT
+        data_type: NUMBER(38,17)
+      - name: BASE_LOCATION
+        data_type: VARCHAR(5000)
+      - name: BLN_BILLABLE
+        data_type: BOOLEAN
+      - name: BLN_BILLED
+        data_type: BOOLEAN
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: CUSTOMER_NAME
+        data_type: VARCHAR(5000)
+      - name: DEPARTMENT_NAME
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION_2
+        data_type: VARCHAR(5000)
+      - name: DISTANCE
+        data_type: NUMBER(38,17)
+      - name: DTE_ENTRY
+        data_type: DATE
+      - name: EMPLOYEE_NAME
+        data_type: VARCHAR(5000)
+      - name: EXPENSE_DETAIL_REPORTING_CATEGORY
+        data_type: VARCHAR(5000)
+      - name: EXPENSE_TYPE_DETAIL
+        data_type: VARCHAR(5000)
+      - name: FORM_1099
+        data_type: VARCHAR(5000)
+      - name: GL_ACCOUNT_NO
+        data_type: VARCHAR(5000)
+      - name: GL_ACCOUNT_TITLE
+        data_type: VARCHAR(5000)
+      - name: GL_DIM_LINE_TAX_DETAIL
+        data_type: VARCHAR(5000)
+      - name: GL_DIM_VAT_CODE
+        data_type: VARCHAR(5000)
+      - name: ITEM_NAME
+        data_type: VARCHAR(5000)
+      - name: BLN_LINE_ITEM
+        data_type: BOOLEAN
+      - name: LINE_NO
+        data_type: VARCHAR(5000)
+      - name: LOCATION_NAME
+        data_type: VARCHAR(5000)
+      - name: NON_RECLAIM_VAT_BASE_AMOUNT
+        data_type: VARCHAR(5000)
+      - name: BLN_NON_REIMBURSABLE
+        data_type: BOOLEAN
+      - name: AMT_ORG
+        data_type: NUMBER(38,17)
+      - name: ORG_CURRENCY
+        data_type: VARCHAR(5000)
+      - name: PSA_URL
+        data_type: VARCHAR(5000)
+      - name: ASSIGNMENT_ID
+        data_type: VARCHAR(5000)
+      - name: AUDIT_NOTES
+        data_type: VARCHAR(5000)
+      - name: NOTES
+        data_type: VARCHAR(5000)
+      - name: AMT_REIMBURSEMENT_IN_PROJECT_CURRENCY
+        data_type: NUMBER(38,17)
+      - name: REIMBURSEMENT_CURRENCY
+        data_type: VARCHAR(5000)
+      - name: TYPE
+        data_type: VARCHAR(5000)
+      - name: QTY
+        data_type: NUMBER(38,17)
+      - name: RECLAIM
+        data_type: BOOLEAN
+      - name: RECORD_TYPE
+        data_type: VARCHAR(5000)
+      - name: RECORD_URL
+        data_type: VARCHAR(5000)
+      - name: STATE
+        data_type: VARCHAR(5000)
+      - name: TAX_USE_IC_CODE
+        data_type: VARCHAR(5000)
+      - name: AMT_TOTAL_PAID
+        data_type: NUMBER(38,17)
+      - name: AMT_TOTAL_SELECTED
+        data_type: NUMBER(38,17)
+      - name: AMT_TRX
+        data_type: NUMBER(38,17)
+      - name: AMT_TRX_TOTAL_PAID
+        data_type: NUMBER(38,17)
+      - name: AMT_TRX_TOTAL_SELECTED
+        data_type: NUMBER(38,17)
+      - name: UNIT_RATE
+        data_type: VARCHAR(5000)
+      - name: USER_EXCH_RATE
+        data_type: NUMBER(38,17)
+      - name: VAT_RATE
+        data_type: NUMBER(38,17)
+      - name: VENDOR_NAME
+        data_type: VARCHAR(5000)
+      - name: AMT_TRX_NR
+        data_type: NUMBER(38,17)
+      - name: ORG_EXCHRATE
+        data_type: NUMBER(38,17)
+      - name: DTE_ORG_EXCHRATE
+        data_type: DATE
+      - name: ORG_EXCHRATETYPE
+        data_type: VARCHAR(5000)
+      - name: PROJECTNAME
+        data_type: VARCHAR(5000)
+      - name: BLN_LOST_RECEIPT
+        data_type: BOOLEAN
+
+
