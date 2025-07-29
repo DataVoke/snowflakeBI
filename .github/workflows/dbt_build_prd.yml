@@ -1,15 +1,13 @@
 name: Run dbt Build in Production
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
   schedule:
-    - cron: '0 9 * * *' 
+    - cron: '0 9 * * *'  # 9:00 AM UTC / 4:00 AM EST
 
 jobs:
   dbt-build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
