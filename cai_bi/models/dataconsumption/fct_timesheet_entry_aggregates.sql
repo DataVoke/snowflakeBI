@@ -401,6 +401,7 @@ blank_data as (
         dg.display_name_1 as date_group_display_name_1,
         te.employee_id,
         e.ukg_employee_number,
+        e.employee_type_name,
         initcap(ifnull(nullif(e.display_name, ''), intacct_employees.personalinfo_printas)) as employee_name,
         initcap(ifnull(nullif(e.display_name_lf, ''), intacct_employees.contact_name)) as employee_name_lf,
         ifnull(intacct_locations.parentkey, intacct_locations.recordno) as entity_key,
