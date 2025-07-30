@@ -401,7 +401,6 @@ blank_data as (
         dg.display_name_1 as date_group_display_name_1,
         te.employee_id,
         e.ukg_employee_number,
-        e.employee_type_name,
         initcap(ifnull(nullif(e.display_name, ''), intacct_employees.personalinfo_printas)) as employee_name,
         initcap(ifnull(nullif(e.display_name_lf, ''), intacct_employees.contact_name)) as employee_name_lf,
         ifnull(intacct_locations.parentkey, intacct_locations.recordno) as entity_key,
@@ -412,7 +411,10 @@ blank_data as (
         initcap(ifnull(e.department_name, intacct_departments.title)) as department_name,
         intacct_employees.home_region as base_team_id,
         initcap(ifnull(portal_base_teams.display_name, intacct_employees.home_region)) as base_team_name,
-        ifnull(e.pay_type_name, intacct_employees.earningtypename) as pay_type_name,
+        case 
+            when e.employee_type_name is not null then concat(ifnull(e.pay_type_name, intacct_employees.earningtypename),' - ',e.employee_type_name)
+            else ifnull(e.pay_type_name, intacct_employees.earningtypename) 
+        end as pay_type_name,
         ifnull(e.bln_mst, intacct_employees.mst_member) as bln_mst,
         ifnull(e.bln_is_active,false) as bln_active,
         ifnull(upper(e.currency_code),intacct_employees.currency) as currency_employee,
