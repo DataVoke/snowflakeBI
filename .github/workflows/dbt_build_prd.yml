@@ -32,6 +32,11 @@ jobs:
           echo "${{ secrets.SNOWFLAKE_PK_PROD_BASE64 }}" | base64 -d > ~/.ssh/snowflake_key.pem
           chmod 600 ~/.ssh/snowflake_key.pem
 
+      - name: Verify key structure
+        run: |
+          cat ~/.ssh/snowflake_key.pem
+
+
       - name: Run dbt build
         run: dbt build --profiles-dir ./profiles --target prd
         working-directory: cai_bi
