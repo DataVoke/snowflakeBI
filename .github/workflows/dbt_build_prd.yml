@@ -3,7 +3,7 @@ name: Run dbt Build in Production
 on:
   workflow_dispatch:
   schedule:
-    - cron: '15 15 * * *'
+    - cron: '31 15 * * *'
 
 jobs:
   dbt-build:
