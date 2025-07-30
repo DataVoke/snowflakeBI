@@ -7,12 +7,14 @@ on:
 
 jobs:
   dbt-build:
-    if: github.ref == 'refs/heads/development'
+    if: github.event_name == 'schedule' || github.ref == 'refs/heads/development'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: development
 
       - name: Set up Python
         uses: actions/setup-python@v5
