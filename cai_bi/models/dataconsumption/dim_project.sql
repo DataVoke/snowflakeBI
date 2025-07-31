@@ -50,6 +50,22 @@ por_loc as (
     select * from {{ source('portal','locations') }} where _fivetran_deleted = false and id != '55-1'
 ),
 
+por_region as (
+    select r.*, 
+        ru.ukg_id as key_regional_manager,  
+        ru.email_address_work as regional_manager_email_address,  
+        ru.display_name as regional_manager_name,  
+        ru.display_name_lf as regional_manager_name_lf,
+        sru.ukg_id as key_safety_rep,  
+        sru.email_address_work as safety_rep_email_address,  
+        sru.display_name as safety_rep_name,  
+        sru.display_name_lf as safety_rep_name_lf
+    from {{ source('portal','location_regions') }} r
+    left join {{ source('portal','users') }} ru on r.regional_manager_user_id = ru.id
+    left join {{ source('portal','users') }} sru on r.safety_rep_user_id = sru.id
+    where r._fivetran_deleted = false
+),
+
 por_ent as (
     select * from {{ source('portal','entities') }} where _fivetran_deleted = false
 ),
@@ -130,6 +146,14 @@ select
     asst_manager_por.display_name as assistant_project_manager_name,
     asst_manager_por.display_name_lf as assistant_project_manager_name_lf,
     asst_manager_por.email_address_work as assistant_project_manager_email,
+    por_region.key_regional_manager,
+    por_region.regional_manager_email_address,
+    por_region.regional_manager_name,
+    por_region.regional_manager_name_lf,
+    por_region.key_safety_rep,
+    por_region.safety_rep_email_address,
+    por_region.safety_rep_name,
+    por_region.safety_rep_name_lf,
     int.billing_over_max,
     int.billing_type,
     sfc.bln_allow_expenses_without_assignments,
@@ -204,6 +228,7 @@ left join por_grp on sfc.group_id = por_grp.salesforce_id
 left join por_pract on por_pract.salesforce_id = sfc.practice_id
 left join por_pract_area on int.department_id = por_pract_area.intacct_id
 left join por_loc on por_loc.intacct_id = int.location_id
+left join por_region on por_region.id = por_loc.region_id
 left join locations_intacct on int.project_location_key = locations_intacct.recordno
 left join por_ent on coalesce(locations_intacct.parentkey,int.project_location_key) = por_ent.id
 left join dim_employee on dim_employee.key = employee_ukg.key

@@ -140,6 +140,22 @@ models:
         data_type: TEXT
       - name: ASSISTANT_PROJECT_MANAGER_EMAIL
         data_type: TEXT
+        name: KEY_REGIONAL_MANAGER
+        data_type: TEXT
+        name: REGIONAL_MANAGER_NAME
+        data_type: TEXT
+        name: REGIONAL_MANAGER_NAME_LF
+        data_type: TEXT
+      - name: REGIONAL_MANAGER_EMAIL
+        data_type: TEXT
+        name: KEY_SAFETY_REP
+        data_type: TEXT
+        name: SAFETY_REP_NAME
+        data_type: TEXT
+        name: SAFETY_REP_NAME_LF
+        data_type: TEXT
+      - name: SAFETY_REP_EMAIL
+        data_type: TEXT
       - name: BILLING_OVER_MAX
         data_type: TEXT
       - name: BILLING_TYPE
