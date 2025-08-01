@@ -20,7 +20,7 @@ jobs:
            https://api.fivetran.com/v1/connectors/$connector_id/force
 
           echo "Waiting for Sage Intacct sync to complete..."
-          for i in {1..30}; do
+          for i in {1..20}; do
             response=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
               https://api.fivetran.com/v1/connectors/$connector_id)
             
@@ -54,7 +54,7 @@ jobs:
            https://api.fivetran.com/v1/connectors/$connector_id/force
 
           echo "Waiting for Salesforce sync to complete..."
-          for i in {1..30}; do
+          for i in {1..20}; do
             response=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
               https://api.fivetran.com/v1/connectors/$connector_id)
             
@@ -87,7 +87,7 @@ jobs:
            https://api.fivetran.com/v1/connectors/$connector_id/force
 
           echo "Waiting for ukg pro sync to complete..."
-          for i in {1..30}; do
+          for i in {1..20}; do
             response=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
               https://api.fivetran.com/v1/connectors/$connector_id)
             
@@ -120,7 +120,7 @@ jobs:
            https://api.fivetran.com/v1/connectors/$connector_id/force
 
           echo "Waiting for portal sync to complete..."
-          for i in {1..30}; do
+          for i in {1..20}; do
             response=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
               https://api.fivetran.com/v1/connectors/$connector_id)
             
