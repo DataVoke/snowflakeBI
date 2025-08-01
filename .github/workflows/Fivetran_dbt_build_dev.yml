@@ -3,7 +3,7 @@ name: Run Fivetran and dbt Build in Development
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0,30 8-19 * * *'  # 9:00 AM UTC / 4:00 AM EST
+    - cron: '0,30 13-23 * * *'  # 9:00 AM UTC / 4:00 AM EST
 
 jobs:
   sync_sage_intacct:
