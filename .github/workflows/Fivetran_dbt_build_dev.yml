@@ -20,19 +20,25 @@ jobs:
            https://api.fivetran.com/v1/connectors/$connector_id/force
 
           echo "Waiting for Sage Intacct sync to complete..."
-          while true; do
-            state=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
-              https://api.fivetran.com/v1/connectors/$connector_id | jq -r '.data.status.sync_state')
-            echo "Sync state: $state"
-            if [ "$state" = "IDLE" ]; then
+          for i in {1..30}; do
+            response=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
+              https://api.fivetran.com/v1/connectors/$connector_id)
+            
+            sync_state=$(echo "$response" | jq -r '.data.status.sync_state')
+            succeeded_at=$(echo "$response" | jq -r '.data.status.succeeded_at')
+
+            echo "sync_state: $sync_state | succeeded_at: $succeeded_at"
+
+            if [[ "$sync_state" == "IDLE" && "$succeeded_at" != "null" ]]; then
               echo "status=success" >> $GITHUB_OUTPUT
-              break
-            elif [ "$state" = "ERROR" ]; then
-              echo "status=error" >> $GITHUB_OUTPUT
-              exit 1
+              exit 0
             fi
-            sleep 60
+            sleep 30
           done
+          
+          echo "status=error" >> $GITHUB_OUTPUT
+          exit 1
+
 
   sync_salesforce:
     runs-on: ubuntu-latest
@@ -48,19 +54,24 @@ jobs:
            https://api.fivetran.com/v1/connectors/$connector_id/force
 
           echo "Waiting for Salesforce sync to complete..."
-          while true; do
-            state=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
-              https://api.fivetran.com/v1/connectors/$connector_id | jq -r '.data.status.sync_state')
-            echo "Sync state: $state"
-            if [ "$state" = "IDLE" ]; then
+          for i in {1..30}; do
+            response=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
+              https://api.fivetran.com/v1/connectors/$connector_id)
+            
+            sync_state=$(echo "$response" | jq -r '.data.status.sync_state')
+            succeeded_at=$(echo "$response" | jq -r '.data.status.succeeded_at')
+
+            echo "sync_state: $sync_state | succeeded_at: $succeeded_at"
+
+            if [[ "$sync_state" == "IDLE" && "$succeeded_at" != "null" ]]; then
               echo "status=success" >> $GITHUB_OUTPUT
-              break
-            elif [ "$state" = "ERROR" ]; then
-              echo "status=error" >> $GITHUB_OUTPUT
-              exit 1
+              exit 0
             fi
-            sleep 60
-          done          
+            sleep 30
+          done
+          
+          echo "status=error" >> $GITHUB_OUTPUT
+          exit 1
 
   sync_ukg_pro:
     runs-on: ubuntu-latest
@@ -76,19 +87,24 @@ jobs:
            https://api.fivetran.com/v1/connectors/$connector_id/force
 
           echo "Waiting for ukg pro sync to complete..."
-          while true; do
-            state=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
-              https://api.fivetran.com/v1/connectors/$connector_id | jq -r '.data.status.sync_state')
-            echo "Sync state: $state"
-            if [ "$state" = "IDLE" ]; then
+          for i in {1..30}; do
+            response=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
+              https://api.fivetran.com/v1/connectors/$connector_id)
+            
+            sync_state=$(echo "$response" | jq -r '.data.status.sync_state')
+            succeeded_at=$(echo "$response" | jq -r '.data.status.succeeded_at')
+
+            echo "sync_state: $sync_state | succeeded_at: $succeeded_at"
+
+            if [[ "$sync_state" == "IDLE" && "$succeeded_at" != "null" ]]; then
               echo "status=success" >> $GITHUB_OUTPUT
-              break
-            elif [ "$state" = "ERROR" ]; then
-              echo "status=error" >> $GITHUB_OUTPUT
-              exit 1
+              exit 0
             fi
-            sleep 60
-          done          
+            sleep 30
+          done
+          
+          echo "status=error" >> $GITHUB_OUTPUT
+          exit 1
 
   sync_portal:
     runs-on: ubuntu-latest
@@ -104,19 +120,24 @@ jobs:
            https://api.fivetran.com/v1/connectors/$connector_id/force
 
           echo "Waiting for portal sync to complete..."
-          while true; do
-            state=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
-              https://api.fivetran.com/v1/connectors/$connector_id | jq -r '.data.status.sync_state')
-            echo "Sync state: $state"
-            if [ "$state" = "IDLE" ]; then
+          for i in {1..30}; do
+            response=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
+              https://api.fivetran.com/v1/connectors/$connector_id)
+            
+            sync_state=$(echo "$response" | jq -r '.data.status.sync_state')
+            succeeded_at=$(echo "$response" | jq -r '.data.status.succeeded_at')
+
+            echo "sync_state: $sync_state | succeeded_at: $succeeded_at"
+
+            if [[ "$sync_state" == "IDLE" && "$succeeded_at" != "null" ]]; then
               echo "status=success" >> $GITHUB_OUTPUT
-              break
-            elif [ "$state" = "ERROR" ]; then
-              echo "status=error" >> $GITHUB_OUTPUT
-              exit 1
+              exit 0
             fi
-            sleep 60
-          done          
+            sleep 30
+          done
+          
+          echo "status=error" >> $GITHUB_OUTPUT
+          exit 1
                     
 
 
