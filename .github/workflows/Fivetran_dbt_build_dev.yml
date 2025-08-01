@@ -23,7 +23,7 @@ jobs:
           for i in {1..15}; do
             response=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
               https://api.fivetran.com/v1/connectors/$connector_id)
-            
+            sleep 15
             sync_state=$(echo "$response" | jq -r '.data.status.sync_state')
             succeeded_at=$(echo "$response" | jq -r '.data.status.succeeded_at')
 
@@ -57,7 +57,7 @@ jobs:
           for i in {1..15}; do
             response=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
               https://api.fivetran.com/v1/connectors/$connector_id)
-            
+            sleep 15
             sync_state=$(echo "$response" | jq -r '.data.status.sync_state')
             succeeded_at=$(echo "$response" | jq -r '.data.status.succeeded_at')
 
@@ -90,7 +90,7 @@ jobs:
           for i in {1..15}; do
             response=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
               https://api.fivetran.com/v1/connectors/$connector_id)
-            
+            sleep 15
             sync_state=$(echo "$response" | jq -r '.data.status.sync_state')
             succeeded_at=$(echo "$response" | jq -r '.data.status.succeeded_at')
 
@@ -118,7 +118,7 @@ jobs:
           curl -X POST \
            -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
            https://api.fivetran.com/v1/connectors/$connector_id/force
-
+          sleep 15
           echo "Waiting for portal sync to complete..."
           for i in {1..15}; do
             response=$(curl -s -u "${{ secrets.FIVETRAN_API_KEY }}:${{ secrets.FIVETRAN_API_SECRET }}" \
