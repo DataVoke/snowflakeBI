@@ -1,5 +1,5 @@
 cai_bi:
-  target: dev
+  target: prd
   outputs:
     dev:
       type: snowflake

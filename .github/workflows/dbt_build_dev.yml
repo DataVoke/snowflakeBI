@@ -2,8 +2,8 @@ name: Run dbt Build in Development
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 9 * * *'  # 9:00 AM UTC / 4:00 AM EST
+  #schedule:
+  #  - cron: '0,15,30,45 8-18 * * *'  # 9:00 AM UTC / 4:00 AM EST
 
 jobs:
   dbt-build:
