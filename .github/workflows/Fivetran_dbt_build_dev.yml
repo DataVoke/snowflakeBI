@@ -202,4 +202,4 @@ jobs:
             • Job: ${{ github.job }}
             • Branch: ${{ github.ref }}
             • Commit: ${{ github.sha }}
-            • Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            • Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} 
