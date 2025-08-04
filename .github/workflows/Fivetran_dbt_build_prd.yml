@@ -1,9 +1,9 @@
-name: Run Fivetran and dbt Build in Development
+name: Run Fivetran and dbt Build in Production
 
 on:
   workflow_dispatch:
-  #schedule:
-    #- cron: '0,30 12-23 * * *'  # 9:00 AM UTC / 4:00 AM EST
+  schedule:
+    - cron: '0,30 12-23 * * *'  # 9:00 AM UTC / 4:00 AM EST
 
 jobs:
   sync_sage_intacct:
@@ -153,7 +153,7 @@ jobs:
       - sync_ukg_pro
       - sync_portal
     if: |
-      github.ref == 'refs/heads/development' &&
+      github.ref == 'refs/heads/main' &&
       needs.sync_sage_intacct.outputs.status == 'success' && 
       needs.sync_salesforce.outputs.status == 'success' && 
       needs.sync_ukg_pro.outputs.status == 'success' && 
@@ -181,7 +181,7 @@ jobs:
           chmod 600 ~/.ssh/snowflake_key.pem
 
       - name: Run dbt build
-        run: dbt build --profiles-dir ./profiles --target dev
+        run: dbt build --profiles-dir ./profiles --target prd
         working-directory: cai_bi
 
       - name: Send email on failure
@@ -192,7 +192,7 @@ jobs:
           server_port: 587
           username: ${{ secrets.NOTIFICATION_MAIL_USERNAME }}
           password: ${{ secrets.NOTIFICATION_MAIL_PASSWORD }}
-          subject: "🚨 dbt Build Failed in GitHub Actions (development)"
+          subject: "🚨 dbt Build Failed in GitHub Actions (production)"
           to: itsupport@cagents.com,evan.gutzwiller@cagents.com 
           from: GitHub Actions <${{ secrets.NOTIFICATION_MAIL_USERNAME }}>
           body: |
