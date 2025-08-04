@@ -30,7 +30,7 @@ jobs:
 
             echo "sync_state: $sync_state | succeeded_at: $succeeded_at"
 
-            if [[ "$sync_state" == "IDLE" && "$succeeded_at" != "null" ]]; then
+            if [[ "$sync_state" != "syncing" ]] && [[ "$succeeded_at" == "null" ]]; then
               echo "status=success" >> $GITHUB_OUTPUT
               exit 0
             fi
@@ -65,7 +65,7 @@ jobs:
 
             echo "sync_state: $sync_state | succeeded_at: $succeeded_at"
 
-            if [[ "$sync_state" == "IDLE" && "$succeeded_at" != "null" ]]; then
+            if [[ "$sync_state" != "syncing" ]] && [[ "$succeeded_at" == "null" ]]; then
               echo "status=success" >> $GITHUB_OUTPUT
               exit 0
             fi
@@ -99,7 +99,7 @@ jobs:
 
             echo "sync_state: $sync_state | succeeded_at: $succeeded_at"
 
-            if [[ "$sync_state" == "IDLE" && "$succeeded_at" != "null" ]]; then
+            if [[ "$sync_state" != "syncing" ]] && [[ "$succeeded_at" == "null" ]]; then
               echo "status=success" >> $GITHUB_OUTPUT
               exit 0
             fi
@@ -133,7 +133,7 @@ jobs:
 
             echo "sync_state: $sync_state | succeeded_at: $succeeded_at"
 
-            if [[ "$sync_state" == "IDLE" && "$succeeded_at" != "null" ]]; then
+            if [[ "$sync_state" != "syncing" ]] && [[ "$succeeded_at" == "null" ]]; then
               echo "status=success" >> $GITHUB_OUTPUT
               exit 0
             fi
