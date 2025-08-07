@@ -35,9 +35,9 @@ with
             order by date_in_job desc
         ) = 1
     ),
-    ukg_employee_job_history as (select * from {{ source('ukg_pro', 'employee_job_history') }} where is_rate_change = true and _fivetran_deleted = false
-    qualify row_number() over 
-            ( partition by employee_id order by date_time_created desc )
+    ukg_employee_job_history as (select * from {{ source('ukg_pro', 'employee_job_history') }} where --is_rate_change = true and 
+    _fivetran_deleted = false qualify row_number() over 
+            ( partition by employee_id order by job_effective_date desc )
     =1),
 
 ukg as (
