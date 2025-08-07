@@ -3,16 +3,18 @@ name: Run dbt Build in Production
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 9 * * *'  # 9:00 AM UTC / 4:00 AM EST
+    - cron: '31 15 * * *'
 
 jobs:
   dbt-build:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -27,8 +29,13 @@ jobs:
       - name: Decode Snowflake private key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SNOWFLAKE_PK_BASE64 }}" | base64 -d > ~/.ssh/snowflake_key.pem
+          echo "${{ secrets.SNOWFLAKE_PK_PROD_BASE64 }}" | base64 -d > ~/.ssh/snowflake_key.pem
           chmod 600 ~/.ssh/snowflake_key.pem
+
+      - name: Verify key structure
+        run: |
+          cat ~/.ssh/snowflake_key.pem
+
 
       - name: Run dbt build
         run: dbt build --profiles-dir ./profiles --target prd
