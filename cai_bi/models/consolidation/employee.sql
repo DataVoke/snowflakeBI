@@ -39,6 +39,9 @@ with
     _fivetran_deleted = false qualify row_number() over 
             ( partition by employee_id order by job_effective_date desc )
     =1),
+    ukg_company as (
+        select * from {{ source('ukg_pro', 'company') }} where _fivetran_deleted = false
+    ),
 
 ukg as (
     select 
@@ -117,21 +120,21 @@ ukg as (
         null as bln_pm_qualified,
         null as bln_is_resource,
         null as closed_won_goal,
-        ukg_compensation.currency_code as currency_code,
+        ukg_company.currency_code as currency_code,
         concat(ifnull(nullif(ukg_employee.preferred_name, ''), ukg_employee.first_name), ' ', ukg_employee.last_name) as display_name,
         concat(ukg_employee.last_name, ', ', ifnull(nullif(ukg_employee.preferred_name, ''), ukg_employee.first_name) ) as display_name_lf,
         cast(ukg_employee.date_of_birth as date) as dte_birth,
         null as dte_of_industry_experience,
         cast(ukg_employment.date_of_termination as date) as dte_src_end,
         cast(ukg_employment.original_hire_date as date) as dte_src_start,
-        cast(ukg_compensation.date_in_job as timestamp_tz) as dts_in_job,
+        cast(ukg_employment.date_in_job as timestamp_tz) as dts_in_job,
         cast(ukg_employment.last_hire_date as timestamp_tz) as dts_last_hire,
-        cast(ukg_compensation.date_last_paid as timestamp_tz) as dts_last_paid,
+        cast(ukg_employment.date_last_pay_date_paid as timestamp_tz) as dts_last_paid,
         cast(ukg_employee.date_time_created as timestamp_tz) as dts_src_created,
         cast(ukg_employee.date_time_changed as timestamp_tz) as dts_src_modified,
         ukg_employee.email_address_alternate as email_address_personal,
         ukg_employee.email_address as email_address_work,
-        coalesce( ukg_employee_job_history.employee_status , ukg_compensation.empl_status) as employee_status,
+        ukg_employment.employee_status_code as employee_status,
         ukg_employee.first_name as first_name,
         coalesce(ukg_employee.preferred_name, ukg_employee.first_name) as first_name_display,
         ukg_employee.former_name as former_name,
@@ -140,7 +143,7 @@ ukg as (
         ukg_employee.home_phone_country as home_phone_country,
         coalesce( ukg_employee_job_history.hourly_pay_rate,ukg_compensation.hourly_pay_rate) as hourly_pay_rate,
         null as intacct_contact_name,
-        ukg_compensation.job_salary_grade as job_salary_grade,
+        ukg_employee_job_history.salary_grade as job_salary_grade,
         ukg_employment.job_title as job_title,
         ukg_employee.last_name as last_name,
         ukg_employee.middle_name as middle_name,
@@ -170,6 +173,7 @@ ukg as (
     left join ukg_employee_change on ukg_employee_change.employee_id = ukg_employee.id 
         and ukg_employee_change.company_id = ukg_employee.company_id
     left join ukg_employee_job_history on ukg_employee_job_history.employee_id = ukg_employee.id
+    left join ukg_company on ukg_company.id = ukg_employee.company_id
 ),
 portal as (
     select
