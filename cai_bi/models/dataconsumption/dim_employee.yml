@@ -9,18 +9,18 @@ models:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ
       - name: CREATED_BY
-        data_type: TEXT
+        data_type: VARCHAR(250)
       - name: DTS_UPDATED_AT
         data_type: TIMESTAMP_LTZ
       - name: UPDATED_BY
-        data_type: TEXT
+        data_type: VARCHAR(250)
       - name: KEY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
         tests:
           - unique
           - not_null
       - name: KEY_BASE_TEAM
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: KEY_COMPANY
         data_type: NUMBER(38,0)
         tests:
@@ -56,7 +56,7 @@ models:
       - name: KEY_LOCATION
         data_type: NUMBER(38,0)
       - name: KEY_LOCATION_INTACCT
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: KEY_LOCATION_UKG
         data_type: NUMBER(38,0)
       - name: KEY_PAYROLL_COMPANY
@@ -74,115 +74,115 @@ models:
       - name: KEY_STATE
         data_type: NUMBER(38,0)
       - name: KEY_SUPERVISOR
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: KEY_TERMINATION_TYPE
         data_type: NUMBER(38,0)
       - name: EMPLOYEE_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ACCOUNT_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AZURE_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: INTACCT_CONTACT_KEY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: INTACCT_DEPARTMENT_KEY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: INTACCT_LOCATION_KEY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: INTACCT_EMPLOYEE_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: INTACCT_EMPLOYEE_KEY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: INTACCT_OVERRIDE_ENTITY_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ENTITY_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: NATIONAL_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: NATIONAL_ID_COUNTRY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: PORTAL_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: PROFILE_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: REGION_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: SALESFORCE_CONTACT_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: SALESFORCE_USER_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: SALESFORCE_SANDBOX_CONTACT_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: SALESFORCE_SANDBOX_USER_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: TRACKER_RECORD_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: UKG_OVERRIDE_PAYROLL_COMPANY_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: UKG_PERSON_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: WORK_CALENDAR_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: CONTINTENT_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: COMPANY_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: CONTRACTOR_COMPANY_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: COUNTRY_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: DEPARTMENT_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: DOL_STATUS_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: EMPLOYEE_TYPE_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ENTITY_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ETHNIC_BACKGROUND_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: GENDER_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: LABOR_CATEGORY_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: LOCATION_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: LOCATION_NAME_INTACCT
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: LOCATION_NAME_UKG
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: PAYROLL_COMPANY_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: PAY_TYPE_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: POSITION_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: POSITION_FAMILY_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: PRACTICE_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: REGION_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: STATE_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: SUPERVISOR_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: TERMINATION_TYPE_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: TERMINATION_ADDRESSABLE_TYPE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: BASE_TEAM_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ADDRESS_CITY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ADDRESS_COUNTRY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ADDRESS_POSTAL_CODE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ADDRESS_STATE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ADDRESS_STREET
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ANNUAL_SALARY
         data_type: NUMBER(38,17)
       - name: BLN_EXCLUDE_FROM_RESOURCE_PLANNER
@@ -200,11 +200,11 @@ models:
       - name: CLOSED_WON_GOAL
         data_type: NUMBER(38,17)
       - name: CURRENCY_CODE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: DISPLAY_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: DISPLAY_NAME_LF
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: DTE_BIRTH
         data_type: DATE
       - name: DTE_OF_INDUSTRY_EXPERIENCE
@@ -220,35 +220,35 @@ models:
       - name: DTS_LAST_PAID
         data_type: TIMESTAMP_TZ
       - name: EMAIL_ADDRESS_PERSONAL
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: EMAIL_ADDRESS_WORK
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: EMPLOYEE_STATUS
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: FIRST_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: FIRST_NAME_DISPLAY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: FORMER_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: HISTORICAL_UTILIZATION_TARGET_HOURS
         data_type: NUMBER(38,17)
       - name: HOME_PHONE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: HOME_PHONE_COUNTRY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: HOURLY_PAY_RATE
         data_type: NUMBER(38,17)
       - name: INTACCT_CONTACT_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: JOB_SALARY_GRADE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: JOB_TITLE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: LAST_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: MIDDLE_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: OTHER_RATE_1
         data_type: NUMBER(38,17)
       - name: OTHER_RATE_2
@@ -258,23 +258,23 @@ models:
       - name: OTHER_RATE_4
         data_type: NUMBER(38,17)
       - name: PAY_GROUP
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: PAY_PERIOD_PAY_RATE
         data_type: NUMBER(38,17)
       - name: STATUS
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: TERM_TYPE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: TERMINATION_REASON_DESCRIPTION
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: TOTAL_ANN_SALARY
         data_type: NUMBER(38,17)
       - name: UKG_EMPLOYEE_NUMBER
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: UKG_OVERRIDE_JOB_TITLE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: UKG_STATUS
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: UTILIZATION_TARGET
         data_type: NUMBER(38,17)
       - name: UTILIZATION_TARGET_HOURS
@@ -282,9 +282,9 @@ models:
       - name: WEEKLY_PAY_RATE
         data_type: NUMBER(38,17)
       - name: WORK_PHONE_COUNTRY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: WORK_PHONE_NUMBER
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: TARGET_BILL_RATE_CURRENT
         data_type: NUMBER(18,2)
       - name: TARGET_BILL_HOURS_WEEK_CURRENT
