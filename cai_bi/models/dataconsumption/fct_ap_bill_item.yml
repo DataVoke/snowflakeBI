@@ -7,17 +7,25 @@ models:
           apbillitem: ref('apbillitem')
           apbill: ref('apbill')
     columns:
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)    
       - name: KEY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
         tests:
           - not_null
           - unique
       - name: KEY_AP_BILL
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: KEY_LOCATION
         data_type: NUMBER(38,0)
       - name: KEY_PROJECT
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: KEY_DEPARTMENT
         data_type: NUMBER(38,0)
       - name: KEY_ENTITY
@@ -27,59 +35,59 @@ models:
           - unique:
               severity: warn
       - name: KEY_EMPLOYEE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: DEPARTMENT_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: LOCATION_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ENTITY_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: EMPLOYEE_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: EMPLOYEE_NAME_LF
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: PROJECT_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: PROJECT_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: CURRENCY_ISO_CODE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ACCOUNT_KEY
         data_type: NUMBER(38,0)
       - name: CUSTOMER_KEY
         data_type: NUMBER(38,0)
       - name: CUSTOMER_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: DEPARTMENT_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ENTITY_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: DETAIL_KEY
         data_type: NUMBER(38,0)
       - name: EMPLOYEE_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: EXCH_RATE_TYPE_ID
         data_type: NUMBER(38,0)
       - name: ITEM_KEY
         data_type: NUMBER(38,0)
       - name: ITEM_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: LOCATION_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: OFFSET_ACCOUNT_KEY
         data_type: NUMBER(38,0)
       - name: AP_BILL_PROJECT_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: RECORD_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: SRC_CREATED_BY_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: SRC_MODIFIED_BY_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: VENDOR_KEY
         data_type: NUMBER(38,0)
       - name: VENDOR_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: DTE_EXCH_RATE
         data_type: DATE
       - name: AMT_NON_RECLAIM_VAT_BASE
@@ -87,7 +95,7 @@ models:
       - name: ACCOUNT_NO
         data_type: NUMBER(38,0)
       - name: ACCOUNT_TITLE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AMT
         data_type: NUMBER(38,17)
       - name: AMT_BASE_VAT
@@ -115,7 +123,7 @@ models:
       - name: AMT_TRX_TOTAL_PAID
         data_type: NUMBER(38,17)
       - name: BASE_CURRENCY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: BASELOCATION
         data_type: NUMBER(38,0)
       - name: BLN_AMT_MANUAL_VAT
@@ -142,14 +150,14 @@ models:
         data_type: BOOLEAN
       - name: BLN_TAX_USE_IC_CODE
         data_type: BOOLEAN
-      - name: CF_APBILLITEM_TEXT_PESNAME
-        data_type: TEXT
+      - name: CF_APBILLITEM_VARCHAR(5000)_PESNAME
+        data_type: VARCHAR(5000)
       - name: CURRENCY_CODE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: CUSTOMER_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_BILL_DEPARTMENT_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: DTE_CF_APBILLITEM_EXPAMTSTART
         data_type: DATE
       - name: DTE_ENTRY
@@ -163,33 +171,33 @@ models:
       - name: DTS_SRC_MODIFIED
         data_type: TIMESTAMP_TZ
       - name: AP_BILL_EMPLOYEE_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: ENTRY_DESCRIPTION
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: EUROPE_VAT_RATE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: EXCHANGE_RATE
         data_type: NUMBER(38,17)
       - name: FORM_1099
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: FORM_1099_BOX
         data_type: NUMBER(38,0)
       - name: FORM_1099_TYPE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: GL_DIM_VAT_CODE
         data_type: NUMBER(38,0)
       - name: GL_DIMLINE_TAX_DETAIL
         data_type: NUMBER(38,0)
       - name: ITEM_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: LINE_NO
         data_type: NUMBER(38,0)
       - name: AP_BILL_LOCATION_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: OFFSET_GL_ACCOUNT_NO
         data_type: NUMBER(38,0)
       - name: OFFSET_GL_ACCOUNT_TITLE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: PARENT_ENTRY
         data_type: NUMBER(38,0)
       - name: PRENTRY_OFFSET_ACCOUNT_NO
@@ -197,13 +205,13 @@ models:
       - name: PREVIOUS_OFFSET_ACCOUNT
         data_type: NUMBER(38,0)
       - name: AP_BILL_PROJECT_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: RECLAIM
         data_type: NUMBER(38,0)
       - name: RECORD_TYPE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: RECORD_URL
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: RETAIN_AGE_PERCENTAGE
         data_type: NUMBER(38,0)
       - name: RPEC
@@ -211,25 +219,25 @@ models:
       - name: RPES
         data_type: NUMBER(38,0)
       - name: STATE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: VAT_AMOUNT
         data_type: NUMBER(38,17)
       - name: VAT_RATE
         data_type: NUMBER(38,17)
       - name: VENDOR_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_RECORD_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_BILLTO_PAYTO_KEY
         data_type: NUMBER(38,0)
       - name: AP_CREATED_USER_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_MEGA_ENTITY_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_MODULE_KEY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_PAYTO_TAX_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_PR_BATCH_KEY
         data_type: NUMBER(38,0)
       - name: AP_SCHOP_KEY
@@ -237,13 +245,13 @@ models:
       - name: AP_SHIP_TO_RETURN_TO_KEY
         data_type: NUMBER(38,0)
       - name: AP_SUPDOC_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_TAX_SOLUTION_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_TERM_KEY
         data_type: NUMBER(38,0)
       - name: AP_USER_ID
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_AMT_TOTAL_DUE
         data_type: NUMBER(38,17)
       - name: AP_AMT_TOTAL_ENTERED
@@ -251,11 +259,11 @@ models:
       - name: AP_AMT_TRX_TOTAL_ENTERED
         data_type: NUMBER(38,17)
       - name: AP_BASE_CURRENCY_CODE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_BILL_BACK_TEMPLATE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_BILLTO_PAYTO_CONTACT_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_BLN_DO_NOT_PROCESS_VAT
         data_type: BOOLEAN
       - name: AP_BLN_ON_HOLD
@@ -265,13 +273,13 @@ models:
       - name: AP_BLN_SYSTEM_GENERATED
         data_type: BOOLEAN
       - name: AP_CONTACT_TAX_GROUP
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_DESCRIPTION
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_DESCRIPTION_2
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_DOC_NUMBER
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_DTE_REC_PAYMENT
         data_type: DATE
       - name: AP_DTE_WHEN_DISCOUNT
@@ -287,31 +295,31 @@ models:
       - name: AP_DUE_IN_DAYS
         data_type: NUMBER(38,0)
       - name: AP_FINANCIAL_ENTITY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_MEGAENTITY_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_PAYMENT_PRIORITY
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_PAYTO_TAXGROUP_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_PAYTO_TAXGROUP_RECORDNO
         data_type: NUMBER(38,0)
       - name: AP_PR_BATCH
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_RAW_STATE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_SENDER_EMAIL
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_SHIPTO_RETURNTO_CONTACT_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_TAX_ENTITY_NUMBER
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_TAX_REVERSE_STATUS
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_TERM_NAME
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_TERM_VALUE
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: AP_TRX_ENTITY_DUE
         data_type: NUMBER(38,17)
       - name: AP_TRX_TOTAL_DUE
