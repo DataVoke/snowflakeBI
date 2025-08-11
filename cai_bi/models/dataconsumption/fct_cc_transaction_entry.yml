@@ -3,18 +3,26 @@ version: 2
 models:
   - name: fct_cc_transaction_entry
     columns:
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)    
       - name: key
         description: Primary key for the transaction entry.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: hash_key
         description: Unique hash key for the transaction entry.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: key_location
         description: Surrogate key for the associated location.
         data_type: NUMBER
       - name: key_project
         description: Surrogate key for the associated project.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: key_department
         description: Surrogate key for the associated department.
         data_type: NUMBER
@@ -23,43 +31,43 @@ models:
         data_type: NUMBER
       - name: key_employee
         description: Surrogate key for the associated employee.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: department_name
         description: Display name of the department.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: location_name
         description: Display name of the location.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: entity_name
         description: Display name of the entity.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: employee_name
         description: Display name of the employee.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: employee_name_lf
         description: Display name of the employee in Last, First format.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: project_id
         description: ID of the project.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: project_name
         description: Name of the project.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: key_cc_transaction
         description: Key linking to the credit card transaction.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: hash_key_cc_transaction
         description: Hash key for the credit card transaction.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: hash_key_project
         description: Hash key for the project.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: hash_key_entity
         description: Hash key for the entity.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: hash_key_location
         description: Hash key for the location.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: account_key
         description: Account key for the entry.
         data_type: NUMBER
@@ -71,13 +79,13 @@ models:
         data_type: NUMBER
       - name: customer_id
         description: Customer ID related to the entry.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: department_id
         description: Department ID from Intacct.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: employee_id
         description: Employee ID from Intacct.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: exchange_rate_type_id
         description: Exchange rate type identifier.
         data_type: NUMBER
@@ -89,10 +97,10 @@ models:
         data_type: NUMBER
       - name: item_id
         description: Item ID.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: location_id
         description: Location ID.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: src_created_by_id
         description: Source created by ID.
         data_type: NUMBER
@@ -104,10 +112,10 @@ models:
         data_type: NUMBER
       - name: vendor_id
         description: Vendor ID.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: account_title
         description: Title of the account.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: amt
         description: Amount value of the line item.
         data_type: NUMBER
@@ -131,7 +139,7 @@ models:
         data_type: NUMBER
       - name: base_currency
         description: Base currency code.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: bln_billable
         description: Indicates if the line item is billable.
         data_type: BOOLEAN
@@ -146,16 +154,16 @@ models:
         data_type: BOOLEAN
       - name: cc_txn_payee
         description: Payee on the credit card transaction.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: currency
         description: Transaction currency.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: customer_name
         description: Name of the customer associated.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: description
         description: Description of the transaction.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: dte_exchange_rate
         description: Date of exchange rate used.
         data_type: DATE
@@ -170,22 +178,22 @@ models:
         data_type: NUMBER
       - name: financial_entity
         description: Associated financial entity.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: item_name
         description: Name of the item associated.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: line_no
         description: Line number.
         data_type: NUMBER
       - name: record_type
         description: Record type of the entry.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: record_url
         description: URL to the record.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: status
         description: Status of the line item.
-        data_type: TEXT
+        data_type: VARCHAR(5000)
       - name: vendor_name
         description: Name of the vendor associated.
-        data_type: TEXT
+        data_type: VARCHAR(5000)

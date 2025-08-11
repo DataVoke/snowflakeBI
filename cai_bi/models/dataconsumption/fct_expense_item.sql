@@ -59,6 +59,10 @@ employee_ukg as (
 
 final as (
     select
+        current_timestamp as dts_created_at,
+        '{{ this.name }}' as created_by,
+        current_timestamp as dts_updated_at,
+        '{{ this.name }}' as updated_by,
         int_ei.key,
         int_ei.key_expense,
 
