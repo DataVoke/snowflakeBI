@@ -21,7 +21,7 @@ with
             from {{ source('ukg_pro', 'employment') }} 
             where _fivetran_deleted = false
             qualify row_number() over (
-            partition by employee_id
+            partition by employee_id,company_id
             order by date_in_job desc
         ) = 1
     ),
@@ -31,13 +31,13 @@ with
             from {{ source('ukg_pro', 'compensation') }} 
             where _fivetran_deleted = false
             qualify row_number() over (
-            partition by employee_id
+            partition by employee_id,company_id
             order by date_in_job desc
         ) = 1
     ),
     ukg_employee_job_history as (select * from {{ source('ukg_pro', 'employee_job_history') }} where --is_rate_change = true and 
     _fivetran_deleted = false qualify row_number() over 
-            ( partition by employee_id order by job_effective_date desc )
+            ( partition by employee_id,company_id order by job_effective_date desc )
     =1),
     ukg_company as (
         select * from {{ source('ukg_pro', 'company') }} where _fivetran_deleted = false
@@ -112,7 +112,7 @@ ukg as (
         ukg_employee.address_zip_code as address_postal_code,
         ukg_employee.address_state as address_state,
         ukg_employee.address_line_1 as address_street,
-        coalesce( ukg_employee_job_history.annual_salary , ukg_compensation.annual_salary) as annual_salary,
+        coalesce( ukg_compensation.annual_salary,ukg_employee_job_history.annual_salary) as annual_salary,
         null as bln_exclude_from_resource_planner,
         case when ukg_employment.employee_status_code in ('A', 'L', 'O') then true else false end as bln_is_active,
         null as bln_is_hourly,
@@ -120,7 +120,7 @@ ukg as (
         null as bln_pm_qualified,
         null as bln_is_resource,
         null as closed_won_goal,
-        ukg_company.currency_code as currency_code,
+        coalesce(ukg_compensation.currency_code,ukg_company.currency_code) as currency_code,
         concat(ifnull(nullif(ukg_employee.preferred_name, ''), ukg_employee.first_name), ' ', ukg_employee.last_name) as display_name,
         concat(ukg_employee.last_name, ', ', ifnull(nullif(ukg_employee.preferred_name, ''), ukg_employee.first_name) ) as display_name_lf,
         cast(ukg_employee.date_of_birth as date) as dte_birth,
@@ -141,18 +141,18 @@ ukg as (
         null as historical_utilization_target_hours,
         ukg_employee.home_phone as home_phone,
         ukg_employee.home_phone_country as home_phone_country,
-        coalesce( ukg_employee_job_history.hourly_pay_rate,ukg_compensation.hourly_pay_rate) as hourly_pay_rate,
+        coalesce( ukg_compensation.hourly_pay_rate,ukg_employee_job_history.hourly_pay_rate) as hourly_pay_rate,
         null as intacct_contact_name,
         ukg_employee_job_history.salary_grade as job_salary_grade,
         ukg_employment.job_title as job_title,
         ukg_employee.last_name as last_name,
         ukg_employee.middle_name as middle_name,
-        coalesce( ukg_employee_job_history.other_rate_1,ukg_compensation.other_rate_1 ) as other_rate_1,
-        coalesce( ukg_employee_job_history.other_rate_2,ukg_compensation.other_rate_2 ) as other_rate_2,
-        coalesce( ukg_employee_job_history.other_rate_3,ukg_compensation.other_rate_3 ) as other_rate_3,
-        coalesce( ukg_employee_job_history.other_rate_4, ukg_compensation.other_rate_4 ) as other_rate_4,
-        coalesce( ukg_employee_job_history.pay_group_id,ukg_compensation.pay_group ) as pay_group,
-        coalesce( ukg_employee_job_history.period_pay_rate, ukg_compensation.pay_period_pay_rate ) as pay_period_pay_rate,
+        coalesce( ukg_compensation.other_rate_1,ukg_employee_job_history.other_rate_1 ) as other_rate_1,
+        coalesce( ukg_compensation.other_rate_2,ukg_employee_job_history.other_rate_2 ) as other_rate_2,
+        coalesce( ukg_compensation.other_rate_3,ukg_employee_job_history.other_rate_3 ) as other_rate_3,
+        coalesce( ukg_compensation.other_rate_4,ukg_employee_job_history.other_rate_4 ) as other_rate_4,
+        coalesce( ukg_compensation.pay_group,ukg_employee_job_history.pay_group_id ) as pay_group,
+        coalesce( ukg_compensation.pay_period_pay_rate,ukg_employee_job_history.period_pay_rate ) as pay_period_pay_rate,
         ukg_employment.employee_status_code as status,
         ukg_employment.term_type as term_type,
         ukg_employment.termination_reason_description as termination_reason_description,
@@ -162,17 +162,17 @@ ukg as (
         ukg_employment.employee_status_code as ukg_status,
         null as utilization_target,
         null as utilization_target_hours,
-        coalesce( ukg_employee_job_history.weekly_pay_rate,ukg_compensation.weekly_pay_rate ) as weekly_pay_rate,
+        coalesce( ukg_compensation.weekly_pay_rate,ukg_employee_job_history.weekly_pay_rate ) as weekly_pay_rate,
         ukg_employment.work_phone_country as work_phone_country,
         null as work_phone_number,
         cast(ukg_employee_job_history.job_effective_date as date) as dte_pay_last_changed
     from ukg_employee
-    left join ukg_employment on ukg_employee.id = ukg_employment.employee_id
-    left join ukg_job on ukg_employment.primary_job_id = ukg_job.id
-    left join ukg_compensation on ukg_compensation.employee_id = ukg_employee.id
+    left join ukg_employment on ukg_employee.id = ukg_employment.employee_id and ukg_employee.company_id = ukg_employment.company_id
+    left join ukg_job on ukg_employment.primary_job_id = ukg_job.id 
+    left join ukg_compensation on ukg_compensation.employee_id = ukg_employee.id and ukg_compensation.company_id = ukg_employee.company_id
     left join ukg_employee_change on ukg_employee_change.employee_id = ukg_employee.id 
         and ukg_employee_change.company_id = ukg_employee.company_id
-    left join ukg_employee_job_history on ukg_employee_job_history.employee_id = ukg_employee.id
+    left join ukg_employee_job_history on ukg_employee_job_history.employee_id = ukg_employee.id and ukg_employee_job_history.company_id = ukg_employee.company_id
     left join ukg_company on ukg_company.id = ukg_employee.company_id
 ),
 portal as (
