@@ -176,7 +176,7 @@ WITH
         left join currency_conversion as cc_employee on (te.dte_entry = cc_employee.date and te.currency_iso_code = cc_employee.frm_curr and intacct_employee.currency = cc_employee.to_curr)
         left join date_listings_flattened as w on te.dte_entry = w.dte
     ),
-blank_data as (
+    blank_data as (
         select
             te.key_employee, te.key_entity, te.employee_id,te.date_group_id, te.date_group_type_id, te.date_group_year,
             0 as hours,  
