@@ -21,6 +21,9 @@ with
         from {{ source('portal','entities') }} as e
         left join {{ source('portal','entities_benefit_rates') }} as eb on e.id = eb.entity_id and eb.timeframe_id = year(current_timestamp)
     ),
+    portal_departments as (
+        select * from prod_bi_raw.cai_prod_portal.departments
+    ),
     currencies_active as (
         select * from {{ ref("currencies_active") }}
     ),
@@ -50,6 +53,7 @@ select
     gold_emp.entity_name,
     gold_emp.department_name,
     gold_emp.key_department,
+    por_departments.intacct_id as department_id,
     gold_emp.base_team_name,
     gold_emp.key_base_team,
     gold_emp.pay_type_name,
@@ -106,6 +110,7 @@ select
     por_forecast.portal_employee_type as employee_type    
 from gold_employees gold_emp
 left join portal_entites por_entities on gold_emp.key_entity = por_entities.record_id
+left join portal_departments por_departments on gold_emp.key_department = por_departments.record_id
 left join portal_user_forecast por_forecast on gold_emp.portal_id = por_forecast.user_id 
 left join currencies_active as active_currencies on gold_emp.currency_code = active_currencies.currency
 left join currency_conversion as gold_cc_fx_org_to_usd on (
