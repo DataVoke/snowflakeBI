@@ -1,4 +1,4 @@
-version: 2
+version: 3
 
 sources:
   - name: portal
@@ -14,6 +14,7 @@ sources:
       - name: dol_statuses
       - name: employee_types
       - name: entities
+      - name: entities_benefit_rates
       - name: ethnic_backgrounds
       - name: genders
       - name: labor_categories
