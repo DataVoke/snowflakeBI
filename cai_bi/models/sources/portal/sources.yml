@@ -3,8 +3,8 @@ version: 3
 sources:
   - name: portal
     description: Source for Portal database
-    database: prod_bi_raw
-    schema:  cai_prod_portal
+    database: prod_bi_dw
+    schema:  cai_portal
     tables:
       - name: base_teams
       - name: contractor_companies
