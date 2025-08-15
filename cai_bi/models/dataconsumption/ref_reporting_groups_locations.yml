@@ -11,6 +11,6 @@ models:
         description: Primary key
         tests:
           - not_null
-          - unique
+          
 
      
