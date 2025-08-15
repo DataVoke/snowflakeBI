@@ -210,14 +210,14 @@ final as (
         int_e.dte_when_submitted exp_dte_when_submitted
     from int_expense_item int_ei
     left join sfc_expense_item sfc_ei on int_ei.hash_link = sfc_ei.hash_link
-    left join int_expense int_e on int_ei.key_expense = int_e.key
+    left join int_expense int_e on int_ei.hash_key_expense = int_e.hash_key
     left join sfc_expense sfc_e on int_e.hash_link = sfc_e.hash_link
     left join portal_departments por_dep on int_ei.department_id = por_dep.intacct_id
     left join portal_locations por_loc on por_loc.intacct_id = int_ei.location_id
     --left join portal_entities por_ent on por_loc.entity_id = por_ent.id
     left join locations_intacct on int_ei.location_id = locations_intacct.locationid
     left join portal_entities por_ent on coalesce(locations_intacct.parentkey,int_ei.base_location) = por_ent.id
-    left join project on int_ei.key_project = project.key
+    left join project on int_ei.hash_key_project = project.hash_key
     left join employee_int on int_ei.employee_id = employee_int.intacct_employee_id
     left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
     where int_e.key is not null
