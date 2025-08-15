@@ -157,13 +157,13 @@ final as (
         cct.record_url AS cct_record_url,
         cct.state AS cct_state
     from cc_transaction_entry cte
-    left join cc_transaction cct on cte.key_cc_transaction = cct.key
+    left join cc_transaction cct on cte.hash_key_cc_transaction = cct.hash_key
     left join portal_departments por_dep on cte.department_id = por_dep.intacct_id
     left join portal_locations por_loc on por_loc.intacct_id = cte.location_id
     --left join portal_entities por_ent on por_loc.entity_id = por_ent.id
     left join locations_intacct on cte.location_id = locations_intacct.locationid
     left join portal_entities por_ent on coalesce(locations_intacct.parentkey,cte.BASE_LOCATION_ID) = por_ent.id
-    left join project on cte.key_project = project.key
+    left join project on cte.hash_key_project = project.hash_key
     left join employee_int on cte.employee_id = employee_int.intacct_employee_id
     left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
     where cct.key is not null
