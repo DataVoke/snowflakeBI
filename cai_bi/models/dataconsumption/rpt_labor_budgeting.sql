@@ -22,7 +22,7 @@ with
         left join {{ source('portal','entities_benefit_rates') }} as eb on e.id = eb.entity_id and eb.timeframe_id = year(current_timestamp)
     ),
     portal_departments as (
-        select * from prod_bi_raw.cai_prod_portal.departments
+        select * from {{ source('portal','departments') }}
     ),
     currencies_active as (
         select * from {{ ref("currencies_active") }}
