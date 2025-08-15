@@ -11,6 +11,7 @@ WITH
     date_groups             as (select * from {{ ref("date_groups") }}),
     date_groups_types       as (select * from {{ ref("date_groups_types") }}),
     dim_employee            as (select * from {{ ref("dim_employee") }}),
+    currencies_active       as (select * from {{ ref("currencies_active") }}),
     fx_rates_timeseries     as (select * from {{ ref("ref_fx_rates_timeseries") }}),
     timesheet_entry         as (select * from {{ ref("fct_timesheet_entry") }}),
     time_type_phase_codes   as (select * from {{ ref("time_type_phase_codes") }}),
