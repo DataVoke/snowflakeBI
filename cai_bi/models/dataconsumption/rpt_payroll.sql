@@ -115,8 +115,8 @@ final as (
         when te.task_name not in (select phase_code from time_type_phase_codes where time_type ='excludepayroll') then '5'
         else '0' end as time_type_ind 
     from timesheet ts
-    inner join timesheet_entry te on te.hash_key_timesheet = ts.hash_key
-    left join dim_employee e on e.hash_key = te.hash_key_employee
+    inner join timesheet_entry te on te.key_timesheet = ts.key
+    left join dim_employee e on e.key = te.key_employee
 )
 
 select * from final
