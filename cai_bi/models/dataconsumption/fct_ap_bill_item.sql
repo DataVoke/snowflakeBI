@@ -209,13 +209,13 @@ final as (
         ab.trx_entity_due ap_trx_entity_due,
         ab.trx_total_due ap_trx_total_due
     from ap_bill_item abi
-    left join ap_bill ab on abi.key_ap_bill = ab.key
+    left join ap_bill ab on abi.hash_key_ap_bill = ab.hash_key
     left join portal_departments por_dep on abi.department_id = por_dep.intacct_id
     left join portal_locations por_loc on por_loc.intacct_id = abi.location_id
     left join locations_intacct on abi.location_id = locations_intacct.locationid
     --left join portal_entities por_ent on por_loc.entity_id = por_ent.id
     left join portal_entities por_ent on coalesce(locations_intacct.parentkey,abi.baselocation) = por_ent.id
-    left join project on abi.key_project = project.key
+    left join project on abi.hash_key_project = project.hash_key
     left join employee_int on abi.employee_id = employee_int.intacct_employee_id
     left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
     where ab.key is not null

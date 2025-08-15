@@ -73,8 +73,8 @@ activitybyproject_te as
         round(coalesce( rate * te.qty,0),2) as cost_project,
         round(case when rate_div >={{ var('rate_threshold') }} then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd
         from timesheet_entry te  
-        inner join project p on te.key_project = p.key
-        left join employee te_e on te.key_employee = te_e.key
+        inner join project p on te.hash_key_project = p.hash_key
+        left join employee te_e on te.hash_key_employee = te_e.hash_key
         left join  forex_filtered ex on (p.currency_iso_code = ex.frm_curr )
             and ex.date = te.dte_entry
              --qualify row_number() over ( partition by te.key  order by ex.date desc ) =1
@@ -109,8 +109,8 @@ p.project_manager_name_lf,
         coalesce( ei.dte_org_exchrate,ei.dte_entry,ei.exp_dte_when_posted) as dte_exch_rate, ei.exp_dte_when_posted as dte_entry,
         1 as qty, 'EXPENSE' as task_name, p.customer_id , p.customer_name , p.practice_id_intacct, p.billing_type,p.root_parent_name, null as notes
         from expense_item ei 
-          inner join project p on ei.key_project = p.key
-          left join employee ei_e on ei.key_employee = ei_e.key
+          inner join project p on ei.hash_key_project = p.hash_key
+          left join employee ei_e on ei.hash_key_employee = ei_e.hash_key
 
 ),
 exchange_matched_ei as 
@@ -195,7 +195,7 @@ apbi_with_project as
         coalesce( apbi.dte_exch_rate,apbi.dte_entry,apbi.ap_dte_when_posted) as dte_exch_rate, apbi.ap_dte_when_posted as dte_entry,
         1 as qty, 'AP' as task_name, p.customer_id , p.customer_name , p.practice_id_intacct, p.billing_type,p.root_parent_name, null as notes
         from ap_bill_item apbi
-          inner join project p on apbi.key_project = p.key 
+          inner join project p on apbi.hash_key_project = p.hash_key 
 ),
 exchange_matched_api as 
 (  select key_project,key_api, key_ap_bill, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,project_manager_email,project_manager_personal_email,client_site_id,
@@ -278,8 +278,8 @@ ccte_with_project as
          ccte.dts_src_created as dte_exch_rate, ccte.cct_dts_src_created as dte_entry,
         1 as qty, 'EXPENSE - CC' as task_name, p.customer_id , p.customer_name , p.practice_id_intacct, p.billing_type,p.root_parent_name, null as notes
         from ccte_entry ccte
-          inner join project p on ccte.key_project = p.key 
-          left join employee ccte_e on ccte.key_employee = ccte_e.key
+          inner join project p on ccte.hash_key_project = p.hash_key 
+          left join employee ccte_e on ccte.hash_key_employee = ccte_e.hash_key
 ),
 exchange_matched_ccte as 
 (  select key_project,key_ccte, key_cc_transaction, location_id_intacct,project_id,location_name,group_name ,entity_name,practice_name,project_manager_name,project_manager_name_lf,project_manager_email,project_manager_personal_email,client_site_id,

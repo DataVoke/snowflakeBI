@@ -11,7 +11,6 @@ WITH
     date_groups             as (select * from {{ ref("date_groups") }}),
     date_groups_types       as (select * from {{ ref("date_groups_types") }}),
     dim_employee            as (select * from {{ ref("dim_employee") }}),
-    currencies_active       as (select * from {{ ref("currencies_active") }}),
     fx_rates_timeseries     as (select * from {{ ref("ref_fx_rates_timeseries") }}),
     timesheet_entry         as (select * from {{ ref("fct_timesheet_entry") }}),
     time_type_phase_codes   as (select * from {{ ref("time_type_phase_codes") }}),
@@ -379,7 +378,7 @@ blank_data as (
             union
             select 0 as pto_hours, d.* from disfun_data d
         ) as te
-        left join users_forecast f on te.key_employee = f.key_employee and te.date_group_year = f.year
+        left join users_forecast f on te.hash_key_employee = f.hash_key_employee and te.date_group_year = f.year
         left join portal_entities entities on te.key_entity = entities.id
     )
 
@@ -433,7 +432,7 @@ blank_data as (
     from combined te
     left join date_groups as dg on te.date_group_id = dg.id
     left join date_groups_types as dgt on te.date_group_type_id = dgt.id
-    left join dim_employee as e on te.key_employee = e.key
+    left join dim_employee as e on te.hash_key_employee = e.hash_key
     left join sage_intacct_employee as intacct_employees on te.employee_id = intacct_employees.employeeid
     left join sage_intacct_location as intacct_locations on intacct_employees.locationid = intacct_locations.locationid
     left join sage_intacct_department as intacct_departments on intacct_employees.departmentkey = intacct_departments.recordno
