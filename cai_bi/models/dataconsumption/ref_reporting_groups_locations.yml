@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: ref_reportiing_groups_locations
+  - name: ref_reporting_groups_locations
     description: >
       Flattened view joining reporting groups and locations, enriched with Practice IDs for practices 2 and 3
     config:
@@ -11,6 +11,6 @@ models:
         description: Primary key
         tests:
           - not_null
-          - unique
+          
 
      

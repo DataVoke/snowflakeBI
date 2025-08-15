@@ -3,8 +3,8 @@ version: 2
 sources:
   - name: psatools
     description: Source for PSA Tools database
-    database: prod_bi_raw
-    schema: cai_prod_psatools
+    database: prod_bi_dw
+    schema: cai_psatools
     tables:
       - name: contracttype
       - name: currency
