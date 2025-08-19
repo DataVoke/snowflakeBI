@@ -1,4 +1,4 @@
-version: 2
+version: 3
 
 models:
   - name: employee
@@ -169,6 +169,8 @@ models:
         data_type: NUMBER(38,17)
       - name: CURRENCY_CODE
         data_type: VARCHAR(20)
+      - name: DIETARY_NEEDS
+        data_type: VARCHAR(5000)
       - name: DISPLAY_NAME
         data_type: VARCHAR(5000)
       - name: DISPLAY_NAME_LF
@@ -219,6 +221,8 @@ models:
         data_type: VARCHAR(5000)
       - name: LAST_NAME
         data_type: VARCHAR(5000)
+      - name: METRIC_BONUS_TYPE
+        data_type: VARCHAR(5000)
       - name: MIDDLE_NAME
         data_type: VARCHAR(5000)
       - name: OTHER_RATE_1
@@ -251,6 +255,8 @@ models:
         data_type: NUMBER(38,17)
       - name: UTILIZATION_TARGET_HOURS
         data_type: NUMBER(38,17)
+      - name: VEST_SIZE
+        data_type: VARCHAR(5000)
       - name: WEEKLY_PAY_RATE
         data_type: NUMBER(38,17)
       - name: WORK_PHONE_COUNTRY
