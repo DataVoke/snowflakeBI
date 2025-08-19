@@ -91,6 +91,7 @@ SELECT
     por.ukg_override_payroll_company_id,
     ukg.ukg_person_id,
     sfc.work_calendar_id,
+    ukg.key_entity as company_id,
 
 --names
     continents.display_name as contintent_name,

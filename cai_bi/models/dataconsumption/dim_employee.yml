@@ -199,6 +199,8 @@ models:
         data_type: BOOLEAN
       - name: CLOSED_WON_GOAL
         data_type: NUMBER(38,17)
+      - name: COMPANY_ID
+        data_type: VARCHAR(5000)
       - name: CURRENCY_CODE
         data_type: VARCHAR(5000)
       - name: DIETERY_NEEDS
