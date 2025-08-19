@@ -1,0 +1,72 @@
+
+version: 1
+
+models:
+  - name: account_team_member
+    description: ''
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: SRC_SYS_KEY
+        data_type: VARCHAR(250)
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_EFF_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EFF_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: BLN_CURRENT
+        data_type: BOOLEAN      
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - not_null
+          - unique
+      - name: HASH_KEY
+        data_type: VARCHAR(32)
+        tests:
+          - not_null
+          - unique
+      - name: LINK
+        data_type: VARCHAR(5000)
+      - name: HASH_LINK
+        data_type: VARCHAR(32)
+      - name: KEY_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_ACCOUNT
+        data_type: VARCHAR(32)
+      - name: KEY_USER
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_USER
+        data_type: VARCHAR(32)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_ACCESS_LEVEL
+        data_type: VARCHAR(5000)
+      - name: CASE_ACCESS_LEVEL
+        data_type: VARCHAR(5000)
+      - name: CONTACT_ACCESS_LEVEL
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SYSTEM_MODSTAMP
+        data_type: TIMESTAMP_TZ(9)
+      - name: OPPORTUNITY_ACCESS_LEVEL
+        data_type: VARCHAR(5000)
+      - name: TEAM_MEMBER_ROLE
+        data_type: VARCHAR(5000)
+      - name: TITLE
+        data_type: VARCHAR(5000)
