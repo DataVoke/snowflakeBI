@@ -15,6 +15,7 @@ with
     ukg_employee        as (select * from {{ source('ukg_pro', 'employee') }} where _fivetran_deleted = false),
     ukg_job             as (select * from {{ source('ukg_pro', 'job') }} where _fivetran_deleted = false),
     ukg_employee_change as (select * from {{ source('ukg_pro', 'employee_change') }} where _fivetran_deleted = false),
+    ukg_custom_fields as (select * from {{ source('ukg_pro', 'employment_field_row') }} where _fivetran_deleted = false),
     ukg_employment      as (
             select 
                 *
@@ -165,7 +166,10 @@ ukg as (
         ukg_employee_job_history.weekly_pay_rate  as weekly_pay_rate,
         ukg_employment.work_phone_country as work_phone_country,
         null as work_phone_number,
-        cast(ukg_employee_job_history.job_effective_date as date) as dte_pay_last_changed
+        cast(ukg_employee_job_history.job_effective_date as date) as dte_pay_last_changed,
+        metric_bonus.field_value as metric_bonus_type,
+        vest_size.field_value as vest_size,
+        dietary_needs.field_value as dietary_needs
     from ukg_employee
     left join ukg_employment on ukg_employee.id = ukg_employment.employee_id and ukg_employee.company_id = ukg_employment.company_id
     left join ukg_job on ukg_employment.primary_job_id = ukg_job.id 
@@ -174,6 +178,11 @@ ukg as (
         and ukg_employee_change.company_id = ukg_employee.company_id
     left join ukg_employee_job_history on ukg_employee_job_history.employee_id = ukg_employee.id and ukg_employee_job_history.company_id = ukg_employee.company_id
     left join ukg_company on ukg_company.id = ukg_employee.company_id
+    left join ukg_custom_fields as pm_qualified on concat(ukg_employee.id,':',ukg_company.code) = pm_qualified.key_value AND pm_qualified.field_name = 'PMQualified'
+    left join ukg_custom_fields as mst on concat(ukg_employee.id,':',ukg_company.code) = mst.key_value AND mst.field_name = 'MissionSupportTeam'
+    left join ukg_custom_fields as metric_bonus on concat(ukg_employee.id,':',ukg_company.code) = metric_bonus.key_value AND metric_bonus.field_name = 'MetricBonus'
+    left join ukg_custom_fields as vest_size on concat(ukg_employee.id,':',ukg_company.code) = vest_size.key_value AND vest_size.field_name = 'VestSize'
+    left join ukg_custom_fields as dietary_needs on concat(ukg_employee.id,':',ukg_company.code) = dietary_needs.key_value AND dietary_needs.field_name = 'DietaryNeeds'
 ),
 portal as (
     select
@@ -298,6 +307,9 @@ portal as (
         null as work_phone_country,
         phone_number_work as work_phone_number,
         null as dte_pay_last_changed,
+        null as metric_bonus_type,
+        null as vest_size,
+        null as dietary_needs
     from portal_users
 ),
 
@@ -423,7 +435,10 @@ sage_intacct as (
         null as weekly_pay_rate,
         null as work_phone_country,
         si_contact.phone_1 as work_phone_number,
-        null as dte_pay_last_changed
+        null as dte_pay_last_changed,
+        null as metric_bonus_type,
+        null as vest_size,
+        null as dietary_needs
     from si_employee
     left join si_location on si_employee.locationkey = si_location.recordno
     left join si_contact on si_contact.recordno = si_employee.contactkey
@@ -550,7 +565,10 @@ salesforce as (
         null as weekly_pay_rate,
         null as work_phone_country,
         sf_contact.mobile_phone as work_phone_number,
-        null as dte_pay_last_changed
+        null as dte_pay_last_changed,
+        null as metric_bonus_type,
+        null as vest_size,
+        null as dietary_needs
     from sf_contact
     left join sf_user on sf_user.id = sf_contact.pse_salesforce_user_c
 ),
@@ -641,6 +659,7 @@ select
     bln_is_resource,
     cast(closed_won_goal as number(19, 4)) as closed_won_goal,
     currency_code,
+    dietary_needs,
     display_name,
     display_name_lf,
     cast(dte_birth as date) as dte_birth,
@@ -666,6 +685,7 @@ select
     job_salary_grade,
     job_title,
     last_name,
+    metric_bonus_type,
     middle_name,
     cast(other_rate_1 as number(19, 4)) as other_rate_1,
     cast(other_rate_2 as number(19, 4)) as other_rate_2,
@@ -682,6 +702,7 @@ select
     ukg_status,
     cast(utilization_target as number(19, 4)) as utilization_target,
     cast(utilization_target_hours as number(19, 4)) as utilization_target_hours,
+    vest_size,
     cast(weekly_pay_rate as number(19, 4)) as weekly_pay_rate,
     work_phone_country,
     work_phone_number,

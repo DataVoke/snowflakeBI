@@ -201,6 +201,8 @@ models:
         data_type: NUMBER(38,17)
       - name: CURRENCY_CODE
         data_type: VARCHAR(5000)
+      - name: DIETERY_NEEDS
+        data_type: VARCHAR(5000)
       - name: DISPLAY_NAME
         data_type: VARCHAR(5000)
       - name: DISPLAY_NAME_LF
@@ -246,6 +248,8 @@ models:
       - name: JOB_TITLE
         data_type: VARCHAR(5000)
       - name: LAST_NAME
+        data_type: VARCHAR(5000)
+      - name: METRIC_BONUS_TYPE
         data_type: VARCHAR(5000)
       - name: MIDDLE_NAME
         data_type: VARCHAR(5000)
@@ -305,3 +309,5 @@ models:
         data_type: NUMBER(18,2)
       - name: TARGET_BILL_AMOUNT_YEAR_LAST
         data_type: NUMBER(18,2)
+      - name: VEST_SIZE
+        data_type: VARCHAR(5000)
