@@ -42,6 +42,10 @@ with
     )
     
 select 
+    current_timestamp as dts_created_at,
+    'activity_by_project' as created_by,
+    current_timestamp as dts_updated_at,
+    'activity_by_project' as updated_by,
     gold_emp.key,
     gold_emp.portal_id,
     gold_emp.intacct_employee_id as employee_id,
