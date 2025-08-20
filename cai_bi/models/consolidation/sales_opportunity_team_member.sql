@@ -2,12 +2,12 @@
     config(
         materialized="table",
         schema="consolidation",
-        alias="account_team_member"
+        alias="sales_opportunity_team_member"
     )
 }}
 
 with
-    sfc_account as (select * from {{ source("salesforce", "account_team_member") }} where _fivetran_deleted = false),
+    sfc_opportunity_team_member as (select * from {{ source("salesforce", "opportunity_team_member") }} where _fivetran_deleted = false),
 
 final as (
     select
@@ -23,21 +23,19 @@ final as (
         md5(id) as hash_key,
         id as link,
         md5(id) as hash_link,
-        account_id as key_account,
-        md5(account_id) as hash_key_account,
+        opportunity_id as key_opportunity,
+        md5(opportunity_id) as hash_key_opportunity,
         user_id as key_user,
         md5(user_id) as hash_key_user,
         created_by_id as src_created_by_id,
         last_modified_by_id as src_modified_by_id,
-        account_access_level as account_access_level,
-        case_access_level as case_access_level,
-        contact_access_level as contact_access_level,
         currency_iso_code as currency_iso_code,
-        created_date as dts_src_created,
-        last_modified_date as dts_src_modified,
-        system_modstamp as dts_system_modstamp,
+        cast(created_date as timestamp_tz) as dts_src_created,
+        cast(last_modified_date as timestamp_tz) as dts_src_modified,
+        cast(system_modstamp as timestamp_tz) as dts_system_modstamp,
+        name as name,
         opportunity_access_level as opportunity_access_level,
         team_member_role as team_member_role,
         title as title
-    from sfc_account
+    from sfc_opportunity_team_member
 ) select * from final

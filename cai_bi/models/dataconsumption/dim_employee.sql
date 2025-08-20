@@ -91,6 +91,7 @@ SELECT
     por.ukg_override_payroll_company_id,
     ukg.ukg_person_id,
     sfc.work_calendar_id,
+    ukg.key_entity as company_id,
 
 --names
     continents.display_name as contintent_name,
@@ -176,6 +177,9 @@ SELECT
     ukg.weekly_pay_rate,
     ukg.work_phone_country,
     por.work_phone_number,
+    nullif(ukg.dietary_needs,'') as dietary_needs,
+    nullif(ukg.metric_bonus_type,'') as metric_bonus_type,
+    nullif(ukg.vest_size,'') as vest_size,
 
     --target billing data
     users_forecasts.bill_rate as target_bill_rate_current,
