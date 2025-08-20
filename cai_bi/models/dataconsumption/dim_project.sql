@@ -122,6 +122,8 @@ select
     int.src_created_by_id,
     int.src_modified_by_id,
     int.term_key,
+    sfc.key as sfc_project_id,
+    pts.key as pts_project_id,
 
     por_dep.record_id as key_department,
     por_loc.record_id as key_location,
