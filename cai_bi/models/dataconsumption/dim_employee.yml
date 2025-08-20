@@ -123,7 +123,7 @@ models:
         data_type: VARCHAR(5000)
       - name: WORK_CALENDAR_ID
         data_type: VARCHAR(5000)
-      - name: CONTINTENT_NAME
+      - name: CONTINENT_NAME
         data_type: VARCHAR(5000)
       - name: COMPANY_NAME
         data_type: VARCHAR(5000)
