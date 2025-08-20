@@ -264,6 +264,10 @@ models:
         data_type: VARCHAR(5000)
       - name: ROOT_PARENT_NAME
         data_type: VARCHAR(5000)
+      - name: SFC_PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: PTS_PROJECT_ID
+        data_type: VARCHAR(5000)
       - name: SHAREPOINT_URL
         data_type: VARCHAR(5000)
       - name: STATUS
