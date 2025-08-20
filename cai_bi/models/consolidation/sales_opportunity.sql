@@ -2,12 +2,12 @@
     config(
         materialized="table",
         schema="consolidation",
-        alias="opportunity"
+        alias="sales_opportunity"
     )
 }}
 
 with
-    sfc_account as (select * from {{ source("salesforce", "opportunity") }} where _fivetran_deleted = false),
+    sfc_opportunity as (select * from {{ source("salesforce", "opportunity") }} where _fivetran_deleted = false),
 
 final as (
     select
@@ -125,5 +125,5 @@ final as (
         subtype_c as subtype_c,
         cast (total_opportunity_quantity as number(38,0)) as total_opportunity_quantity,
         type_c as type_c,
-    from sfc_account
+    from sfc_opportunity
 ) select * from final

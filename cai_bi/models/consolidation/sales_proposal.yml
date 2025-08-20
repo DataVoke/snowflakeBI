@@ -1,0 +1,171 @@
+version: 1
+
+models:
+  - name: sales_proposal
+    description: ''
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: SRC_SYS_KEY
+        data_type: VARCHAR(250)
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_EFF_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EFF_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: BLN_CURRENT
+        data_type: BOOLEAN
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - not_null
+          - unique
+      - name: HASH_KEY
+        data_type: VARCHAR(32)
+        tests:
+          - not_null
+          - unique
+      - name: LINK
+        data_type: VARCHAR(5000)
+      - name: HASH_LINK
+        data_type: VARCHAR(32)
+      - name: KEY_ACCOUNT_ID
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_ACCOUNT_ID
+        data_type: VARCHAR(32)
+      - name: KEY_ACCOUNT_OWNER
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_ACCOUNT_OWNER
+        data_type: VARCHAR(32)
+      - name: KEY_APPROVER_1
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_APPROVER_1
+        data_type: VARCHAR(32)
+      - name: KEY_APPROVER_2
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_APPROVER_2
+        data_type: VARCHAR(32)
+      - name: KEY_APPROVER_3
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_APPROVER_3
+        data_type: VARCHAR(32)
+      - name: KEY_APPROVER_4
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_APPROVER_4
+        data_type: VARCHAR(32)
+      - name: KEY_APPROVER_5
+        data_type: VARCHAR(32)
+      - name: HASH_KEY_APPROVER_5
+        data_type: VARCHAR(32)
+      - name: KEY_APPROVER_6
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_APPROVER_6
+        data_type: VARCHAR(32)
+      - name: KEY_APPROVER_7
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_APPROVER_7
+        data_type: VARCHAR(32)
+      - name: KEY_APPROVER_8
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_APPROVER_8
+        data_type: VARCHAR(32)
+      - name: KEY_APPROVER_9
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_APPROVER_9
+        data_type: VARCHAR(32)
+      - name: KEY_APPROVER_10
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_APPROVER_10
+        data_type: VARCHAR(32)
+      - name: KEY_CONTACT
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_CONTACT
+        data_type: VARCHAR(32)
+      - name: KEY_OPPORTUNITY
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_OPPORTUNITY
+        data_type: VARCHAR(32)
+      - name: KEY_OWNER_ID
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_OWNER_ID
+        data_type: VARCHAR(32)
+      - name: KEY_PRICEBOOK
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PRICEBOOK
+        data_type: VARCHAR(32)
+      - name: KEY_PROJECT
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PROJECT
+        data_type: VARCHAR(32)
+      - name: KEY_REGIONAL_MANAGER
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_REGIONAL_MANAGER
+        data_type: VARCHAR(32)
+      - name: KEY_REVIEWER_1
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_REVIEWER_1
+        data_type: VARCHAR(32)
+      - name: KEY_REVIEWER_2
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_REVIEWER_2
+        data_type: VARCHAR(32)
+      - name: KEY_REVIEWER_3
+        data_type: VARCHAR(32)
+      - name: HASH_KEY_REVIEWER_3
+        data_type: VARCHAR(5000)
+      - name: KEY_REVIEWER_4
+        data_type: VARCHAR(32)
+      - name: HASH_KEY_REVIEWER_4
+        data_type: VARCHAR(5000)
+      - name: KEY_REVIEWER_5
+        data_type: VARCHAR(32)
+      - name: HASH_KEY_REVIEWER_5
+        data_type: VARCHAR(5000)
+      - name: KEY_VICE_PRESIDENT
+        data_type: VARCHAR(32)
+      - name: HASH_KEY_VICE_PRESIDENT
+        data_type: VARCHAR(5000)
+      - name: ESTIMATE_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: AMT_GRAND_TOTAL
+        data_type: NUMBER(38,17)
+      - name: AMT_PO_AWARDED
+        data_type: NUMBER(38,17)
+      - name: BLN_IS_SYNCING
+        data_type: BOOLEAN
+      - name: BUSINESS_AREAS
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SYSTEM_MODSTAMP
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTE_INTERNAL_APPROVAL
+        data_type: DATE
+      - name: NAME
+        data_type: VARCHAR(5000)
+      - name: PST_ASSIST
+        data_type: BOOLEAN
+      - name: QUOTE_NUMBER
+        data_type: VARCHAR(5000)
+      - name: STATUS
+        data_type: VARCHAR(5000)
+      - name: TYPE_OF_REQUEST
+        data_type: VARCHAR(5000)

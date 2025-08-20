@@ -2,7 +2,7 @@
     config(
         materialized="table",
         schema="consolidation",
-        alias="account"
+        alias="sales_account"
     )
 }}
 

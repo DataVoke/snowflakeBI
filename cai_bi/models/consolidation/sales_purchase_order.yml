@@ -1,7 +1,7 @@
 version: 1
 
 models:
-  - name: opportunity_team_member
+  - name: sales_purchase_order
     description: ''
     config:
       contract:
@@ -37,20 +37,20 @@ models:
         data_type: VARCHAR(5000)
       - name: HASH_LINK
         data_type: VARCHAR(32)
-      - name: KEY_OPPORTUNITY
+      - name: KEY_PROPOSAL
         data_type: VARCHAR(5000)
-      - name: HASH_KEY_OPPORTUNITY
-        data_type: VARCHAR(32)
-      - name: KEY_USER
-        data_type: VARCHAR(5000)
-      - name: HASH_KEY_USER
+      - name: HASH_KEY_PROPOSAL
         data_type: VARCHAR(32)
       - name: SRC_CREATED_BY_ID
         data_type: VARCHAR(5000)
       - name: SRC_MODIFIED_BY_ID
         data_type: VARCHAR(5000)
+      - name: AMOUNT
+        data_type: NUMBER(38,17)
       - name: CURRENCY_ISO_CODE
         data_type: VARCHAR(5000)
+      - name: DTE
+        data_type: DATE
       - name: DTS_SRC_CREATED
         data_type: TIMESTAMP_TZ(9)
       - name: DTS_SRC_MODIFIED
@@ -59,9 +59,11 @@ models:
         data_type: TIMESTAMP_TZ(9)
       - name: NAME
         data_type: VARCHAR(5000)
-      - name: OPPORTUNITY_ACCESS_LEVEL
+      - name: NOTES
         data_type: VARCHAR(5000)
-      - name: TEAM_MEMBER_ROLE
+      - name: PURCHASE_ORDER_NUMBER
         data_type: VARCHAR(5000)
       - name: TITLE
+        data_type: VARCHAR(5000)
+      - name: TYPE
         data_type: VARCHAR(5000)
