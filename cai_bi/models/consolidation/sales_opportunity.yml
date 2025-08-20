@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: opportunity
+  - name: sales_opportunity
     description: ''
     config:
       contract:
