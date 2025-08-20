@@ -94,7 +94,7 @@ SELECT
     ukg.key_entity as company_id,
 
 --names
-    continents.display_name as contintent_name,
+    continents.display_name as continent_name,
     companies.display_name as company_name,
     contractor_companies.display_name as contractor_company_name,
     countries.display_name as country_name,
