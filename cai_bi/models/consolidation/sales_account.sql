@@ -58,7 +58,6 @@ final as (
         msa_in_place_c as bln_msa_in_place,
         currency_iso_code as currency_iso_code,
         description as description,
-        division_c as division,
         last_activity_date as dte_last_activity,
         created_date as dts_src_created,
         last_modified_date as dts_src_modified,

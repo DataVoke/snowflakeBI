@@ -17,6 +17,7 @@ sources:
       - name: entities_benefit_rates
       - name: ethnic_backgrounds
       - name: genders
+      - name: job_salary_grades
       - name: labor_categories
       - name: labor_categories_rates
       - name: locations

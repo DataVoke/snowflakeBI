@@ -107,8 +107,6 @@ models:
         data_type: VARCHAR(5000)
       - name: DESCRIPTION
         data_type: VARCHAR(5000)
-      - name: DIVISION
-        data_type: VARCHAR(5000)
       - name: DTE_LAST_ACTIVITY
         data_type: DATE
       - name: DTS_SRC_CREATED

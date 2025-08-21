@@ -107,6 +107,8 @@ models:
         data_type: VARCHAR(5000)
       - name: REGION_ID
         data_type: VARCHAR(5000)
+      - name: JOB_SALARY_GRADE_ID
+        data_type: VARCHAR(5000)
       - name: SALESFORCE_CONTACT_ID
         data_type: VARCHAR(5000)
       - name: SALESFORCE_USER_ID
@@ -201,6 +203,8 @@ models:
         data_type: NUMBER(38,17)
       - name: COMPANY_ID
         data_type: VARCHAR(5000)
+      - name: COMPANY_CODE
+        data_type: VARCHAR(5000)
       - name: CURRENCY_CODE
         data_type: VARCHAR(5000)
       - name: DIETERY_NEEDS
@@ -246,6 +250,8 @@ models:
       - name: INTACCT_CONTACT_NAME
         data_type: VARCHAR(5000)
       - name: JOB_SALARY_GRADE
+        data_type: NUMBER(38,17)
+        name: JOB_SALARY_GRADE_NAME
         data_type: VARCHAR(5000)
       - name: JOB_TITLE
         data_type: VARCHAR(5000)
