@@ -91,6 +91,8 @@ models:
         data_type: VARCHAR(5000)
       - name: INTACCT_OVERRIDE_ENTITY_ID
         data_type: VARCHAR(5000)
+      - name: JOB_SALARY_GRADE_ID
+        data_type: VARCHAR(5000)
       - name: LABOR_CATEGORY_ID
         data_type: VARCHAR(5000)
       - name: LOCATION_ID
@@ -214,8 +216,6 @@ models:
       - name: HOURLY_PAY_RATE
         data_type: NUMBER(38,17)
       - name: INTACCT_CONTACT_NAME
-        data_type: VARCHAR(5000)
-      - name: JOB_SALARY_GRADE
         data_type: VARCHAR(5000)
       - name: JOB_TITLE
         data_type: VARCHAR(5000)

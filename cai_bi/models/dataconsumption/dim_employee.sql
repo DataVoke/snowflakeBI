@@ -33,8 +33,9 @@ with
     practices            as (select * from {{ source('portal', 'practices') }} where _fivetran_deleted = false),
     termination_types    as (select * from {{ source('portal', 'termination_types') }} where _fivetran_deleted = false),
     users_forecasts      as (select * from {{ source('portal', 'users_forecasts') }} where _fivetran_deleted = false),
-    base_teams      as (select * from {{ source('portal', 'base_teams') }} where _fivetran_deleted = false)
-
+    base_teams           as (select * from {{ source('portal', 'base_teams') }} where _fivetran_deleted = false),
+    job_salary_grades    as (select * from {{ source('portal', 'job_salary_grades') }} where _fivetran_deleted = false),
+    ukg_companies        as (select * from {{ source('ukg_pro', 'company') }} where _fivetran_deleted = false)
 SELECT 
     current_timestamp as dts_created_at,
     '{{ this.name }}' as created_by,
@@ -92,6 +93,7 @@ SELECT
     ukg.ukg_person_id,
     sfc.work_calendar_id,
     ukg.key_entity as company_id,
+    ukg.job_salary_grade_id,
 
 --names
     continents.display_name as continent_name,
@@ -119,6 +121,7 @@ SELECT
     termination_types.display_name as termination_type_name,
     termination_types.addressable_type as termination_addressable_type,
     base_teams.display_name as base_team_name,
+    job_salary_grades.display_name as job_salary_grade_name,
 
 -- other fields
     ukg.address_city,
@@ -134,6 +137,7 @@ SELECT
     por.bln_pm_qualified,
     sfc.bln_is_resource,
     sfc.closed_won_goal,
+    ukg_companies.code as company_code,
     ukg.currency_code,
     ukg.display_name,
     ukg.display_name_lf,
@@ -155,7 +159,7 @@ SELECT
     ukg.home_phone_country,
     ukg.hourly_pay_rate,
     sin.intacct_contact_name,
-    ukg.job_salary_grade,
+    job_salary_grades.salary_grade as job_salary_grade,
     ukg.job_title,
     ukg.last_name,
     ukg.middle_name,
@@ -225,4 +229,6 @@ left join termination_types as termination_types on ukg.termination_type_id = te
 left join users_forecasts as users_forecasts on por.key = users_forecasts.user_id and users_forecasts.timeframe_id = year(current_date())
 left join users_forecasts as users_forecasts_last_year on por.key = users_forecasts_last_year.user_id and users_forecasts_last_year.timeframe_id = year(current_date())-1
 left join base_teams as base_teams on base_teams.ukg_id = ukg.key_base_team
+left join job_salary_grades as job_salary_grades on ukg.job_salary_grade_id = job_salary_grades.id
+left join ukg_companies as ukg_companies on ukg.key_entity = ukg_companies.id
 where ukg.src_sys_key = 'ukg'
