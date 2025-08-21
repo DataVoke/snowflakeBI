@@ -159,7 +159,7 @@ SELECT
     ukg.home_phone_country,
     ukg.hourly_pay_rate,
     sin.intacct_contact_name,
-    job_salary_grades.salary_grade,
+    job_salary_grades.salary_grade as job_salary_grade,
     ukg.job_title,
     ukg.last_name,
     ukg.middle_name,
