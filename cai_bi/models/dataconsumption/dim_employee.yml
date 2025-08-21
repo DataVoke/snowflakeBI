@@ -249,10 +249,10 @@ models:
         data_type: NUMBER(38,17)
       - name: INTACCT_CONTACT_NAME
         data_type: VARCHAR(5000)
-      - name: JOB_SALARY_GRADE
-        data_type: NUMBER(38,17)
-        name: JOB_SALARY_GRADE_NAME
-        data_type: VARCHAR(5000)
+      # - name: JOB_SALARY_GRADE
+      #   data_type: NUMBER(38,17)
+      #   name: JOB_SALARY_GRADE_NAME
+      #   data_type: VARCHAR(5000)
       - name: JOB_TITLE
         data_type: VARCHAR(5000)
       - name: LAST_NAME
