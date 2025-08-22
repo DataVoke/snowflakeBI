@@ -129,7 +129,7 @@ select
     por_loc.record_id as key_location,
     coalesce(por_ent.record_id,dim_employee.key_entity) as key_entity,
     por_grp.record_id as key_group,
-    por_pract.record_id as key_practice,
+    ifnull(por_pract.record_id, por_pract_bkup.record_id) as key_practice,
     employee_ukg.key as key_project_manager,
     por_pract_area.record_id as key_practice_area,
 
@@ -137,7 +137,7 @@ select
     por_loc.display_name as location_name,
     coalesce(por_ent.display_name,dim_employee.entity_name ) as entity_name,
     por_grp.display_name as group_name,
-    por_pract.display_name as practice_name,
+   ifnull(por_pract.display_name, por_pract_bkup.display_name) as practice_name,
     employee_ukg.display_name as project_manager_name,
     employee_ukg.display_name_lf as project_manager_name_lf,
     por_pract_area.display_name as practice_area_name,
@@ -227,8 +227,9 @@ left join employee_ukg client_manager_ukg on employee_sfc.hash_link = client_man
 left join employee_por asst_manager_por on pts.assistant_project_manager_id = asst_manager_por.key
 left join por_dep on int.department_id = por_dep.intacct_id
 left join por_grp on sfc.group_id = por_grp.salesforce_id
-left join por_pract on por_pract.salesforce_id = sfc.practice_id
 left join por_pract_area on int.department_id = por_pract_area.intacct_id
+left join por_pract on por_pract_area.practice_id = por_pract.id
+left join por_pract as por_pract_bkup on por_pract_bkup.salesforce_id = sfc.practice_id
 left join por_loc on por_loc.intacct_id = int.location_id
 left join por_region on por_region.id = por_loc.region_id
 left join locations_intacct on int.project_location_key = locations_intacct.recordno
