@@ -144,7 +144,7 @@ ukg as (
         ukg_employee.home_phone_country as home_phone_country,
         ukg_employee_job_history.hourly_pay_rate as hourly_pay_rate,
         null as intacct_contact_name,
-        ukg_employee_job_history.salary_grade as job_salary_grade_id,
+        ifnull(nullif(ukg_employee_job_history.salary_grade,''),ifnull(ukg_compensation.job_salary_grade,'')) as job_salary_grade_id,
         ukg_employment.job_title as job_title,
         ukg_employee.last_name as last_name,
         ukg_employee.middle_name as middle_name,
