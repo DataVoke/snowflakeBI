@@ -107,7 +107,7 @@ select
     sfc.owner_id,
     int.parent_key,
     pts.portal_project_id,
-    sfc.practice_id_intacct,
+    ifnull(por_pract.intacct_id, por_pract_bkup.intacct_id) as practice_id_intacct,
     int.project_dept_key,
     int.project_id,
     int.project_location_key,
