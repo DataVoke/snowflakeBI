@@ -89,7 +89,7 @@ sources:
       - name: pse_project_task_c
       - name: pse_proj_c
       - name: pse_rate_card_c
-      - name: pse_rate_card_set
+      - name: pse_rate_card_set_c
       - name: pse_rate_card_set_junction_c
       - name: pse_region_c
       - name: pse_resource_request_c
