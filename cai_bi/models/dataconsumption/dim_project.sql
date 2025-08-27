@@ -219,7 +219,7 @@ select
     pts.travel_rate
 from int
 left join pts on int.hash_link = pts.hash_link
-left join sfc on sfc.hash_link = pts.hash_link
+left join sfc on int.hash_link = sfc.hash_link
 left join employee_int on int.project_manager_id = employee_int.intacct_employee_id
 left join employee_sfc on sfc.client_manager_id = employee_sfc.key
 left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
