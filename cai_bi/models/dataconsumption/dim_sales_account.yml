@@ -1,0 +1,167 @@
+version: 2
+
+models:
+  - name: dim_sales_account
+    tests:
+      - dim_sales_account_row_count_matches_sources:
+          source: ref('sales_account')
+    columns:
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - unique
+          - not_null        
+      - name: KEY
+        data_type: VARCHAR(5000)
+      - name: KEY_CLIENT_MANAGER
+        data_type: VARCHAR(5000)
+      - name: KEY_ACCOUNT_MANAGER
+        data_type: VARCHAR(5000)
+      - name: KEY_LOCATION
+        data_type: VARCHAR(5000)
+      - name: KEY_REGION
+        data_type: VARCHAR(5000)
+      - name: KEY_COUNTRY
+        data_type: VARCHAR(5000)
+      - name: KEY_STATE
+        data_type: VARCHAR(5000)
+      - name: KEY_OWNER
+        data_type: VARCHAR(5000)
+      - name: KEY_PARENT_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE
+        data_type: VARCHAR(5000)
+      - name: KEY_ACCOUNT_COORDINATOR
+        data_type: VARCHAR(5000)
+      - name: KEY_RATE_CARD_SET
+        data_type: VARCHAR(5000)
+      - name: KEY_TOP_LEVEL_PARENT_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: EXTERNAL_ID
+        data_type: VARCHAR(5000)
+      - name: INTACCT_CUSTOMER_ID
+        data_type: VARCHAR(5000)
+      - name: INTACCT_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_SOURCE
+        data_type: VARCHAR(5000)
+      - name: ANNUAL_REVENUE
+        data_type: VARCHAR(5000)
+      - name: BILLING_CITY
+        data_type: VARCHAR(5000)
+      - name: BILLING_COUNTRY
+        data_type: VARCHAR(5000)
+      - name: BILLING_COUNTRY_CODE
+        data_type: VARCHAR(5000)
+      - name: BILLING_POSTAL_CODE
+        data_type: VARCHAR(5000)
+      - name: BILLING_STATE
+        data_type: VARCHAR(5000)
+      - name: BILLING_STATE_CODE
+        data_type: VARCHAR(5000)
+      - name: BILLING_STREET
+        data_type: VARCHAR(5000)
+      - name: BLN_IS_CONFIDENTIAL_ACCOUNT
+        data_type: BOOLEAN
+      - name: BLN_IS_KEY_ACCOUNT
+        data_type: BOOLEAN
+      - name: BLN_MSA_IN_PLACE
+        data_type: BOOLEAN
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: DTE_LAST_ACTIVITY
+        data_type: DATE
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_LTZ
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_LTZ
+      - name: DTS_SYSTEM_MODSTAMP
+        data_type: TIMESTAMP_LTZ
+      - name: FAX
+        data_type: VARCHAR(5000)
+      - name: GRADE
+        data_type: VARCHAR(5000)
+      - name: INDUSTRY
+        data_type: VARCHAR(5000)
+      - name: KARE_DESIGNATION
+        data_type: VARCHAR(5000)
+      - name: NAME
+        data_type: VARCHAR(5000)
+      - name: NUMBER_OF_EMPLOYEES
+        data_type: NUMBER(38,0)
+      - name: PAYMENT_TERMS
+        data_type: VARCHAR(5000)
+      - name: PHONE
+        data_type: VARCHAR(5000)
+      - name: RATING
+        data_type: VARCHAR(5000)
+      - name: TYPE  
+        data_type: VARCHAR(5000)
+      - name: WEBSITE
+        data_type: VARCHAR(5000)
+      - name: PARENT_ACCOUNT_NAME
+        data_type: VARCHAR(5000)
+      - name: TOP_LEVEL_PARENT_ACCOUNT_NAME
+        data_type: VARCHAR(5000)
+      - name: COUNTRY_NAME
+        data_type: VARCHAR(5000)
+      - name: LOCATION_NAME
+        data_type: VARCHAR(5000)
+      - name: REGION_NAME
+        data_type: VARCHAR(5000)
+      - name: STATE_NAME
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_NAME
+        data_type: VARCHAR(5000)
+      - name: RATE_CARD_SET_NAME
+        data_type: VARCHAR(5000)
+      - name: CLIENT_MANAGER_DISPLAY_NAME
+        data_type: VARCHAR(5000)
+      - name: CLIENT_MANAGER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: CLIENT_MANAGER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_MANAGER_NAME
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_MANAGER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_MANAGER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: OWNER_MANAGER_NAME
+        data_type: VARCHAR(5000)
+      - name: OWNER_MANAGER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: OWNER_MANAGER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_COORDINATOR_NAME
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_COORDINATOR_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_COORDINATOR_EMAIL
+        data_type: VARCHAR(5000)
+      - name: SFC_CLIENT_MANAGER_USER_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_OWNER_USER_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_KEY_ACCOUNT_MANAGER_USER_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_ACCOUNT_COORDINATOR_USER_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_PRACTICE_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_LOCATION_ID
+        data_type: VARCHAR(5000)
