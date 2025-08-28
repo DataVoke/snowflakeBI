@@ -1,4 +1,4 @@
-version: 2
+version: 1
 
 models:
   - name: dim_sales_account
@@ -18,9 +18,7 @@ models:
         data_type: VARCHAR(5000)
         tests:
           - unique
-          - not_null        
-      - name: KEY
-        data_type: VARCHAR(5000)
+          - not_null  
       - name: KEY_CLIENT_MANAGER
         data_type: VARCHAR(5000)
       - name: KEY_ACCOUNT_MANAGER
