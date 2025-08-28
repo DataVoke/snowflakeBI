@@ -9,9 +9,10 @@ with
         select * from {{ ref('sales_account') }} where src_sys_key = 'sfc' 
     ),
     ukg_employees as (
-        select sfc.salesforce_user_id as sfc_user_id, sfc.key as sfc_contact_id, ukg.* 
+        select ifnull(sfc.salesforce_user_id, por.salesforce_user_id) as sfc_user_id, por.salesforce_user_id, ifnull(sfc.key, por.contact_id) as sfc_contact_id, ukg.* 
         from {{ ref('employee') }} ukg
         left join {{ ref('employee') }} as sfc on ukg.link = sfc.link and sfc.src_sys_key = 'sfc'
+        left join {{ ref('employee') }} as por on ukg.link = por.link and por.src_sys_key = 'por'
         where ukg.src_sys_key = 'ukg'
     ),
     silver_rcs as (
