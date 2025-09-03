@@ -53,6 +53,14 @@ models:
         data_type: VARCHAR(5000)
       - name: HASH_KEY_PRICEBOOK_ENTRY
         data_type: VARCHAR(32)
+      - name: KEY_PRACTICE
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PRACTICE
+        data_type: VARCHAR(32)
+      - name: KEY_PRACTICE_AREA
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PRACTICE_AREA
+        data_type: VARCHAR(32)
       - name: SRC_CREATED_BY_ID
         data_type: VARCHAR(5000)
       - name: SRC_MODIFIED_BY_ID
@@ -76,4 +84,10 @@ models:
       - name: TOTAL_PRICE_OPPORTUNITY
         data_type: NUMBER(38,17)
       - name: UNIT_PRICE
+        data_type: NUMBER(38,17)
+      - name: SUBTOTAL
+        data_type: NUMBER(38,17)
+      - name: TOTAL_PRICE
+        data_type: NUMBER(38,17)
+      - name: LIST_PRICE
         data_type: NUMBER(38,17)
