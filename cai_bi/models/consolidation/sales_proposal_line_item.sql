@@ -31,6 +31,10 @@ final as (
         md5(product_2_id) as hash_key_product,
         pricebook_entry_id as key_pricebook_entry,
         md5(pricebook_entry_id) as hash_key_pricebook_entry,
+        practice_c as key_practice,
+        md5(practice_c) as hash_key_practice,
+        practice_area_c as key_practice_area,
+        md5(practice_area_c) as hash_key_practice_area,
         created_by_id as src_created_by_id,
         last_modified_by_id as src_modified_by_id,
         currency_iso_code as currency_iso_code,
@@ -43,5 +47,8 @@ final as (
         total_price_location_c as total_price_location,
         total_price_opportunity_c as total_price_opportunity,
         unit_price as unit_price,
+        subtotal as subtotal,
+        total_price as total_price,
+        list_price as list_price
     from sfc_proposal_line_item
 ) select * from final
