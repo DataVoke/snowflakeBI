@@ -1,0 +1,291 @@
+version: 1
+
+models:
+  - name: dim_sales_opportunity
+    tests:
+      - dim_sales_opportunity_row_count_matches_sources:
+          source: ref('sales_opportunity')
+    columns:
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - unique
+          - not_null  
+      - name: KEY_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: KEY_CLIENT_SITE_MANAGER
+        data_type: VARCHAR(5000)
+      - name: KEY_CONTINENT
+        data_type: VARCHAR(5000)
+      - name: KEY_COUNTRY
+        data_type: VARCHAR(5000)
+      - name: KEY_ESTIMATE
+        data_type: VARCHAR(5000)
+      - name: KEY_IDENTIFIED_BY
+        data_type: VARCHAR(5000)
+      - name: KEY_LOCATION
+        data_type: VARCHAR(5000)
+      - name: KEY_OWNER
+        data_type: VARCHAR(5000)
+      - name: KEY_PARENT_OPPORTUNITY
+        data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE
+        data_type: VARCHAR(5000)
+      - name: KEY_PROJECT
+        data_type: VARCHAR(5000)
+      - name: KEY_PROPOSAL
+        data_type: VARCHAR(5000)
+      - name: KEY_RATE_CARD_SET
+        data_type: VARCHAR(5000)
+      - name: KEY_REGION
+        data_type: VARCHAR(5000)
+      - name: KEY_REGIONAL_MANAGER
+        data_type: VARCHAR(5000)
+      - name: KEY_STATE
+        data_type: VARCHAR(5000)
+      - name: KEY_TOP_LEVEL_PARENT_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: CAMPAIGN_ID
+        data_type: VARCHAR(5000)
+      - name: CONTACT_ID
+        data_type: VARCHAR(5000)
+      - name: EXTERNAL_ID
+        data_type: VARCHAR(5000)
+      - name: LAST_AMOUNT_CHANGED_HISTORY_ID
+        data_type: VARCHAR(5000)
+      - name: LAST_CLOSE_DATE_CHANGED_HISTORY_ID
+        data_type: VARCHAR(5000)
+      - name: PRICE_BOOK_ENTRY_ID
+        data_type: VARCHAR(5000)
+      - name: PORTAL_PROJECT_ID_C
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_LOCATION_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_PRACTICE_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_IDENTIFIED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_OWNER_ID
+        data_type: VARCHAR(5000)
+      - name: AMT_TOTAL_PRICE
+        data_type: NUMBER(38,17)
+      - name: AMT_CHILD_OPPORTUNITIES
+        data_type: NUMBER(38,17)
+      - name: AMT_CHILD_PO_AWARDED
+        data_type: NUMBER(38,17)
+      - name: AMT_CONTINGENCY_BUDGET
+        data_type: NUMBER(38,17)
+      - name: AMT_EXPECTED_REVENUE
+        data_type: NUMBER(38,17)
+      - name: AMT_LABOR_BUDGET
+        data_type: NUMBER(38,17)
+      - name: AMT_OTHER_BUDGET
+        data_type: NUMBER(38,17)
+      - name: AMT_PO_AWARDED
+        data_type: NUMBER(38,17)
+      - name: AMT_SUBCONTRACTOR_BUDGET
+        data_type: NUMBER(38,17)
+      - name: AMT_TOTAL_PRICE_OPPORTUNITY
+        data_type: NUMBER(38,17)
+      - name: AMT_DISCOUNT_OPPORTUNITY
+        data_type: NUMBER(38,17)
+      - name: PERC_DISCOUNT_OPPORTUNITY
+        data_type: NUMBER(38,17)
+      - name: AMT_TOTAL_PRICE_LOCATION
+        data_type: NUMBER(38,17)
+      - name: AMT_DISCOUNT_LOCATION
+        data_type: NUMBER(38,17)
+      - name: PERC_DISCOUNT_LOCATION
+        data_type: NUMBER(38,17)
+      - name: AMT_TRAVEL_BUDGET
+        data_type: NUMBER(38,17)
+      - name: BLN_BUDGET_CONFIRMED
+        data_type: BOOLEAN
+      - name: BLN_CURRENCY_CONFIRMED
+        data_type: BOOLEAN
+      - name: BLN_HAS_BYPASS_PO_OR_LOI
+        data_type: BOOLEAN
+      - name: BLN_HAS_LETTER_OF_INTENT_RECEIVED
+        data_type: BOOLEAN
+      - name: BLN_HAS_OPEN_ACTIVITY
+        data_type: BOOLEAN
+      - name: BLN_HAS_OPPORTUNITY_LINE_ITEM
+        data_type: BOOLEAN
+      - name: BLN_HAS_OVERDUE_TASK
+        data_type: BOOLEAN
+      - name: BLN_HAS_SIGNED_PURCHASE_ORDER
+        data_type: BOOLEAN
+      - name: BLN_HAS_SIGNED_SLA
+        data_type: BOOLEAN
+      - name: BLN_IS_CHANGE_REQUEST
+        data_type: BOOLEAN
+      - name: BLN_IS_CLOSED
+        data_type: BOOLEAN
+      - name: BLN_IS_CONVERTED
+        data_type: BOOLEAN
+      - name: BLN_IS_COVID_19_VACCINE
+        data_type: BOOLEAN
+      - name: BLN_IS_CREATED_FROM_LEAD
+        data_type: BOOLEAN
+      - name: BLN_IS_MVP
+        data_type: BOOLEAN
+      - name: BLN_IS_ON_HOLD
+        data_type: BOOLEAN
+      - name: BLN_IS_WON
+        data_type: BOOLEAN
+      - name: BV_CAI_PROPOSAL_NO
+        data_type: VARCHAR(5000)
+      - name: CAI_TEAM_ENGAGED_IN_PURSUIT
+        data_type: VARCHAR(5000)
+      - name: CLOSED_WON_REASON
+        data_type: VARCHAR(5000)
+      - name: CONTRACT_TYPE
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: DTE_CLOSE
+        data_type: DATE
+      - name: DTE_CUSTOMER_PO_AWARDED
+        data_type: DATE
+      - name: DTE_ESTIMATED_PROJECT_END
+        data_type: DATE
+      - name: DTE_ESTIMATED_PROJECT_START
+        data_type: DATE
+      - name: DTE_LAST_ACTIVITY
+        data_type: DATE
+      - name: DTE_PROPOSAL_SUBMITTED
+        data_type: DATE
+      - name: DTE_STAGE_LAST_UPDATED
+        data_type: DATE
+      - name: DTS_LAST_STAGE_CHANGE
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SYSTEM_MODSTAMP
+        data_type: TIMESTAMP_TZ(9)
+      - name: DURATION_CLOSED_WON
+        data_type: NUMBER(38,0)
+      - name: DURATION_INTERVIEW_PRESENTATION
+        data_type: NUMBER(38,0)
+      - name: DURATION_NEGOTIATION_REVIEW
+        data_type: NUMBER(38,0)
+      - name: DURATION_PROPOSAL_APPROVED
+        data_type: NUMBER(38,0)
+      - name: DURATION_PROPOSAL_DEVELOPMENT
+        data_type: NUMBER(38,0)
+      - name: DURATION_PROPOSAL_SUBMITTED
+        data_type: NUMBER(38,0)
+      - name: DURATION_PROSPECTING_QUALIFICATION
+        data_type: NUMBER(38,0)
+      - name: DURATION_SOLUTION_DEVELOPMENT
+        data_type: NUMBER(38,0)
+      - name: FISCAL
+        data_type: VARCHAR(50)
+      - name: FISCAL_QUARTER
+        data_type: NUMBER(38,0)
+      - name: FISCAL_YEAR
+        data_type: NUMBER(38,0)
+      - name: FORECAST_CATEGORY
+        data_type: VARCHAR(5000)
+      - name: FORECAST_CATEGORY_NAME
+        data_type: VARCHAR(5000)
+      - name: KARE
+        data_type: VARCHAR(5000)
+      - name: LEAD_SOURCE
+        data_type: VARCHAR(5000)
+      - name: LOSS_REASON_C
+        data_type: VARCHAR(5000)
+      - name: LOSS_REASON_DESCRIPTION_C
+        data_type: VARCHAR(5000)
+      - name: NAME
+        data_type: VARCHAR(5000)
+      - name: NEXT_STEP
+        data_type: VARCHAR(5000)
+      - name: OR_OE_C
+        data_type: VARCHAR(5000)
+      - name: PORTAL_PROJECT_CODE_C
+        data_type: VARCHAR(5000)
+      - name: PROBABILITY
+        data_type: NUMBER(38,0)
+      - name: SCOPE_TYPE_C
+        data_type: VARCHAR(5000)
+      - name: STAGE_NAME
+        data_type: VARCHAR(5000)
+      - name: SUBTYPE_C
+        data_type: VARCHAR(5000)
+      - name: TOTAL_OPPORTUNITY_QUANTITY
+        data_type: NUMBER(38,0)
+      - name: TYPE_C
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_NAME
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_HIERARCHY_PATH
+        data_type: VARCHAR(5000)
+      - name: TOP_LEVEL_PARENT_ACCOUNT_NAME
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_GRADE
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_PAYMENT_TERMS
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_NAME
+        data_type: VARCHAR(5000)
+      - name: STATE_NAME
+        data_type: VARCHAR(5000)
+      - name: COUNTRY_NAME
+        data_type: VARCHAR(5000)
+      - name: LOCATION_NAME
+        data_type: VARCHAR(5000)
+      - name: REGION_NAME
+        data_type: VARCHAR(5000)
+      - name: CONTINENT_NAME
+        data_type: VARCHAR(5000)
+      - name: ESTIMATE_NAME
+        data_type: VARCHAR(5000)
+      - name: IDENTIFIED_BY_NAME
+        data_type: VARCHAR(5000)
+      - name: IDENTIFIED_BY_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: IDENTIFIED_BY_EMAIL
+        data_type: VARCHAR(5000)
+      - name: REGIONAL_MANAGER_NAME
+        data_type: VARCHAR(5000)
+      - name: REGIONAL_MANAGER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: REGIONAL_MANAGER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: OWNER_NAME
+        data_type: VARCHAR(5000)
+      - name: OWNER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: OWNER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: CLIENT_SITE_MANAGER_NAME
+        data_type: VARCHAR(5000)
+      - name: CLIENT_SITE_MANAGER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: CLIENT_SITE_MANAGER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: PROJECT_NAME
+        data_type: VARCHAR(5000)
+      - name: RATE_CARD_SET_NAME
+        data_type: VARCHAR(5000)
