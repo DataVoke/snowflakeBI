@@ -90,6 +90,7 @@ select
     emp_client_manager.key as key_client_site_manager,
     por_continents.record_id as key_continent,
     por_countries.record_id as key_country,
+    por_entities.record_id as key_entity,
     silver_oppty.key_estimate,
     emp_identified_by.key as key_identified_by,
     por_locations.record_id as key_location,
@@ -189,6 +190,7 @@ select
     silver_oppty.loss_reason_c,
     silver_oppty.loss_reason_description_c,
     silver_oppty.name,
+    parent_oppty.name as parent_opportunity_name,
     silver_oppty.next_step,
     silver_oppty.or_oe_c,
     silver_oppty.portal_project_code_c,
@@ -206,6 +208,10 @@ select
     ifnull(por_practices.display_name,por_practices_account.display_name) as practice_name,
     por_states.display_name as state_name,
     por_countries.display_name as country_name,
+    por_entities.display_name as entity_id,
+    por_entities.name as entity_name,
+    por_entities.ukg_id as company_id,
+    por_entities.ukg_company_code as company_code,
     por_locations.display_name as location_name,
     por_regions.display_name as region_name,
     por_continents.display_name as continent_name,
@@ -226,6 +232,7 @@ select
     int_project.project_name,
     silver_rcs.name as rate_card_set_name
 from silver_oppty
+left join silver_oppty as parent_oppty on silver_oppty.key_parent_opportunity = parent_oppty.key
 left join silver_acct on silver_oppty.key_account = silver_acct.key
 left join oppty_discounts on silver_oppty.key = oppty_discounts.key_opportunity
 left join psa_estimates on silver_oppty.key_estimate = psa_estimates.estimateid
@@ -241,6 +248,7 @@ left join por_states on silver_acct.billing_state_code = por_states.salesforce_i
 left join por_locations as por_locations on silver_acct.key_location = por_locations.salesforce_id
 left join por_regions as por_regions on por_locations.region_id = por_regions.id
 left join por_continents as por_continents on por_regions.continent_id = por_continents.id
+left join por_entities as por_entities on por_locations.entity_id = por_entities.id
 left join all_employees as emp_rm on por_regions.ukg_regional_manager_id = emp_rm.key
 left join silver_acct parent_account1 on silver_acct.key_parent_account = parent_account1.key
 left join silver_acct parent_account2 on parent_account1.key_parent_account = parent_account2.key
