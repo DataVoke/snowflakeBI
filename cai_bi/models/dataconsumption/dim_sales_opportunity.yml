@@ -27,6 +27,8 @@ models:
         data_type: VARCHAR(5000)
       - name: KEY_COUNTRY
         data_type: VARCHAR(5000)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
       - name: KEY_ESTIMATE
         data_type: VARCHAR(5000)
       - name: KEY_IDENTIFIED_BY
@@ -259,6 +261,14 @@ models:
         data_type: VARCHAR(5000)
       - name: ESTIMATE_NAME
         data_type: VARCHAR(5000)
+      - name: ENTITY_ID
+        data_type: VARCHAR(5000)
+      - name: ENTITY_NAME
+        data_type: VARCHAR(5000)
+      - name: COMPANY_NAME
+        data_type: VARCHAR(5000)
+      - name: COMPANY_CODE
+        data_type: VARCHAR(5000)
       - name: IDENTIFIED_BY_NAME
         data_type: VARCHAR(5000)
       - name: IDENTIFIED_BY_NAME_LF
@@ -284,6 +294,8 @@ models:
       - name: CLIENT_SITE_MANAGER_EMAIL
         data_type: VARCHAR(5000)
       - name: PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: PARENT_OPPORTUNITY_NAME
         data_type: VARCHAR(5000)
       - name: PROJECT_NAME
         data_type: VARCHAR(5000)
