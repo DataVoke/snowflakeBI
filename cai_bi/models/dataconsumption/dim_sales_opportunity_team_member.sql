@@ -50,7 +50,7 @@ select
     silver_oppty_tm.dts_src_created as dts_src_created,
     silver_oppty_tm.dts_src_modified,
     silver_oppty_tm.dts_system_modstamp,
-    all_employees.email_address_work,
+    all_employees.email_address_work as employee_email,
     all_employees.display_name as employee_name,
     all_employees.display_name_lf as employee_name_lf,
     silver_oppty_tm.name,
