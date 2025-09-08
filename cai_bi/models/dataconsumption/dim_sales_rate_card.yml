@@ -1,10 +1,8 @@
-version: 1
-
 models:
-  - name: dim_sales_opportunity_team_member
+  - name: dim_sales_rate_card
     tests:
-      - dim_sales_opportunity_team_member_row_count_matches_sources:
-          source: ref('sales_opportunity_team_member')
+      - dim_sales_rate_card_row_count_matches_sources:
+          source: ref('sales_rate_card')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ
@@ -18,42 +16,64 @@ models:
         data_type: VARCHAR(5000)
         tests:
           - unique
-          - not_null  
+          - not_null
+      - name: KEY_RATE_CARD_SET
+        data_type: VARCHAR(5000)
+      - name: KEY_OWNER
+        data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE
+        data_type: VARCHAR(5000)
       - name: KEY_ACCOUNT
         data_type: VARCHAR(5000)
-      - name: KEY_OPPORTUNITY
+      - name: KEY_PAYROLL_COMPANY
         data_type: VARCHAR(5000)
-      - name: KEY_EMPLOYEE
+      - name: KEY_LOCATION
         data_type: VARCHAR(5000)
       - name: SRC_CREATED_BY_ID
         data_type: VARCHAR(5000)
       - name: SRC_MODIFIED_BY_ID
         data_type: VARCHAR(5000)
-      - name: ACCOUNT_NAME
+      - name: BILLING_CATEGORY
         data_type: VARCHAR(5000)
       - name: CURRENCY_ISO_CODE
         data_type: VARCHAR(5000)
+      - name: DTE_END
+        data_type: DATE
+      - name: DTE_START
+        data_type: DATE
       - name: DTS_SRC_CREATED
         data_type: TIMESTAMP_TZ(9)
       - name: DTS_SRC_MODIFIED
         data_type: TIMESTAMP_TZ(9)
       - name: DTS_SYSTEM_MODSTAMP
         data_type: TIMESTAMP_TZ(9)
-      - name: EMPLOYEE_NAME
-        data_type: VARCHAR(5000)
-      - name: EMPLOYEE_NAME_LF
-        data_type: VARCHAR(5000)
-      - name: EMPLOYEE_EMAIL
-        data_type: VARCHAR(5000)
       - name: NAME
         data_type: VARCHAR(5000)
-      - name: OPPORTUNITY_ACCESS_LEVEL
+      - name: NUMBER(38,17)
+        data_type: BOOLEAN
+      - name: RATE
+        data_type: NUMBER(38,17)
+      - name: ROLE
         data_type: VARCHAR(5000)
-      - name: OPPORTUNITY_NAME
+      - name: PRACTICE_NAME
         data_type: VARCHAR(5000)
-      - name: SFC_USER_ID
+      - name: ACCOUNT_NAME
         data_type: VARCHAR(5000)
-      - name: TEAM_MEMBER_ROLE
+      - name: PAYROLL_COMPANY_NAME
         data_type: VARCHAR(5000)
-      - name: JOB_TITLE
+      - name: LOCATION_NAME
+        data_type: VARCHAR(5000)
+      - name: OWNER_NAME
+        data_type: VARCHAR(5000)
+      - name: OWNER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: OWNER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: SFC_PRACTICE_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_LOCATION_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_OWNER_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_GROUP_ID
         data_type: VARCHAR(5000)

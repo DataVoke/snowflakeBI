@@ -49,11 +49,11 @@ models:
         data_type: VARCHAR(5000)
       - name: TEAM_MEMBER_ROLE
         data_type: VARCHAR(5000)
-      - name: TITLE
+      - name: JOB_TITLE
         data_type: VARCHAR(5000)
-      - name: USER_EMAIL
+      - name: EMPLOYEE_EMAIL
         data_type: VARCHAR(5000)
-      - name: USER_NAME
+      - name: EMPLOYEE_NAME
         data_type: VARCHAR(5000)
-      - name: USER_NAME_LF
+      - name: EMPLOYEE_NAME_LF
         data_type: VARCHAR(5000)
