@@ -48,6 +48,7 @@ final as (
         ts.hours_in_day,
         ts.mega_entity_name,
         ts.method,
+        e.pay_type_name,
         ts.state_worked,
         ts.status,
         ts.uom,
