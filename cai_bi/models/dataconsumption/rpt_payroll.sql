@@ -108,6 +108,7 @@ final as (
         te.task_name,
         e.state_name,
         e.country_name,
+        e.ukg_employee_number,
         case when te.task_name in (select phase_code from time_type_phase_codes where time_type ='sicktime') then '1'
         when te.task_name in (select phase_code from time_type_phase_codes where time_type ='vacholtime') then '2'
         when te.task_name in (select phase_code from time_type_phase_codes where time_type ='dulltime') then '3'
