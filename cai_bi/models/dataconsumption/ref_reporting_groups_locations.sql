@@ -21,7 +21,8 @@ concat(l.id,'|3') as id,
             cast(p.id as varchar(255)) as por_practice_id, 
             cast(p.salesforce_id as varchar(255)) as sfc_practice_id, 
             cast(p.intacct_id as varchar(255)) as int_practice_id,
-            iff(current_date>=r.start_date and current_date<r.end_date,true, false) as active
+            iff(current_date>=r.start_date and current_date<r.end_date,true, false) as active,
+            r.sort
         from {{ source('portal', 'reporting_groups_locations') }} l
         left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
         left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
@@ -46,7 +47,8 @@ practice_2 as (
                 cast(p.id as varchar(255)) as por_practice_id, 
                 cast(p.salesforce_id as varchar(255)) as sfc_practice_id, 
                 cast(p.intacct_id as varchar(255)) as int_practice_id,
-                iff(current_date>=r.start_date and current_date<r.end_date,true, false) as active
+                iff(current_date>=r.start_date and current_date<r.end_date,true, false) as active,
+                r.sort
         from {{ source('portal', 'reporting_groups_locations') }} l
         left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
         left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
@@ -71,7 +73,8 @@ practice_4 as (
                 cast(p.id as varchar(255)) as por_practice_id, 
                 cast(p.salesforce_id as varchar(255)) as sfc_practice_id, 
                 cast(p.intacct_id as varchar(255)) as int_practice_id,
-                iff(current_date>=r.start_date and current_date<r.end_date,true, false) as active
+                iff(current_date>=r.start_date and current_date<r.end_date,true, false) as active,
+                r.sort
         from {{ source('portal', 'reporting_groups_locations') }} l
         left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
         left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
@@ -97,7 +100,8 @@ practice_5 as (
                 cast(p.id as varchar(255)) as por_practice_id, 
                 cast(p.salesforce_id as varchar(255)) as sfc_practice_id, 
                 cast(p.intacct_id as varchar(255)) as int_practice_id,
-                iff(current_date>=r.start_date and current_date<r.end_date,true, false) as active
+                iff(current_date>=r.start_date and current_date<r.end_date,true, false) as active,
+                r.sort
         from {{ source('portal', 'reporting_groups_locations') }} l
         left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
         left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
@@ -121,7 +125,8 @@ practice_internal as (
                 '' as por_practice_id, 
                 '' as sfc_practice_id, 
                 '' as int_practice_id,
-                iff(current_date>=r.start_date and current_date<r.end_date,true, false) as active
+                iff(current_date>=r.start_date and current_date<r.end_date,true, false) as active,
+                r.sort
         from {{ source('portal', 'reporting_groups_locations') }} l
         left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
         left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
