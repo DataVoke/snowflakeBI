@@ -130,7 +130,7 @@ practice_internal as (
         from {{ source('portal', 'reporting_groups_locations') }} l
         left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
         left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
-            where l.group_id = 'G398' and r.visible = true
+            where r.parent_id = 'I004' or r.id= 'I004' and r.visible = true
 )
 
 select
