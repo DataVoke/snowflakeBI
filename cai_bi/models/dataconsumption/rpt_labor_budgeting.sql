@@ -65,6 +65,7 @@ select
     gold_emp.labor_category_name,
     gold_emp.key_labor_categories,  
     ifnull(gold_emp.other_rate_2,0) as performance_bonus_percent,
+    ifnull(gold_emp.cola_percent,0) as cola_percent,
     
     -- Original Employee  Values
     upper(gold_emp.currency_code) as currency_id_original, 
@@ -73,6 +74,7 @@ select
     ifnull(gold_emp.annual_salary,0) as annual_salary_original,
     ifnull(gold_emp.other_rate_1,0) as non_discretionary_original,
     ifnull(annual_salary_original * performance_bonus_percent,0) as performance_bonus_original,
+    ifnull(annual_salary_original * cola_percent,0) as annual_cola_original,
     ifnull(gold_emp.other_rate_3,0) as other_rate_3_original,
     ifnull(gold_emp.other_rate_4,0) as other_rate_4_original,
     ifnull(forecast_cc_fx_org_to_employee.fx_rate_mul,1) as forecast_conversion_rate_original,
@@ -87,6 +89,7 @@ select
     ifnull(gold_emp.annual_salary,0) * salary_conversion_rate_usd as annual_salary_usd,
     ifnull(gold_emp.other_rate_1,0) * salary_conversion_rate_usd as non_discretionary_usd,
     ifnull(annual_salary_usd * performance_bonus_percent,0) as performance_bonus_usd,
+    ifnull(annual_salary_usd * cola_percent,0) as annual_cola_usd,
     ifnull(gold_emp.other_rate_3,0) * salary_conversion_rate_usd as other_rate_3_usd,
     ifnull(gold_emp.other_rate_4,0) * salary_conversion_rate_usd as other_rate_4_usd,
     ifnull(forecast_cc_fx_org_to_usd.fx_rate_mul,1) as forecast_conversion_rate_usd,
@@ -100,6 +103,7 @@ select
     ifnull(gold_emp.annual_salary,0) * salary_conversion_rate_entity as annual_salary_entity,
     ifnull(gold_emp.other_rate_1,0) * salary_conversion_rate_entity as non_discretionary_entity,
     ifnull(annual_salary_entity * performance_bonus_percent,0) as performance_bonus_entity,
+    ifnull(annual_salary_entity * cola_percent,0) as annual_cola_entity,
     ifnull(gold_emp.other_rate_3,0) * salary_conversion_rate_entity as other_rate_3_entity,
     ifnull(gold_emp.other_rate_4,0) * salary_conversion_rate_entity as other_rate_4_entity,
     ifnull(forecast_cc_fx_org_to_entity.fx_rate_mul,1) as forecast_conversion_rate_entity,

@@ -33,6 +33,7 @@ sources:
       - name: practice_areas
       - name: reporting_groups
       - name: reporting_groups_locations
+      - name: shift_codes
       - name: states
       - name: termination_types
       - name: timeframes
