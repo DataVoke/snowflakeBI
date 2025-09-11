@@ -13,15 +13,14 @@ with
     countries            as (select * from {{ source('portal', 'countries') }} where _fivetran_deleted = false),
     departments          as (select * from {{ source('portal', 'departments') }} where _fivetran_deleted = false),
     dol_statuses         as (select * from {{ source('portal', 'dol_statuses') }} where _fivetran_deleted = false),
+    shift_codes          as (select * from {{ source('portal', 'shift_codes') }} where _fivetran_deleted = false),
     employee_types       as (select * from {{ source('portal', 'employee_types') }} where _fivetran_deleted = false),
     entities             as (select * from {{ source('portal', 'entities') }} where _fivetran_deleted = false),
     ethnic_backgrounds   as (select * from {{ source('portal', 'ethnic_backgrounds') }} where _fivetran_deleted = false),
     labor_categories     as (select * from {{ source('portal', 'labor_categories') }} where _fivetran_deleted = false),
     genders              as (select * from {{ source('portal', 'genders') }} where _fivetran_deleted = false),
     locations_intacct    as (select * from {{ source('portal', 'locations_intacct') }} where _fivetran_deleted = false),
-    sageint_locations as (
-    select * from {{ source('sage_intacct','location') }} where _fivetran_deleted = false
-),
+    sageint_locations    as (select * from {{ source('sage_intacct','location') }} where _fivetran_deleted = false),
     locations_ukg        as (select * from {{ source('portal', 'locations_ukg') }} where _fivetran_deleted = false),
     locations            as (select * from {{ source('portal', 'locations') }} where _fivetran_deleted = false),
     location_regions     as (select * from {{ source('portal', 'location_regions') }} where _fivetran_deleted = false),
@@ -137,6 +136,8 @@ SELECT
     por.bln_pm_qualified,
     sfc.bln_is_resource,
     sfc.closed_won_goal,
+    ifnull(shift_codes.shift_percent,0) as cola_percent,
+    ifnull(shift_codes.shift_percent,0) * ifnull(ukg.annual_salary,0) as amt_cola,
     ukg_companies.code as company_code,
     ukg.currency_code,
     initcap(ukg.display_name) as display_name,
@@ -231,4 +232,5 @@ left join users_forecasts as users_forecasts_last_year on por.key = users_foreca
 left join base_teams as base_teams on base_teams.ukg_id = ukg.key_base_team
 left join job_salary_grades as job_salary_grades on ukg.job_salary_grade_id = job_salary_grades.id
 left join ukg_companies as ukg_companies on ukg.key_entity = ukg_companies.id
+left join shift_codes as shift_codes on ukg.shift_code = shift_codes.ukg_id
 where ukg.src_sys_key = 'ukg'
