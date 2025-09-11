@@ -169,7 +169,9 @@ ukg as (
         cast(ukg_employee_job_history.job_effective_date as date) as dte_pay_last_changed,
         metric_bonus.field_value as metric_bonus_type,
         vest_size.field_value as vest_size,
-        dietary_needs.field_value as dietary_needs
+        dietary_needs.field_value as dietary_needs,
+        ifnull(nullif(ukg_employee_job_history.shift_code,''),ifnull(ukg_compensation.primary_shift_code,'')) as shift_code,
+        ifnull(nullif(ukg_employee_job_history.shift_group_code,''),ifnull(ukg_compensation.primary_shift_group_code,'')) as shift_group_code
     from ukg_employee
     left join ukg_employment on ukg_employee.id = ukg_employment.employee_id and ukg_employee.company_id = ukg_employment.company_id
     left join ukg_job on ukg_employment.primary_job_id = ukg_job.id 
@@ -309,7 +311,9 @@ portal as (
         null as dte_pay_last_changed,
         null as metric_bonus_type,
         null as vest_size,
-        null as dietary_needs
+        null as dietary_needs,
+        null as shift_code,
+        null as shift_group_code
     from portal_users
 ),
 
@@ -438,7 +442,9 @@ sage_intacct as (
         null as dte_pay_last_changed,
         null as metric_bonus_type,
         null as vest_size,
-        null as dietary_needs
+        null as dietary_needs,
+        null as shift_code,
+        null as shift_group_code
     from si_employee
     left join si_location on si_employee.locationkey = si_location.recordno
     left join si_contact on si_contact.recordno = si_employee.contactkey
@@ -568,7 +574,9 @@ salesforce as (
         null as dte_pay_last_changed,
         null as metric_bonus_type,
         null as vest_size,
-        null as dietary_needs
+        null as dietary_needs,
+        null as shift_code,
+        null as shift_group_code
     from sf_contact
     left join sf_user on sf_user.id = sf_contact.pse_salesforce_user_c
 ),
@@ -693,6 +701,8 @@ select
     cast(other_rate_4 as number(19, 4)) as other_rate_4,
     pay_group,
     cast(pay_period_pay_rate as number(19, 4)) as pay_period_pay_rate,
+    shift_code,
+    shift_group_code,
     status,
     term_type,
     termination_reason_description,

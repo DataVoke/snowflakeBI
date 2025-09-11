@@ -199,6 +199,10 @@ models:
         data_type: BOOLEAN
       - name: BLN_IS_RESOURCE
         data_type: BOOLEAN
+      - name: COLA_PERCENT
+        data_type: NUMBER(38,17)
+      - name: AMT_COLA
+        data_type: NUMBER(38,17)
       - name: CLOSED_WON_GOAL
         data_type: NUMBER(38,17)
       - name: COMPANY_ID
@@ -273,6 +277,10 @@ models:
         data_type: VARCHAR(5000)
       - name: PAY_PERIOD_PAY_RATE
         data_type: NUMBER(38,17)
+      - name: SHIFT_CODE
+        data_type: VARCHAR(5000)
+      - name: SHIFT_GROUP_CODE
+        data_type: VARCHAR(5000)
       - name: STATUS
         data_type: VARCHAR(5000)
       - name: TERM_TYPE
