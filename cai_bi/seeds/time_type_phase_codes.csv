@@ -150,3 +150,55 @@ sicktime,SICK,2025-07-15 12:46:29.964
 vacholtime,VACHOL,2025-07-15 12:46:29.964
 dulltime,DULL,2025-07-15 12:46:29.964
 tvltime,TVL,2025-07-15 12:46:29.964
+company_mc_comp,BCXCOMP,2025-09-12 00:00:00.000
+company_mc_comp,DCCOMP,2025-09-12 00:00:00.000
+company_comp,COMP,2025-09-12 00:00:00.000
+company_disfun,COVID-DISFUN,2025-09-12 00:00:00.000
+company_disfun,DISFUN,2025-09-12 00:00:00.000
+company_dull,COVID DULL,2025-09-12 00:00:00.000
+company_dull,COVID-DULLN,2025-09-12 00:00:00.000
+company_dull,DULL,2025-09-12 00:00:00.000
+company_fmla,FMLA,2025-09-12 00:00:00.000
+company_internal_tvl,Internal TVL,2025-09-12 00:00:00.000
+company_leave,Allattamento Leave,2025-09-12 00:00:00.000
+company_leave,Bereavement Leave,2025-09-12 00:00:00.000
+company_leave,BEREAVEMENTLEAVE,2025-09-12 00:00:00.000
+company_leave,Care Leave,2025-09-12 00:00:00.000
+company_leave,CCARE,2025-09-12 00:00:00.000
+company_leave,COMLEAVE,2025-09-12 00:00:00.000
+company_leave,GARDENLEAVE,2025-09-12 00:00:00.000
+company_leave,Marital Leave,2025-09-12 00:00:00.000
+company_leave,MARRIAGE,2025-09-12 00:00:00.000
+company_leave,MATERNITY,2025-09-12 00:00:00.000
+company_leave,Maternity Leave,2025-09-12 00:00:00.000
+company_leave,NEWBORN,2025-09-12 00:00:00.000
+company_leave,PARENTAL,2025-09-12 00:00:00.000
+company_leave,Parental Leave,2025-09-12 00:00:00.000
+company_leave,PARENTAL LEAVE,2025-09-12 00:00:00.000
+company_leave,PARENTALLEAVE,2025-09-12 00:00:00.000
+company_leave,PARENTSLEAVE,2025-09-12 00:00:00.000
+company_leave,Paternity Leave,2025-09-12 00:00:00.000
+company_leave,SERVICE,2025-09-12 00:00:00.000
+company_ltd,LTD,2025-09-12 00:00:00.000
+company_tds,Long Term Sick,2025-09-12 00:00:00.000
+company_nowork,FIRST WEEK,2025-09-12 00:00:00.000
+company_nowork,FLEX,2025-09-12 00:00:00.000
+company_nowork,Jury Duty,2025-09-12 00:00:00.000
+company_nowork,JURYDUTYCOMPULSORY,2025-09-12 00:00:00.000
+company_nowork,LAST WEEK,2025-09-12 00:00:00.000
+company_nowork,NO WORK,2025-09-12 00:00:00.000
+company_nowork,PART TIME,2025-09-12 00:00:00.000
+company_nowork,PARTTIME,2025-09-12 00:00:00.000
+company_nowork,PLANNED UNPAID,2025-09-12 00:00:00.000
+company_nowork,PU,2025-09-12 00:00:00.000
+company_nowork,RESERVE DUTY,2025-09-12 00:00:00.000
+company_nowork,RESERVEDUTY,2025-09-12 00:00:00.000
+company_nowork,REST FOR 10/4,2025-09-12 00:00:00.000
+company_nowork,REST FOR 104 LAW,2025-09-12 00:00:00.000
+company_sick,SICK,2025-09-12 00:00:00.000
+company_sick,Sick Time,2025-09-12 00:00:00.000
+company_vachol,PUBLIC,2025-09-12 00:00:00.000
+company_vachol,Public Holiday,2025-09-12 00:00:00.000
+company_vachol,RESTRICT,2025-09-12 00:00:00.000
+company_vachol,Vacation,2025-09-12 00:00:00.000
+company_vachol,VACHOL,2025-09-12 00:00:00.000
