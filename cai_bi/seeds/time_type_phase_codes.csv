@@ -180,7 +180,7 @@ company_leave,PARENTSLEAVE,2025-09-12 00:00:00.000
 company_leave,Paternity Leave,2025-09-12 00:00:00.000
 company_leave,SERVICE,2025-09-12 00:00:00.000
 company_ltd,LTD,2025-09-12 00:00:00.000
-company_tds,Long Term Sick,2025-09-12 00:00:00.000
+company_lts,Long Term Sick,2025-09-12 00:00:00.000
 company_nowork,FIRST WEEK,2025-09-12 00:00:00.000
 company_nowork,FLEX,2025-09-12 00:00:00.000
 company_nowork,Jury Duty,2025-09-12 00:00:00.000
