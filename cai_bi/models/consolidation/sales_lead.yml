@@ -1,0 +1,189 @@
+models:
+  - name: sales_lead
+    description: ''
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: SRC_SYS_KEY
+        data_type: VARCHAR(250)
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_EFF_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EFF_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: BLN_CURRENT
+        data_type: BOOLEAN
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - not_null
+          - unique
+      - name: HASH_KEY
+        data_type: VARCHAR(32)
+        tests:
+          - not_null
+          - unique
+      - name: LINK
+        data_type: VARCHAR(5000)
+      - name: HASH_LINK
+        data_type: VARCHAR(32)
+      - name: KEY_LOCATION
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_LOCATION
+        data_type: VARCHAR(32)
+      - name: KEY_OWNER
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_OWNER
+        data_type: VARCHAR(32)
+      - name: KEY_PRACTICE_AREA
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PRACTICE_AREA
+        data_type: VARCHAR(32)
+      - name: CONVERTED_ACCOUNT_ID
+        data_type: VARCHAR(5000)
+      - name: CONVERTED_CONTACT_ID
+        data_type: VARCHAR(5000)
+      - name: CONVERTED_OPPORTUNITY_ID
+        data_type: VARCHAR(5000)
+      - name: EXTERNAL_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: ADDITIONAL_BUSINESS_AREAS
+        data_type: VARCHAR(5000)
+      - name: ADDITIONAL_LEAD_SOURCES
+        data_type: VARCHAR(5000)
+      - name: AMT_BUDGET
+        data_type: NUMBER(37,18)
+      - name: BLN_BYPASS_OPPORTUNITY_VALIDATION
+        data_type: BOOLEAN
+      - name: BLN_CONVERT
+        data_type: BOOLEAN
+      - name: BLN_CURRENCY_CONFIRMED
+        data_type: BOOLEAN
+      - name: BLN_HAS_OPTED_OUT_OF_EMAIL
+        data_type: BOOLEAN
+      - name: BLN_IS_CONVERTED
+        data_type: BOOLEAN
+      - name: BLN_IS_CREATED_FROM_LEAD
+        data_type: BOOLEAN
+      - name: BLN_IS_MARKETING_QUALIFIED_LEAD
+        data_type: BOOLEAN
+      - name: BLN_IS_SYNCED_TO_MARKETO
+        data_type: BOOLEAN
+      - name: BLN_IS_UNREAD_BY_OWNER
+        data_type: BOOLEAN
+      - name: CITY
+        data_type: VARCHAR(5000)
+      - name: COMPANY
+        data_type: VARCHAR(5000)
+      - name: CONFERENCEOR_SHOW
+        data_type: VARCHAR(5000)
+      - name: CONTENT_THEME
+        data_type: VARCHAR(5000)
+      - name: CONTENT_TITLE
+        data_type: VARCHAR(5000)
+      - name: COUNTRY
+        data_type: VARCHAR(5000)
+      - name: COUNTRY_CODE
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: DATA_CENTER_PRIMARY_BUSINESS_AREA
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: DIVISION
+        data_type: VARCHAR(5000)
+      - name: DTE_CONVERTED
+        data_type: DATE
+      - name: DTE_LAST_ACTIVITY
+        data_type: DATE
+      - name: DTE_LAST_TRANSFER
+        data_type: DATE
+      - name: DTS_EMAIL_BOUNCED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_MARKETO_ACQUISITION_DATE
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SYSTEM_MODSTAMP
+        data_type: TIMESTAMP_TZ(9)
+      - name: EMAIL
+        data_type: VARCHAR(5000)
+      - name: EMAIL_BOUNCED_REASON
+        data_type: VARCHAR(5000)
+      - name: FAX
+        data_type: VARCHAR(5000)
+      - name: FIRST_NAME
+        data_type: VARCHAR(5000)
+      - name: INBOUND_MARKETING_SOURCE
+        data_type: VARCHAR(5000)
+      - name: INDUSTRY
+        data_type: VARCHAR(5000)
+      - name: LAST_NAME
+        data_type: VARCHAR(5000)
+      - name: LEAD_SOURCE
+        data_type: VARCHAR(5000)
+      - name: LEGAL_BASIS_PROCESSING_DATA_C
+        data_type: VARCHAR(5000)
+      - name: LID_LINKED_IN_MEMBER_TOKEN_C
+        data_type: VARCHAR(5000)
+      - name: LIFE_SCIENCES_PRIMARY_BUSINESS_AREA_C
+        data_type: VARCHAR(5000)
+      - name: LINKED_IN_URL_C
+        data_type: VARCHAR(5000)
+      - name: MARKETO_ACQUISITION_PROGRAM
+        data_type: VARCHAR(5000)
+      - name: MARKETO_LEAD_SCORE
+        data_type: NUMBER(37,18)
+      - name: MIDDLE_NAME
+        data_type: VARCHAR(5000)
+      - name: MOBILE_PHONE
+        data_type: VARCHAR(5000)
+      - name: NAME
+        data_type: VARCHAR(5000)
+      - name: NUMBER_OF_EMPLOYEES
+        data_type: NUMBER(37,0)
+      - name: OR_OE
+        data_type: VARCHAR(5000)
+      - name: PHONE
+        data_type: VARCHAR(5000)
+      - name: POSTAL_CODE
+        data_type: VARCHAR(5000)
+      - name: PRIMARY_BUSINESS_AREA
+        data_type: VARCHAR(5000)
+      - name: RATING
+        data_type: VARCHAR(5000)
+      - name: REFERENCE_NUMBER
+        data_type: VARCHAR(5000)
+      - name: SALUTATION
+        data_type: VARCHAR(5000)
+      - name: STATE
+        data_type: VARCHAR(5000)
+      - name: STATUS
+        data_type: VARCHAR(5000)
+      - name: STREET
+        data_type: VARCHAR(5000)
+      - name: SUBTYPE
+        data_type: VARCHAR(5000)
+      - name: SUFFIX
+        data_type: VARCHAR(5000)
+      - name: TITLE
+        data_type: VARCHAR(5000)
+      - name: TYPE
+        data_type: VARCHAR(5000)
+      - name: WEBSITE
+        data_type: VARCHAR(5000)
