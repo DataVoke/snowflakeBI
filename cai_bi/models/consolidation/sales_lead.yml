@@ -137,13 +137,13 @@ models:
         data_type: VARCHAR(5000)
       - name: LEAD_SOURCE
         data_type: VARCHAR(5000)
-      - name: LEGAL_BASIS_PROCESSING_DATA_C
+      - name: LEGAL_BASIS_PROCESSING_DATA
         data_type: VARCHAR(5000)
-      - name: LID_LINKED_IN_MEMBER_TOKEN_C
+      - name: LID_LINKED_IN_MEMBER_TOKEN
         data_type: VARCHAR(5000)
-      - name: LIFE_SCIENCES_PRIMARY_BUSINESS_AREA_C
+      - name: LIFE_SCIENCES_PRIMARY_BUSINESS_AREA
         data_type: VARCHAR(5000)
-      - name: LINKED_IN_URL_C
+      - name: LINKED_IN_URL
         data_type: VARCHAR(5000)
       - name: MARKETO_ACQUISITION_PROGRAM
         data_type: VARCHAR(5000)
