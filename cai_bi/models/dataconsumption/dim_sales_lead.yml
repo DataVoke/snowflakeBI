@@ -1,7 +1,7 @@
 version: 1
 
 models:
-  - name: dim_employee
+  - name: dim_sales_lead
     tests:
       - dim_sales_lead_row_count_matches_sources:
           source: ref('sales_lead')
@@ -23,6 +23,8 @@ models:
         data_type: VARCHAR(5000)
       - name: KEY_COUNTRY
         data_type: VARCHAR(5000)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
       - name: KEY_LOCATION
         data_type: VARCHAR(5000)
       - name: KEY_OWNER
@@ -40,6 +42,8 @@ models:
       - name: SRC_CREATED_BY_ID
         data_type: VARCHAR(5000)
       - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_OWNER_ID
         data_type: VARCHAR(5000)
       - name: CONVERTED_ACCOUNT_ID
         data_type: VARCHAR(5000)
@@ -94,6 +98,8 @@ models:
       - name: DESCRIPTION
         data_type: VARCHAR(5000)
       - name: DISPLAY_NAME
+        data_type: VARCHAR(5000)
+      - name: DISPLAY_NAME_LF
         data_type: VARCHAR(5000)
       - name: DIVISION
         data_type: VARCHAR(5000)
@@ -204,4 +210,6 @@ models:
       - name: REGIONAL_MANAGER_EMAIL
         data_type: VARCHAR(5000)
       - name: STATE_NAME
+        data_type: VARCHAR(5000)
+      - name: ENTITY_NAME
         data_type: VARCHAR(5000)
