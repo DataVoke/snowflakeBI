@@ -6,7 +6,7 @@
     )
 }}
 with 
-    lead as (select * from prod_bi_raw.salesforce.lead where _fivetran_deleted = false)
+    lead as (select * from {{ source("salesforce", "lead") }} where _fivetran_deleted = false)
 select 
     'sfc' as src_sys_key,
     cast(current_timestamp as timestamp_tz) as dts_created_at,
