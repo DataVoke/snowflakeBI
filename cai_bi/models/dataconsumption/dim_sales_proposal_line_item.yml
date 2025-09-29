@@ -1,0 +1,87 @@
+models:
+  - name: dim_sales_proposal_line_item
+    tests:
+      - dim_sales_proposal_line_item_row_count_matches_sources:
+          source: ref('sales_proposal_line_item')
+    columns:
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - unique
+          - not_null
+      - name: KEY_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: KEY_OPPORTUNITY
+        data_type: VARCHAR(5000)
+      - name: KEY_OPPORTUNITY_LINE_ITEM
+        data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE
+        data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE_AREA
+        data_type: VARCHAR(5000)
+      - name: KEY_PARENT_OPPORTUNITY
+        data_type: VARCHAR(5000)
+      - name: KEY_PRODUCT
+        data_type: VARCHAR(5000)
+      - name: KEY_PRICE_BOOK_ENTRY
+        data_type: VARCHAR(5000)
+      - name: KEY_PROJECT
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SYSTEM_MODSTAMP
+        data_type: TIMESTAMP_TZ(9)
+      - name: LIST_PRICE
+        data_type: NUMBER(38,17)
+      - name: OPPORTUNITY_STAGE_NAME
+        data_type: VARCHAR(5000)
+      - name: PROPOSAL_STATUS
+        data_type: VARCHAR(5000)
+      - name: QTY
+        data_type: NUMBER(38,17)
+      - name: SORT_ORDER
+        data_type: NUMBER(38,0)
+      - name: SUBTOTAL
+        data_type: NUMBER(38,17)
+      - name: TOTAL_PRICE
+        data_type: NUMBER(38,17)
+      - name: TOTAL_PRICE_LOCATION
+        data_type: NUMBER(38,17)
+      - name: TOTAL_PRICE_OPPORTUNITY
+        data_type: NUMBER(38,17)
+      - name: UNIT_PRICE
+        data_type: NUMBER(38,17)
+      - name: ACCOUNT_NAME
+        data_type: VARCHAR(5000)
+      - name: OPPORTUNITY_NAME
+        data_type: NUMBER(38,17)
+      - name: PRACTICE_NAME
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_AREA_NAME
+        data_type: VARCHAR(5000)
+      - name: PRODUCT_NAME
+        data_type: VARCHAR(5000)
+      - name: PRICE_BOOK_ENTRY_NAME
+        data_type: VARCHAR(5000)
+      - name: PARENT_OPPORTUNITY_NAME
+        data_type: VARCHAR(5000)
+      - name: PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: PROJECT_NAME
+        data_type: VARCHAR(5000)
