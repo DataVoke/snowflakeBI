@@ -15,31 +15,44 @@ with
     ukg_employee        as (select * from {{ source('ukg_pro', 'employee') }} where _fivetran_deleted = false),
     ukg_job             as (select * from {{ source('ukg_pro', 'job') }} where _fivetran_deleted = false),
     ukg_employee_change as (select * from {{ source('ukg_pro', 'employee_change') }} where _fivetran_deleted = false),
-    ukg_custom_fields as (select * from {{ source('ukg_pro', 'employment_field_row') }} where _fivetran_deleted = false),
+    ukg_custom_fields   as (select * from {{ source('ukg_pro', 'employment_field_row') }} where _fivetran_deleted = false),
     ukg_employment      as (
-            select 
-                *
+            select *
             from {{ source('ukg_pro', 'employment') }} 
             where _fivetran_deleted = false
             qualify row_number() over (
-            partition by employee_id,company_id
-            order by date_in_job desc
+                partition by employee_id, company_id
+                order by date_in_job desc, date_time_created desc
         ) = 1
     ),
     ukg_compensation    as (
-            select 
-                *
-            from {{ source('ukg_pro', 'compensation') }} 
-            where _fivetran_deleted = false
-            qualify row_number() over (
-            partition by employee_id,company_id
+        select *
+        from {{ source('ukg_pro', 'compensation') }} 
+        where _fivetran_deleted = false
+        qualify row_number() over (
+            partition by employee_id, company_id
             order by date_in_job desc
         ) = 1
     ),
-    ukg_employee_job_history as (select * from {{ source('ukg_pro', 'employee_job_history') }} where --is_rate_change = true and 
-    _fivetran_deleted = false qualify row_number() over 
-            ( partition by employee_id,company_id order by job_effective_date desc )
-    =1),
+    ukg_employee_job_history as (
+        select * 
+        from {{ source('ukg_pro', 'employee_job_history') }} 
+        where _fivetran_deleted = false 
+        qualify row_number() over ( 
+            partition by employee_id, company_id 
+            order by job_effective_date desc, date_time_created desc
+        ) = 1
+    ),
+    ukg_employee_job_history_pay_change as (
+        select * 
+        from {{ source('ukg_pro', 'employee_job_history') }} 
+        where is_rate_change = true 
+            and _fivetran_deleted = false 
+        qualify row_number() over ( 
+            partition by employee_id, company_id 
+            order by job_effective_date desc, date_time_created desc 
+        ) = 1
+    ),
     ukg_company as (
         select * from {{ source('ukg_pro', 'company') }} where _fivetran_deleted = false
     ),
@@ -88,7 +101,7 @@ ukg as (
         ukg_employment.organization_level_4_id as location_id_intacct,
         ukg_employment.primary_work_location_id as location_id_ukg,
         ukg_employee.national_id as national_id,
-        ukg_employee.national_id_country as national_id_country,
+        upper(ukg_employee.national_id_country) as national_id_country,
         ukg_employment.salary_or_hourly as pay_type_id,
         ukg_employment.pay_group as payroll_company_id,
         ukg_job.job_family_code as position_family_id,
@@ -108,12 +121,12 @@ ukg as (
         null as ukg_override_payroll_company_id,
         ukg_employee.person_id as ukg_person_id,
         null as work_calendar_id,
-        ukg_employee.address_city as address_city,
-        ukg_employee.address_country as address_country,
+        initcap(ukg_employee.address_city) as address_city,
+        initcap(ukg_employee.address_country) as address_country,
         ukg_employee.address_zip_code as address_postal_code,
-        ukg_employee.address_state as address_state,
-        ukg_employee.address_line_1 as address_street,
-        ukg_employee_job_history.annual_salary as annual_salary,
+        initcap(ukg_employee.address_state) as address_state,
+        initcap(ukg_employee.address_line_1) as address_street,
+        ifnull(ifnull(ukg_compensation.annual_salary, ukg_employee_job_history.annual_salary),0) as annual_salary,
         null as bln_exclude_from_resource_planner,
         case when ukg_employment.employee_status_code in ('A', 'L', 'O') then true else false end as bln_is_active,
         null as bln_is_hourly,
@@ -121,9 +134,9 @@ ukg as (
         cast(pm_qualified.field_value as boolean) as bln_pm_qualified,
         null as bln_is_resource,
         null as closed_won_goal,
-        coalesce(ukg_compensation.currency_code,ukg_company.currency_code) as currency_code,
-        concat(ifnull(nullif(ukg_employee.preferred_name, ''), ukg_employee.first_name), ' ', ukg_employee.last_name) as display_name,
-        concat(ukg_employee.last_name, ', ', ifnull(nullif(ukg_employee.preferred_name, ''), ukg_employee.first_name) ) as display_name_lf,
+        upper(coalesce(ukg_compensation.currency_code, ukg_company.currency_code)) as currency_code,
+        trim(initcap(concat(ifnull(nullif(ukg_employee.preferred_name, ''), ukg_employee.first_name), ' ', ukg_employee.last_name))) as display_name,
+        trim(initcap(concat(ukg_employee.last_name, ', ', ifnull(nullif(ukg_employee.preferred_name, ''), ukg_employee.first_name)))) as display_name_lf,
         cast(ukg_employee.date_of_birth as date) as dte_birth,
         null as dte_of_industry_experience,
         cast(ukg_employment.date_of_termination as date) as dte_src_end,
@@ -136,42 +149,42 @@ ukg as (
         ukg_employee.email_address_alternate as email_address_personal,
         ukg_employee.email_address as email_address_work,
         ukg_employment.employee_status_code as employee_status,
-        ukg_employee.first_name as first_name,
-        coalesce(ukg_employee.preferred_name, ukg_employee.first_name) as first_name_display,
-        ukg_employee.former_name as former_name,
+        initcap(ukg_employee.first_name) as first_name,
+        initcap(coalesce(ukg_employee.preferred_name, ukg_employee.first_name)) as first_name_display,
+        initcap(ukg_employee.former_name) as former_name,
         null as historical_utilization_target_hours,
         ukg_employee.home_phone as home_phone,
         ukg_employee.home_phone_country as home_phone_country,
-        ukg_employee_job_history.hourly_pay_rate as hourly_pay_rate,
+        ifnull(ifnull(ukg_compensation.hourly_pay_rate, ukg_employee_job_history.hourly_pay_rate),0) as hourly_pay_rate,
         null as intacct_contact_name,
-        ifnull(nullif(ukg_employee_job_history.salary_grade,''),ifnull(ukg_compensation.job_salary_grade,'')) as job_salary_grade_id,
-        ukg_employment.job_title as job_title,
-        ukg_employee.last_name as last_name,
-        ukg_employee.middle_name as middle_name,
-        ukg_employee_job_history.other_rate_1 as other_rate_1,
-        ukg_employee_job_history.other_rate_2 as other_rate_2,
-        ukg_employee_job_history.other_rate_3 as other_rate_3,
-        ukg_employee_job_history.other_rate_4 as other_rate_4,
-        ukg_employee_job_history.pay_group_id as pay_group,
-        ukg_employee_job_history.period_pay_rate as pay_period_pay_rate,
+        ifnull(nullif(ukg_compensation.job_salary_grade,''),ifnull(ukg_employee_job_history.salary_grade,'')) as job_salary_grade_id,
+        initcap(ukg_employment.job_title) as job_title,
+        initcap(ukg_employee.last_name) as last_name,
+        initcap(ukg_employee.middle_name) as middle_name,
+        ifnull(ukg_compensation.other_rate_1, ukg_employee_job_history.other_rate_1) as other_rate_1,
+        ifnull(ukg_compensation.other_rate_2, ukg_employee_job_history.other_rate_2) as other_rate_2,
+        ifnull(ukg_compensation.other_rate_3, ukg_employee_job_history.other_rate_3) as other_rate_3,
+        ifnull(ukg_compensation.other_rate_4, ukg_employee_job_history.other_rate_4) as other_rate_4,
+        ifnull(ukg_compensation.pay_group, ukg_employee_job_history.pay_group_id) as pay_group,
+        ifnull(ukg_compensation.pay_period_pay_rate, ukg_employee_job_history.period_pay_rate) as pay_period_pay_rate,
         ukg_employment.employee_status_code as status,
         ukg_employment.term_type as term_type,
-        ukg_employment.termination_reason_description as termination_reason_description,
+        initcap(ukg_employment.termination_reason_description) as termination_reason_description,
         ukg_compensation.total_ann_salary as total_ann_salary,
         ukg_employee_change.employee_number as ukg_employee_number,
-        ukg_employment.job_title as ukg_override_job_title,
+        initcap(ukg_employment.job_title) as ukg_override_job_title,
         ukg_employment.employee_status_code as ukg_status,
         null as utilization_target,
         null as utilization_target_hours,
-        ukg_employee_job_history.weekly_pay_rate  as weekly_pay_rate,
+        ifnull(ukg_compensation.weekly_pay_rate, ukg_employee_job_history.weekly_pay_rate)  as weekly_pay_rate,
         ukg_employment.work_phone_country as work_phone_country,
         null as work_phone_number,
-        cast(ukg_employee_job_history.job_effective_date as date) as dte_pay_last_changed,
+        cast(ukg_employee_job_history_pay_change.job_effective_date as date) as dte_pay_last_changed,
         metric_bonus.field_value as metric_bonus_type,
         vest_size.field_value as vest_size,
         dietary_needs.field_value as dietary_needs,
-        ifnull(nullif(ukg_employee_job_history.shift_code,''),ifnull(ukg_compensation.primary_shift_code,'')) as shift_code,
-        ifnull(nullif(ukg_employee_job_history.shift_group_code,''),ifnull(ukg_compensation.primary_shift_group_code,'')) as shift_group_code
+        ifnull(nullif(ukg_compensation.primary_shift_code,''),nullif(ukg_employee_job_history.shift_code,'')) as shift_code,
+        ifnull(nullif(ukg_compensation.primary_shift_group_code,''),nullif(ukg_employee_job_history.shift_group_code,'')) as shift_group_code
     from ukg_employee
     left join ukg_employment on ukg_employee.id = ukg_employment.employee_id and ukg_employee.company_id = ukg_employment.company_id
     left join ukg_job on ukg_employment.primary_job_id = ukg_job.id 
@@ -179,6 +192,7 @@ ukg as (
     left join ukg_employee_change on ukg_employee_change.employee_id = ukg_employee.id 
         and ukg_employee_change.company_id = ukg_employee.company_id
     left join ukg_employee_job_history on ukg_employee_job_history.employee_id = ukg_employee.id and ukg_employee_job_history.company_id = ukg_employee.company_id
+    left join ukg_employee_job_history_pay_change on ukg_employee_job_history_pay_change.employee_id = ukg_employee.id and ukg_employee_job_history_pay_change.company_id = ukg_employee.company_id
     left join ukg_company on ukg_company.id = ukg_employee.company_id
     left join ukg_custom_fields as pm_qualified on concat(ukg_employee.id,':',ukg_company.code) = pm_qualified.key_value AND pm_qualified.field_name = 'PMQualified'
     left join ukg_custom_fields as mst on concat(ukg_employee.id,':',ukg_company.code) = mst.key_value AND mst.field_name = 'MissionSupportTeam'
@@ -263,7 +277,7 @@ portal as (
         is_pm_qualified as bln_pm_qualified,
         null as bln_is_resource,
         null as closed_won_goal,
-        currency_id as currency_code,
+        upper(currency_id) as currency_code,
         display_name as display_name,
         display_name_lf as display_name_lf,
         null as dte_birth,
