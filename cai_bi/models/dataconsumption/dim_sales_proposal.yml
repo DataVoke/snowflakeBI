@@ -1,0 +1,329 @@
+models:
+  - name: dim_sales_proposal
+    tests:
+      - dim_sales_proposal_row_count_matches_sources:
+          source: ref('sales_proposal')
+    columns:
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - unique
+          - not_null
+      - name: KEY_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: KEY_ACCOUNT_OWNER
+        data_type: VARCHAR(5000)
+      - name: KEY_APPROVER_1
+        data_type: VARCHAR(5000)
+      - name: KEY_APPROVER_2
+        data_type: VARCHAR(5000)
+      - name: KEY_APPROVER_3
+        data_type: VARCHAR(5000)
+      - name: KEY_APPROVER_4
+        data_type: VARCHAR(5000)
+      - name: KEY_APPROVER_5
+        data_type: VARCHAR(32)
+      - name: KEY_APPROVER_6
+        data_type: VARCHAR(5000)
+      - name: KEY_APPROVER_7
+        data_type: VARCHAR(5000)
+      - name: KEY_APPROVER_8
+        data_type: VARCHAR(5000)
+      - name: KEY_APPROVER_9
+        data_type: VARCHAR(5000)
+      - name: KEY_APPROVER_10
+        data_type: VARCHAR(5000)
+      - name: KEY_CONTACT
+        data_type: VARCHAR(5000)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
+      - name: KEY_STATE
+        data_type: VARCHAR(5000)
+      - name: KEY_COUNTRY
+        data_type: VARCHAR(5000)
+      - name: KEY_LOCATION
+        data_type: VARCHAR(5000)
+      - name: KEY_REGION
+        data_type: VARCHAR(5000)
+      - name: KEY_CONTINENT
+        data_type: VARCHAR(5000)
+      - name: KEY_OPPORTUNITY
+        data_type: VARCHAR(5000)
+      - name: KEY_OWNER
+        data_type: VARCHAR(5000)
+      - name: KEY_PARENT_OPPORTUNITY
+        data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE
+        data_type: VARCHAR(5000)
+      - name: KEY_PRICEBOOK
+        data_type: VARCHAR(5000)
+      - name: KEY_PROJECT
+        data_type: VARCHAR(5000)
+      - name: KEY_REGIONAL_MANAGER
+        data_type: VARCHAR(5000)
+      - name: KEY_REVIEWER_1
+        data_type: VARCHAR(5000)
+      - name: KEY_REVIEWER_2
+        data_type: VARCHAR(5000)
+      - name: KEY_REVIEWER_3
+        data_type: VARCHAR(32)
+      - name: KEY_REVIEWER_4
+        data_type: VARCHAR(32)
+      - name: KEY_REVIEWER_5
+        data_type: VARCHAR(32)
+      - name: KEY_VICE_PRESIDENT
+        data_type: VARCHAR(32)
+      - name: ESTIMATE_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: AMT_GRAND_TOTAL
+        data_type: NUMBER(38,17)
+      - name: AMT_PO_AWARDED
+        data_type: NUMBER(38,17)
+      - name: AMT_TOTAL_PRICE_OPPORTUNITY
+        data_type: NUMBER(38,17)
+      - name: AMT_DISCOUNT_OPPORTUNITY
+        data_type: NUMBER(38,17)
+      - name: PERC_DISCOUNT_OPPORTUNITY
+        data_type: NUMBER(38,17)
+      - name: AMT_TOTAL_PRICE_LOCATION
+        data_type: NUMBER(38,17)
+      - name: AMT_DISCOUNT_LOCATION
+        data_type: NUMBER(38,17)
+      - name: PERC_DISCOUNT_LOCATION
+        data_type: NUMBER(38,17)
+      - name: BLN_IS_SYNCING
+        data_type: BOOLEAN
+      - name: BUSINESS_AREA
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SYSTEM_MODSTAMP
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTE_INTERNAL_APPROVAL
+        data_type: DATE
+      - name: NAME
+        data_type: VARCHAR(5000)
+      - name: PST_ASSIST
+        data_type: BOOLEAN
+      - name: QUOTE_NUMBER
+        data_type: VARCHAR(5000)
+      - name: STATUS
+        data_type: VARCHAR(5000)
+      - name: TYPE_OF_REQUEST
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_NAME
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_OWNER_NAME
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_OWNER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_OWNER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: APPROVER_1_NAME
+        data_type: VARCHAR(5000)
+      - name: APPROVER_1_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: APPROVER_1_EMAIL
+        data_type: VARCHAR(5000)
+      - name: APPROVER_2_NAME
+        data_type: VARCHAR(5000)
+      - name: APPROVER_2_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: APPROVER_2_EMAIL
+        data_type: VARCHAR(5000)
+      - name: APPROVER_3_NAME
+        data_type: VARCHAR(5000)
+      - name: APPROVER_3_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: APPROVER_3_EMAIL
+        data_type: VARCHAR(5000)
+      - name: APPROVER_4_NAME
+        data_type: VARCHAR(5000)
+      - name: APPROVER_4_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: APPROVER_4_EMAIL
+        data_type: VARCHAR(5000)
+      - name: APPROVER_5_NAME
+        data_type: VARCHAR(5000)
+      - name: APPROVER_5_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: APPROVER_5_EMAIL
+        data_type: VARCHAR(5000)
+      - name: APPROVER_6_NAME
+        data_type: VARCHAR(5000)
+      - name: APPROVER_6_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: APPROVER_6_EMAIL
+        data_type: VARCHAR(5000)
+      - name: APPROVER_7_NAME
+        data_type: VARCHAR(5000)
+      - name: APPROVER_7_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: APPROVER_7_EMAIL
+        data_type: VARCHAR(5000)
+      - name: APPROVER_8_NAME
+        data_type: VARCHAR(5000)
+      - name: APPROVER_8_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: APPROVER_8_EMAIL
+        data_type: VARCHAR(5000)
+      - name: APPROVER_9_NAME
+        data_type: VARCHAR(5000)
+      - name: APPROVER_9_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: APPROVER_9_EMAIL
+        data_type: VARCHAR(5000)
+      - name: APPROVER_10_NAME
+        data_type: VARCHAR(5000)
+      - name: APPROVER_10_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: APPROVER_10_EMAIL
+        data_type: VARCHAR(5000)
+      - name: CONTACT_NAME
+        data_type: VARCHAR(5000)
+      - name: CONTACT_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: CONTACT_EMAIL
+        data_type: VARCHAR(5000)
+      - name: ENTITY_NAME
+        data_type: VARCHAR(5000)
+      - name: STATE_NAME
+        data_type: VARCHAR(5000)
+      - name: COUNTRY_NAME
+        data_type: VARCHAR(5000)
+      - name: LOCATION_NAME
+        data_type: VARCHAR(5000)
+      - name: REGION_NAME
+        data_type: VARCHAR(5000)
+      - name: CONTINENT_NAME
+        data_type: VARCHAR(5000)
+      - name: ESTIMATE_NAME
+        data_type: VARCHAR(5000)
+      - name: OPPORTUNITY_NAME
+        data_type: VARCHAR(5000)
+      - name: OPPORTUNITY_STAGE_NAME
+        data_type: VARCHAR(5000)
+      - name: OWNER_NAME
+        data_type: VARCHAR(5000)
+      - name: OWNER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: OWNER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: PARENT_OPPORTUNITY_NAME
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_NAME
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_AREA_NAME
+        data_type: VARCHAR(5000)
+      - name: PRICE_BOOK_NAME
+        data_type: VARCHAR(5000)
+      - name: PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: PROJECT_NAME
+        data_type: VARCHAR(5000)
+      - name: REGIONAL_MANAGER_NAME
+        data_type: VARCHAR(5000)
+      - name: REGIONAL_MANAGER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: REGIONAL_MANAGER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_1_NAME
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_1_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_1_EMAIL
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_2_NAME
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_2_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_2_EMAIL
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_3_NAME
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_3_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_3_EMAIL
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_4_NAME
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_4_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_4_EMAIL
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_5_NAME
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_5_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: REVIEWER_5_EMAIL
+        data_type: VARCHAR(5000)
+      - name: VICE_PRESIDENT_NAME
+        data_type: VARCHAR(5000)
+      - name: VICE_PRESIDENT_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: VICE_PRESIDENT_EMAIL
+        data_type: VARCHAR(5000)
+      - name: SFC_ACCOUNT_OWNER_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_APPROVER_1_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_APPROVER_2_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_APPROVER_3_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_APPROVER_4_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_APPROVER_5_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_APPROVER_6_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_APPROVER_7_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_APPROVER_8_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_APPROVER_9_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_APPROVER_10_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_CONTACT_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_OWNER_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_PRACTICE_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_PRACTICE_AREA_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_REGIONAL_MANAGER_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_REVIEWER_1_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_REVIEWER_2_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_REVIEWER_3_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_REVIEWER_4_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_REVIEWER_5_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_VICE_PRESIDENT_ID
+        data_type: VARCHAR(5000)
