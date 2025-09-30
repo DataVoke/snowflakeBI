@@ -85,3 +85,5 @@ models:
         data_type: VARCHAR(5000)
       - name: PROJECT_NAME
         data_type: VARCHAR(5000)
+      - name: SFC_PROJECT_ID
+        data_type: VARCHAR(5000)

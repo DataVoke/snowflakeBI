@@ -31,7 +31,7 @@ select
     opportunity.key_parent_opportunity,
     proposal_li.key_product,
     proposal_li.key_pricebook_entry as key_price_book_entry,
-    ifnull(opportunity.key_project, proposal.key_project) as key_project,
+    int_project.key as key_project,
     proposal_li.src_created_by_id,
     proposal_li.src_modified_by_id,
     proposal_li.currency_iso_code,
@@ -55,7 +55,8 @@ select
     parent_opportunity.name as parent_opportunity_name,
     int_project.project_id,
     proposal.status as proposal_status,
-    opportunity.stage_name as opportunity_stage_name
+    opportunity.stage_name as opportunity_stage_name,
+    ifnull(opportunity.key_project, proposal.key_project) as sfc_project_id
 from proposal_li
 left join proposal on proposal_li.key_proposal = proposal.key
 left join opportunity on proposal.key_opportunity = opportunity.key

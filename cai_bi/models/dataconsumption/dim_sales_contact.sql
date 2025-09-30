@@ -78,6 +78,8 @@ select
     sf_contacts.currency_iso_code,
     sf_contacts.department,
     sf_contacts.description,
+    initcap(trim(concat(ifnull(sf_contacts.first_name,''), ' ', ifnull(sf_contacts.last_name,'')))) as display_name,
+    initcap(trim(concat(ifnull(sf_contacts.last_name,''), ', ', ifnull(sf_contacts.first_name,'')))) as display_name_lf,
     sf_contacts.dte_last_activity,
     sf_contacts.dte_of_industry_experience,
     sf_contacts.dts_actuals_last_updated,
