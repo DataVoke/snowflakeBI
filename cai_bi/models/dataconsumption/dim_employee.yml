@@ -4,7 +4,8 @@ models:
   - name: dim_employee
     tests:
       - dim_employee_row_count_matches_sources:
-          source: ref('employee')
+          arguments:
+            source: ref('employee')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ
@@ -16,14 +17,14 @@ models:
         data_type: VARCHAR(250)
       - name: KEY
         data_type: VARCHAR(5000)
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: KEY_BASE_TEAM
         data_type: VARCHAR(5000)
       - name: KEY_COMPANY
         data_type: NUMBER(38,0)
-        tests:
+        data_tests:
           - not_null:
               severity: warn
           - unique:
@@ -42,7 +43,7 @@ models:
         data_type: NUMBER(38,0)
       - name: KEY_ENTITY
         data_type: NUMBER(38,0)
-        tests:
+        data_tests:
           - not_null:
               severity: warn
           - unique:
@@ -211,7 +212,7 @@ models:
         data_type: VARCHAR(5000)
       - name: CURRENCY_CODE
         data_type: VARCHAR(5000)
-      - name: DIETERY_NEEDS
+      - name: DIETARY_NEEDS
         data_type: VARCHAR(5000)
       - name: DISPLAY_NAME
         data_type: VARCHAR(5000)
@@ -255,7 +256,7 @@ models:
         data_type: VARCHAR(5000)
       - name: JOB_SALARY_GRADE
         data_type: NUMBER(38,17)
-        name: JOB_SALARY_GRADE_NAME
+      - name: JOB_SALARY_GRADE_NAME
         data_type: VARCHAR(5000)
       - name: JOB_TITLE
         data_type: VARCHAR(5000)
