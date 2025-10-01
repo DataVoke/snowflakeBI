@@ -1,0 +1,89 @@
+models:
+  - name: dim_sales_purchase_order
+    tests:
+      - dim_sales_purchase_order_row_count_matches_sources:
+          source: ref('sales_purchase_order')
+    columns:
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - unique
+          - not_null
+      - name: KEY_PROPOSAL
+        data_type: VARCHAR(5000)
+      - name: KEY_OPPORTUNITY
+        data_type: VARCHAR(5000)
+      - name: KEY_PARENT_OPPORTUNITY
+        data_type: VARCHAR(5000)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
+      - name: KEY_LOCATION
+        data_type: VARCHAR(5000)
+      - name: KEY_REGION
+        data_type: VARCHAR(5000)
+      - name: KEY_PROJECT
+        data_type: VARCHAR(5000)
+      - name: KEY_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: SFC_PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: AMT
+        data_type: NUMBER(38,17)
+      - name: AMT_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_OPPORTUNITY
+        data_type: NUMBER(38,17)
+      - name: AMT_ENTITY
+        data_type: NUMBER(38,17)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE_USD
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE_OPPORTUNITY
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE_ENTITY
+        data_type: VARCHAR(5000)
+      - name: DTE
+        data_type: DATE
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SYSTEM_MODSTAMP
+        data_type: TIMESTAMP_TZ(9)
+      - name: NAME
+        data_type: VARCHAR(5000)
+      - name: NOTES
+        data_type: VARCHAR(5000)
+      - name: PURCHASE_ORDER_NUMBER
+        data_type: VARCHAR(5000)
+      - name: TITLE
+        data_type: VARCHAR(5000)
+      - name: TYPE
+        data_type: VARCHAR(5000)
+      - name: PROPOSAL_NAME
+        data_type: VARCHAR(5000)
+      - name: OPPORTUNITY_NAME
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_NAME
+        data_type: VARCHAR(5000)
+      - name: ENTITY_NAME
+        data_type: VARCHAR(5000)
+      - name: REGION_NAME
+        data_type: VARCHAR(5000)
+      - name: LOCATION_NAME
+        data_type: VARCHAR(5000)
+      - name: PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: PROJECT_NAME
+        data_type: VARCHAR(5000)
+      - name: PARENT_OPPORTUNITY_NAME
+        data_type: VARCHAR(5000)
