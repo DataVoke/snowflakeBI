@@ -7,7 +7,7 @@ on:
 
 jobs:
   dbt-build:
-    if: github.event_name == 'schedule' || github.ref == 'refs/heads/development'
+    if: github.event_name == 'schedule' || github.ref == 'refs/heads/development' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     steps:
