@@ -23,6 +23,7 @@ select
     cast(current_timestamp as timestamp_tz) as dts_updated_at,
     '{{ this.name }}' as updated_by,
     proposal_li.key as key,
+    proposal_li.key_proposal,
     opportunity.key_account,
     opportunity.key as key_oppportunity,
     proposal_li.key_opportunity_line_item,
