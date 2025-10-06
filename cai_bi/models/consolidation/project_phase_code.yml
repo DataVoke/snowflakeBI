@@ -1,0 +1,201 @@
+version: 1
+
+models:
+  - name: project_phase_code
+    description: 'Project Phase Codes from Salesforce (Milestone and Project Tasks), Sage Intacct, and PSA Tools'
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: SRC_SYS_KEY
+        data_type: VARCHAR(250)
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_EFF_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EFF_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: BLN_CURRENT
+        data_type: BOOLEAN
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - not_null
+          - unique
+      - name: HASH_KEY
+        data_type: VARCHAR(32)
+        tests:
+          - not_null
+          - unique
+      - name: LINK
+        data_type: VARCHAR(5000)
+      - name: HASH_LINK
+        data_type: VARCHAR(32)
+      - name: KEY_CUSTOMER
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_CUSTOMER
+        data_type: VARCHAR(32)
+      - name: KEY_ITEM
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_ITEM
+        data_type: VARCHAR(32)
+      - name: KEY_PARENT
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PARENT
+        data_type: VARCHAR(32)
+      - name: KEY_PROJECT
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PROJECT
+        data_type: VARCHAR(32)
+      - name: KEY_APPROVER
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_APPROVER
+        data_type: VARCHAR(32)
+      - name: KEY_OWNER
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_OWNER
+        data_type: VARCHAR(32)
+      - name: KEY_PRACTICE_AREA
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PRACTICE_AREA
+        data_type: VARCHAR(32)
+      - name: KEY_PRODUCT
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PRODUCT
+        data_type: VARCHAR(32)
+      - name: KEY_MILESTONE
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_MILESTONE
+        data_type: VARCHAR(32)
+      - name: CUSTOMER_ID
+        data_type: VARCHAR(5000)
+      - name: INT_ID
+        data_type: VARCHAR(5000)
+      - name: ITEM_ID
+        data_type: VARCHAR(5000)
+      - name: PARENT_ID
+        data_type: VARCHAR(5000)
+      - name: PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: PTS_ID
+        data_type: VARCHAR(5000)
+      - name: PTS_RECORD_ID
+        data_type: VARCHAR(5000)
+      - name: RECORD_TYPE_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_TASK_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: TASK_ID
+        data_type: VARCHAR(5000)
+      - name: AMT_BILLABLE_ENTERED
+        data_type: NUMBER(38,17)
+      - name: AMT_BILLABLE_IN_FINANCIALS
+        data_type: NUMBER(38,17)
+      - name: AMT_BILLABLE_SUBMITTED
+        data_type: NUMBER(38,17)
+      - name: AMT_MILESTONE
+        data_type: NUMBER(38,17)
+      - name: BLN_CLOSED_FOR_EXPENSE_ENTRY
+        data_type: BOOLEAN
+      - name: BLN_CLOSED_FOR_TIME_ENTRY
+        data_type: BOOLEAN
+      - name: BLN_IS_BILLABLE
+        data_type: BOOLEAN
+      - name: BLN_IS_CUSTOM
+        data_type: BOOLEAN
+      - name: BLN_IS_DELETED
+        data_type: BOOLEAN
+      - name: BLN_IS_UTILIZED
+        data_type: BOOLEAN
+      - name: BUDGET_CALCULATED
+        data_type: NUMBER(38,17)
+      - name: BUDGET_OVERRIDE
+        data_type: NUMBER(38,17)
+      - name: COST_MILESTONE
+        data_type: NUMBER(38,17)
+      - name: COST_VARIANCE
+        data_type: NUMBER(38,17)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: CUSTOMER_NAME
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: DTE_END
+        data_type: DATE
+      - name: DTE_PROJECT_END
+        data_type: DATE
+      - name: DTE_START
+        data_type: DATE
+      - name: DTE_START_PROJECT
+        data_type: DATE
+      - name: DTS_INT_LAST_SYNC
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SFC_PHASE_CODE_LAST_SYNC
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SFC_TASK_LAST_SYNC
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SYSTEM_MODSTAMP
+        data_type: TIMESTAMP_TZ(9)
+      - name: HOURS_ACTUAL
+        data_type: NUMBER(38,17)
+      - name: HOURS_ACTUAL_TIMECARD
+        data_type: NUMBER(38,17)
+      - name: HOURS_BILLABLE_ENTERED
+        data_type: NUMBER(38,17)
+      - name: HOURS_PLANNED
+        data_type: NUMBER(38,17)
+      - name: ITEM_NAME
+        data_type: VARCHAR(5000)
+      - name: NAME
+        data_type: VARCHAR(5000)
+      - name: ORIGINAL_ADDITIONAL_BUDGET
+        data_type: NUMBER(38,17)
+      - name: ORIGINAL_ADDITIONAL_HOURS
+        data_type: NUMBER(38,17)
+      - name: ORIGINAL_BUDGET
+        data_type: NUMBER(38,17)
+      - name: ORIGINAL_HOURS
+        data_type: NUMBER(38,17)
+      - name: PARENT_NAME
+        data_type: VARCHAR(5000)
+      - name: PROJECT_NAME
+        data_type: VARCHAR(5000)
+      - name: QTY_ACTUAL
+        data_type: NUMBER(38,17)
+      - name: QTY_APPROVED
+        data_type: NUMBER(38,17)
+      - name: QTY_BILLABLE_ACTUAL
+        data_type: NUMBER(38,17)
+      - name: QTY_BILLABLE_APPROVED
+        data_type: NUMBER(38,17)
+      - name: RECORD_URL
+        data_type: VARCHAR(5000)
+      - name: SCOPE_CHANGE_TOTAL_BUDGET
+        data_type: NUMBER(38,17)
+      - name: SCOPE_CHANGE_TOTAL_HOURS
+        data_type: NUMBER(38,17)
+      - name: STATUS
+        data_type: VARCHAR(5000)
+      - name: TASK_COUNT
+        data_type: NUMBER(38,17)
+      - name: TOTAL_EARNED_VALUE
+        data_type: NUMBER(38,17)
+      - name: TYPE
+        data_type: VARCHAR(5000)    
