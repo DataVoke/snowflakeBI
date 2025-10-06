@@ -19,6 +19,8 @@ models:
           - not_null
       - name: KEY_ACCOUNT
         data_type: VARCHAR(5000)
+      - name: KEY_PROPOSAL
+        data_type: VARCHAR(5000)
       - name: KEY_OPPORTUNITY
         data_type: VARCHAR(5000)
       - name: KEY_OPPORTUNITY_LINE_ITEM
