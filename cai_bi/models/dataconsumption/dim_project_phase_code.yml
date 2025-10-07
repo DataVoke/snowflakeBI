@@ -24,9 +24,9 @@ models:
         data_type: VARCHAR(5000)
       - name: KEY_PROJECT
         data_type: VARCHAR(5000)
-      - name: KEY_APPROVER
+      - name: KEY_PROJECT_MANAGER
         data_type: VARCHAR(5000)
-      - name: KEY_OWNER
+      - name: KEY_APPROVER
         data_type: VARCHAR(5000)
       - name: KEY_PRACTICE_AREA
         data_type: VARCHAR(5000)
@@ -64,11 +64,7 @@ models:
         data_type: VARCHAR(5000)
       - name: PTS_ID
         data_type: VARCHAR(5000)
-      - name: PTS_RECORD_ID
-        data_type: VARCHAR(5000)
       - name: RECORD_TYPE_ID
-        data_type: VARCHAR(5000)
-      - name: SFC_OWNER_ID
         data_type: VARCHAR(5000)
       - name: SFC_APPROVER_ID
         data_type: VARCHAR(5000)
@@ -180,11 +176,11 @@ models:
         data_type: VARCHAR(5000)
       - name: APPROVER_EMAIL
         data_type: VARCHAR(5000)
-      - name: OWNER_NAME
+      - name: PROJECT_MANAGER_NAME
         data_type: VARCHAR(5000)
-      - name: OWNER_NAME_LF
+      - name: PROJECT_MANAGER_NAME_LF
         data_type: VARCHAR(5000)
-      - name: OWNER_EMAIL
+      - name: PROJECT_MANAGER_EMAIL
         data_type: VARCHAR(5000)
       - name: PRACTICE_AREA_NAME
         data_type: VARCHAR(5000)
