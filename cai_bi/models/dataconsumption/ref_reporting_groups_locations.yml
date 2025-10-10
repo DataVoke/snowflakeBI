@@ -6,11 +6,51 @@ models:
       Flattened view joining reporting groups and locations, enriched with Practice IDs for practices 2 and 3
     config:
       schema: dataconsumption
+      contract:
+          enforced: true
     columns:
-      - name: id
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(26)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(26)
+      - name: ID
+        data_type: VARCHAR(5000)
         description: Primary key
         tests:
           - not_null
-          
-
-     
+      - name: GROUP_ID
+        data_type: VARCHAR(255)
+      - name: PARENT_GROUP_ID
+        data_type: VARCHAR(255)
+      - name: LOCATION_ID
+        data_type: VARCHAR(255)
+      - name: GROUP_NAME
+        data_type: VARCHAR(255)
+      - name: START_DATE
+        data_type: DATE
+      - name: END_DATE
+        data_type: DATE
+      - name: KEY_LOCATION
+        data_type: VARCHAR(255)
+      - name: POR_LOCATION_ID
+        data_type: VARCHAR(255)
+      - name: SFC_LOCATION_ID
+        data_type: VARCHAR(255)
+      - name: INT_LOCATION_ID
+        data_type: VARCHAR(255)
+      - name: KEY_PRACTICE
+        data_type: VARCHAR(255)
+      - name: POR_PRACTICE_ID
+        data_type: VARCHAR(255)
+      - name: SFC_PRACTICE_ID
+        data_type: VARCHAR(255)
+      - name: INT_PRACTICE_ID
+        data_type: VARCHAR(255)
+      - name: ACTIVE
+        data_type: BOOLEAN
+      - name: SORT
+        data_type: NUMBER(8,1)
