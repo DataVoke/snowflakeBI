@@ -27,7 +27,7 @@ select
     opportunity.key_account,
     opportunity.key as key_oppportunity,
     proposal_li.key_opportunity_line_item,
-    practices.record_id as key_practice,
+    ifnull(practices.record_id,practice_acct.record_id) as key_practice,
     practice_areas.record_id as key_practice_area,
     opportunity.key_parent_opportunity,
     proposal_li.key_product,
@@ -49,7 +49,7 @@ select
     proposal_li.unit_price,
     account.name as account_name,
     opportunity.name as opportunity_name,
-    practices.display_name as practice_name,
+    ifnull(practices.display_name, practice_acct.display_name) as practice_name,
     practice_areas.display_name as practice_area_name,
     products.name as product_name,
     price_book_entry.name as price_book_entry_name,
@@ -64,6 +64,7 @@ left join opportunity on proposal.key_opportunity = opportunity.key
 left join opportunity as parent_opportunity on opportunity.key_parent_opportunity = parent_opportunity.key
 left join account on opportunity.key_account = account.key
 left join practices on proposal_li.key_practice = practices.salesforce_id
+left join practices as practice_acct on account.key_practice = practice_acct.salesforce_id
 left join practice_areas on proposal_li.key_practice_area = practice_areas.salesforce_id
 left join products on proposal_li.key_product = products.key
 left join price_book_entry on proposal_li.key_pricebook_entry = price_book_entry.key
