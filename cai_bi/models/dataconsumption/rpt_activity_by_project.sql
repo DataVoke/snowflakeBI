@@ -8,11 +8,11 @@
 
 with
 project as ( select * from {{ ref('dim_project') }} where dte_src_start is not null),
-ap_bill_item as ( select * from {{ ref('dim_ap_bill_item') }} where bln_billable =true  ),
-timesheet_entry as (select * from {{ ref('dim_timesheet_entry') }} ),
+ap_bill_item as ( select * from {{ ref('fct_ap_bill_item') }} where bln_billable =true  ),
+timesheet_entry as (select * from {{ ref('fct_timesheet_entry') }} ),
 employee as (select * from {{ ref('dim_employee') }}  ),
-expense_item as (select *  from {{ ref('dim_expense_item') }} where bln_billable =true ),
-ccte_entry as (select * from {{ ref('dim_cc_transaction_entry') }} where bln_billable =true ),
+expense_item as (select *  from {{ ref('fct_expense_item') }} where bln_billable =true ),
+ccte_entry as (select * from {{ ref('fct_cc_transaction_entry') }} where bln_billable =true ),
 forex_filtered as ( select * from {{ ref('ref_fx_rates_timeseries')}} where to_curr = 'USD' ),
 forex_projectcurr as ( select * from {{ ref('ref_fx_rates_timeseries')}} ),
 activitybyproject_te as
