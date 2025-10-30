@@ -88,6 +88,8 @@ models:
         data_type: BOOLEAN
       - name: BLN_IS_CUSTOM
         data_type: BOOLEAN
+      - name: BLN_IS_IN_INTACCT
+        data_type: BOOLEAN
       - name: BLN_IS_UTILIZED
         data_type: BOOLEAN
       - name: BUDGET_CALCULATED
