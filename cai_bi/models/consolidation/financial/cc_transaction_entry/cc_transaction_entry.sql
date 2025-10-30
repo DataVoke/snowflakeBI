@@ -6,8 +6,8 @@
 }}
 
 with
-    cc_transaction_entry as (select * from {{ source('sage_intacct', 'cc_transaction_entry')}}),
-    location as (select * from {{ source('sage_intacct', 'location') }}),
+    cc_transaction_entry as (select * from {{ source('sage_intacct', 'cc_transaction_entry')}} where _fivetran_deleted = false),
+    location as (select * from {{ source('sage_intacct', 'location') }} where _fivetran_deleted = false),
 
 sage_intacct as (
     select

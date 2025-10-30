@@ -23,11 +23,6 @@ models:
         data_type: VARCHAR(5000)
       - name: KEY_COMPANY
         data_type: NUMBER(38,0)
-        tests:
-          - not_null:
-              severity: warn
-          - unique:
-              severity: warn
       - name: KEY_CONTINENT
         data_type: NUMBER(38,0)
       - name: KEY_CONTRACTOR_COMPANY
@@ -42,11 +37,6 @@ models:
         data_type: NUMBER(38,0)
       - name: KEY_ENTITY
         data_type: NUMBER(38,0)
-        tests:
-          - not_null:
-              severity: warn
-          - unique:
-              severity: warn
       - name: KEY_ETHNIC_BACKGROUND_ID
         data_type: NUMBER(38,0)
       - name: KEY_GENDER

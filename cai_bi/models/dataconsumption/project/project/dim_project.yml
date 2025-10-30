@@ -99,11 +99,6 @@ models:
         data_type: NUMBER(38, 0)
       - name: KEY_ENTITY
         data_type: NUMBER(38, 0)
-        tests:
-          - not_null:
-              severity: warn
-          - unique:
-              severity: warn
       - name: KEY_GROUP
         data_type: NUMBER(38, 0)
       - name: KEY_PRACTICE

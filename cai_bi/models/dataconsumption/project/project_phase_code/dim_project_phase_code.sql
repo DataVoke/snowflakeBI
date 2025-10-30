@@ -2,7 +2,7 @@
     config(
         materialized="table",
         schema="dataconsumption",
-        alias="dim_project_phase_code"
+        alias="project_phase_code"
     )
 }}
 
@@ -83,6 +83,7 @@ with
             pt_phase_codes.bln_closed_for_time_entry,
             phase_codes.bln_is_billable,
             ifnull(psa_phase_codes.bln_is_custom,true) as bln_is_custom,
+            true as bln_is_in_intacct,
             phase_codes.bln_is_utilized,
             psa_phase_codes.budget_calculated,
             psa_phase_codes.budget_override,
@@ -211,6 +212,7 @@ with
                 phase_codes.bln_closed_for_time_entry,
                 false as bln_is_billable,
                 ifnull(psa_phase_codes.bln_is_custom, true) as bln_is_custom,
+                false as bln_is_in_intacct,
                 false as bln_is_utilized,
                 psa_phase_codes.budget_calculated,
                 psa_phase_codes.budget_override,

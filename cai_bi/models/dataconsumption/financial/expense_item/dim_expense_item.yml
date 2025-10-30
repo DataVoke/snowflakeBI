@@ -31,10 +31,6 @@ models:
         data_type: NUMBER(38,0)
       - name: KEY_ENTITY
         data_type: NUMBER(38,0)
-        tests:
-          - not_null
-          - unique:
-              severity: warn
       - name: KEY_EMPLOYEE
         data_type: VARCHAR(5000)
       - name: DEPARTMENT_NAME

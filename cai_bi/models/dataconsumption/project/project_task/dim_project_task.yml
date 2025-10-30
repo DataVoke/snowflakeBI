@@ -20,6 +20,8 @@ models:
         data_type: VARCHAR(5000)
       - name: KEY_PHASE_CODE
         data_type: VARCHAR(5000)
+      - name: KEY_MILESTONE
+        data_type: VARCHAR(5000)
       - name: KEY_ENTITY
         data_type: VARCHAR(5000)
       - name: KEY_ACCOUNT
@@ -36,11 +38,11 @@ models:
         data_type: VARCHAR(5000)
       - name: KEY_PRACTICE
         data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE_AREA
+        data_type: VARCHAR(5000)
       - name: KEY_PROPOSAL
         data_type: VARCHAR(5000)
       - name: KEY_CHANGE_EVENT_NOTIFICATION_ITEM
-        data_type: VARCHAR(5000)
-      - name: SFC_PHASE_CODE_ID
         data_type: VARCHAR(5000)
       - name: SFC_PROJECT_ID
         data_type: VARCHAR(5000)
@@ -120,6 +122,8 @@ models:
         data_type: VARCHAR(5000)
       - name: TYPE
         data_type: VARCHAR(5000)
+      - name: PROJECT_ID
+        data_type: VARCHAR(5000)
       - name: PROJECT_NAME
         data_type: VARCHAR(5000)
       - name: OWNER_NAME
@@ -149,6 +153,8 @@ models:
       - name: COUNTRY_NAME
         data_type: VARCHAR(5000)
       - name: PRACTICE_NAME
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_AREA_NAME
         data_type: VARCHAR(5000)
       - name: PROPOSAL_NAME
         data_type: VARCHAR(5000)
