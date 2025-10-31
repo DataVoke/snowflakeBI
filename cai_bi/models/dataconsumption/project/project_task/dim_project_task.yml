@@ -1,0 +1,162 @@
+models:
+  - name: dim_project_task
+    columns:
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - unique
+          - not_null
+      - name: KEY_PROJECT
+        data_type: VARCHAR(5000)
+      - name: KEY_OWNER
+        data_type: VARCHAR(5000)
+      - name: KEY_PHASE_CODE
+        data_type: VARCHAR(5000)
+      - name: KEY_MILESTONE
+        data_type: VARCHAR(5000)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
+      - name: KEY_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: KEY_REGIONAL_MANAGER
+        data_type: VARCHAR(5000)
+      - name: KEY_REGION
+        data_type: VARCHAR(5000)
+      - name: KEY_LOCATION
+        data_type: VARCHAR(5000)
+      - name: KEY_STATE
+        data_type: VARCHAR(5000)
+      - name: KEY_COUNTRY
+        data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE
+        data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE_AREA
+        data_type: VARCHAR(5000)
+      - name: KEY_PROPOSAL
+        data_type: VARCHAR(5000)
+      - name: KEY_CHANGE_EVENT_NOTIFICATION_ITEM
+        data_type: VARCHAR(5000)
+      - name: SFC_PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: AMT_PO_AWARDED
+        data_type: NUMBER(35,17)
+      - name: BLN_CLOSED_FOR_TIME_ENTRY
+        data_type: BOOLEAN
+      - name: BLN_IS_CLONE
+        data_type: BOOLEAN
+      - name: BLN_IS_SCOPE_CHANGE
+        data_type: BOOLEAN
+      - name: BLN_IS_STARTED
+        data_type: BOOLEAN
+      - name: BUDGET_ORIGINAL
+        data_type: NUMBER(35,17)
+      - name: COST_VARIANCE
+        data_type: NUMBER(35,17)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: DTE_MILESTONE_DATE
+        data_type: DATE
+      - name: DTE_PLANNED_COMPLETION_DATE
+        data_type: DATE
+      - name: DTS_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_START_ACTUAL
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SYSTEM_MODSTAMP
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_UPDATE_FROM_CX
+        data_type: TIMESTAMP_TZ(9)
+      - name: HOURS_ESTIMATED
+        data_type: NUMBER(35,17)
+      - name: HOURS_ESTIMATED_ROLLUP
+        data_type: NUMBER(35,17)
+      - name: HOURS_ORIGINAL
+        data_type: NUMBER(35,17)
+      - name: HOURS_ACTUAL
+        data_type: NUMBER(35,17)
+      - name: HOURS_TIMECARD_ACTUAL
+        data_type: NUMBER(35,17)
+      - name: HRS_OR_UNITS_ADDITIONAL
+        data_type: NUMBER(35,17)
+      - name: LAST_MODIFIED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: METADATA_1
+        data_type: VARCHAR(5000)
+      - name: METADATA_2
+        data_type: VARCHAR(5000)
+      - name: METADATA_3
+        data_type: VARCHAR(5000)
+      - name: METADATA_4
+        data_type: VARCHAR(5000)
+      - name: MILESTONE_STATUS
+        data_type: VARCHAR(5000)
+      - name: MILESTONE_STATUS_INDIRECT_TVL
+        data_type: NUMBER(35,17)
+      - name: NAME
+        data_type: VARCHAR(5000)
+      - name: PERCENT_COMPLETE_TASKS
+        data_type: NUMBER(35,17)
+      - name: RATE_ORIGINAL
+        data_type: NUMBER(35,17)
+      - name: RATE_ADDITIONAL
+        data_type: NUMBER(35,17)
+      - name: STATUS
+        data_type: VARCHAR(5000)
+      - name: SYSTEM_DELIVERABLE
+        data_type: VARCHAR(5000)
+      - name: TYPE
+        data_type: VARCHAR(5000)
+      - name: PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: PROJECT_NAME
+        data_type: VARCHAR(5000)
+      - name: OWNER_NAME
+        data_type: VARCHAR(5000)
+      - name: OWNER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: OWNER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: PHASE_CODE_NAME
+        data_type: VARCHAR(5000)
+      - name: ENTITY_NAME
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_NAME
+        data_type: VARCHAR(5000)
+      - name: REGIONAL_MANAGER_NAME
+        data_type: VARCHAR(5000)
+      - name: REGIONAL_MANAGER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: REGIONAL_MANAGER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: REGION_NAME
+        data_type: VARCHAR(5000)
+      - name: LOCATION_NAME
+        data_type: VARCHAR(5000)
+      - name: STATE_NAME
+        data_type: VARCHAR(5000)
+      - name: COUNTRY_NAME
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_NAME
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_AREA_NAME
+        data_type: VARCHAR(5000)
+      - name: PROPOSAL_NAME
+        data_type: VARCHAR(5000)
+      - name: CHANGE_EVENT_NOTIFICATION_ITEM_NAME
+        data_type: VARCHAR(5000)

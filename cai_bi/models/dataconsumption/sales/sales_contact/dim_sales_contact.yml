@@ -1,0 +1,211 @@
+version: 1
+
+models:
+  - name: dim_sales_contact
+    tests:
+      - dim_sales_contact_row_count_matches_sources:
+          source: ref('sales_contact')
+    columns:
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - unique
+          - not_null  
+      - name: KEY_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: KEY_OWNER
+        data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE
+        data_type: VARCHAR(5000)
+      - name: KEY_SUPERVISOR
+        data_type: VARCHAR(5000)
+      - name: KEY_USER
+        data_type: VARCHAR(5000)
+      - name: KEY_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: ACTUALS_LAST_UPDATED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: EXTERNAL_ID
+        data_type: VARCHAR(5000)
+      - name: MASTER_RECORD_ID
+        data_type: VARCHAR(5000)
+      - name: RECORD_TYPE_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_PRACTICE_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_SUPERVISOR_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_USER_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_MODIFIED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: UTILIZATION_LAST_UPDATED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: WORK_CALENDAR_ID
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_NAME
+        data_type: VARCHAR(5000)
+      - name: BLN_IS_ACTIVE
+        data_type: BOOLEAN
+      - name: BASE_TEAM
+        data_type: VARCHAR(5000)
+      - name: BILLING_CATEGORY
+        data_type: VARCHAR(5000)
+      - name: BIOGRAPHY
+        data_type: VARCHAR(5000)
+      - name: BLN_ALLOW_TIMECARDS_WITHOUT_ASSIGNMENT
+        data_type: BOOLEAN
+      - name: BLN_DO_NOT_CALL
+        data_type: BOOLEAN
+      - name: BLN_EXCLUDE_FROM_RESOURCE_PLANNER
+        data_type: BOOLEAN
+      - name: BLN_HAS_OPTED_OUT_OF_EMAIL
+        data_type: BOOLEAN
+      - name: BLN_IS_ACTION_CALCULATE_UTILIZATION
+        data_type: BOOLEAN
+      - name: BLN_IS_ACTION_UPDATE_CURRENT_TIME_PERIOD
+        data_type: BOOLEAN
+      - name: BLN_IS_EMAIL_BOUNCED
+        data_type: BOOLEAN
+      - name: BLN_IS_EXTERNAL_RESOURCE
+        data_type: BOOLEAN
+      - name: BLN_IS_PART_TIME_RESOURCE
+        data_type: BOOLEAN
+      - name: BLN_IS_QUALIFIED_PROJECT_MANAGER
+        data_type: BOOLEAN
+      - name: BLN_IS_RESOURCE
+        data_type: BOOLEAN
+      - name: BLN_IS_RESOURCE_ACTIVE
+        data_type: BOOLEAN
+      - name: BLN_IS_SYNCED_TO_MARKETO
+        data_type: BOOLEAN
+      - name: BLOG_SUBSCRIPTION
+        data_type: VARCHAR(5000)
+      - name: CONFERENCEOR_SHOW
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: DEPARTMENT
+        data_type: VARCHAR(5000)
+      - name: DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: DISPLAY_NAME
+        data_type: VARCHAR(5000)
+      - name: DISPLAY_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: DTE_LAST_ACTIVITY
+        data_type: DATE
+      - name: DTE_OF_INDUSTRY_EXPERIENCE
+        data_type: DATE
+      - name: DTS_ACTUALS_LAST_UPDATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EMAIL_BOUNCED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_LEGACY_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_MARKETO_ACQUISITION
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SYSTEM_MODSTAMP
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_UTILIZATION_LAST_UPDATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: EMAIL
+        data_type: VARCHAR(5000)
+      - name: EMAIL_BOUNCED_REASON
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_EMAIL
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_PAY_TYPE
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_TYPE
+        data_type: VARCHAR(5000)
+      - name: FAX
+        data_type: VARCHAR(5000)
+      - name: FIRST_NAME
+        data_type: VARCHAR(5000)
+      - name: HISTORICAL_UTILIZATION_TARGET_HOURS
+        data_type: NUMBER(38,17)
+      - name: HOME_PHONE
+        data_type: VARCHAR(5000)
+      - name: INDUSTRY
+        data_type: VARCHAR(5000)
+      - name: INTACCT_EMPLOYEE_ID
+        data_type: VARCHAR(5000)
+      - name: INTERESTED_BUSINESS_AREAS
+        data_type: VARCHAR(5000)
+      - name: LAST_NAME
+        data_type: VARCHAR(5000)
+      - name: LEAD_SOURCE
+        data_type: VARCHAR(5000)
+      - name: LEGACY_LEAD_SOURCE
+        data_type: VARCHAR(5000)
+      - name: LEGAL_BASIS_PROCESSING_DATA
+        data_type: VARCHAR(5000)
+      - name: LINKED_IN_PROFILE_URL
+        data_type: VARCHAR(5000)
+      - name: MAILING_CITY
+        data_type: VARCHAR(5000)
+      - name: MAILING_COUNTRY
+        data_type: VARCHAR(5000)
+      - name: MAILING_COUNTRY_CODE
+        data_type: VARCHAR(5000)
+      - name: MAILING_POSTAL_CODE
+        data_type: VARCHAR(5000)
+      - name: MAILING_STATE
+        data_type: VARCHAR(5000)
+      - name: MAILING_STATE_CODE
+        data_type: VARCHAR(5000)
+      - name: MAILING_STREET
+        data_type: VARCHAR(5000)
+      - name: MARKETO_ACQUISITION_PROGRAM
+        data_type: VARCHAR(5000)
+      - name: MARKETO_LEAD_SCORE
+        data_type: NUMBER(38,17)
+      - name: MIDDLE_NAME
+        data_type: VARCHAR(5000)
+      - name: MOBILE_PHONE
+        data_type: VARCHAR(5000)
+      - name: NAME
+        data_type: VARCHAR(5000)
+      - name: ORIGINAL_SOURCE
+        data_type: VARCHAR(5000)
+      - name: OWNER_NAME
+        data_type: VARCHAR(5000)
+      - name: PHONE
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_NAME
+        data_type: VARCHAR(5000)
+      - name: PSE_GROUP
+        data_type: VARCHAR(5000)
+      - name: PSE_LAST_DATE
+        data_type: DATE
+      - name: PSE_START_DATE
+        data_type: DATE
+      - name: RESOURCE_ROLE
+        data_type: VARCHAR(5000)
+      - name: SALUTATION
+        data_type: VARCHAR(5000)
+      - name: SUPERVISOR_NAME
+        data_type: VARCHAR(5000)
+      - name: SUFFIX
+        data_type: VARCHAR(5000)
+      - name: TITLE
+        data_type: VARCHAR(5000)
