@@ -7,7 +7,7 @@
 }}
 
 with 
-    task as (select * from {{ source('salesforce', 'pse_project_task_c') }} where is_project_task_c = true and _fivetran_deleted = false)
+    task as (select * from {{ source('salesforce', 'pse_project_task_c') }} where _fivetran_deleted = false)
     
 select
     'sfc' as src_sys_key,
