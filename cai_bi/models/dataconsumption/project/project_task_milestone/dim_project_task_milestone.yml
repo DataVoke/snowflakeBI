@@ -1,0 +1,79 @@
+version: 1
+
+models:
+    - name: dim_project_task_milestone
+      tests:
+      - dim_project_row_count_matches_sources:
+          source: ref('project_task_milestone')
+      columns:
+        - name: DTS_CREATED_AT
+          data_type: TIMESTAMP_LTZ
+        - name: CREATED_BY
+          data_type: VARCHAR(250)
+        - name: DTS_UPDATED_AT
+          data_type: TIMESTAMP_LTZ
+        - name: UPDATED_BY
+          data_type: VARCHAR(250)
+        - name: KEY
+          data_type: VARCHAR(5000)
+          tests:
+            - unique
+            - not_null
+        - name: KEY_PROJECT
+          data_type: VARCHAR(5000)
+        - name: KEY_PHASE_CODE
+          data_type: VARCHAR(5000)
+        - name: KEY_MILESTONE
+          data_type: VARCHAR(5000)
+        - name: KEY_PROJECT_TASK
+          data_type: VARCHAR(5000)
+        - name: KEY_CREATED_BY
+          data_type: VARCHAR(5000)
+        - name: SRC_CREATED_BY_ID
+          data_type: VARCHAR(5000)
+        - name: SRC_MODIFIED_BY_ID
+          data_type: VARCHAR(5000)
+        - name: SFC_PROJECT_ID
+          data_type: VARCHAR(5000)
+        - name: CURRENCY_ISO_CODE
+          data_type: VARCHAR(5000)
+        - name: DTE_MILESTONE
+          data_type: DATE
+        - name: DTS_SRC_CREATED
+          data_type: TIMESTAMP_TZ(9)
+        - name: DTS_SRC_MODIFIED
+          data_type: TIMESTAMP_TZ(9)
+        - name: DTS_SYSTEM_MODSTAMP
+          data_type: TIMESTAMP_TZ(9)
+        - name: EARNED_VALUE
+          data_type: NUMBER(35,17)
+        - name: NAME
+          data_type: VARCHAR(5000)
+        - name: PERC_COMPLETE
+          data_type: NUMBER(35,17)
+        - name: STATUS
+          data_type: VARCHAR(5000)
+        - name: STATUS_INDIRECT_TVL
+          data_type: NUMBER(35,17)
+        - name: TYPE
+          data_type: VARCHAR(5000)
+        - name: PROJECT_NAME
+          data_type: VARCHAR(5000)
+        - name: PROJECT_ID
+          data_type: VARCHAR(5000)
+        - name: TASK_NAME
+          data_type: VARCHAR(5000)
+        - name: PHASE_CODE_NAME
+          data_type: VARCHAR(5000)
+        - name: CREATED_BY_NAME
+          data_type: VARCHAR(5000)
+        - name: CREATED_BY_NAME_LF
+          data_type: VARCHAR(5000)
+        - name: CREATED_BY_EMAIL
+          data_type: VARCHAR(5000)
+        - name: MODIFIED_BY_NAME
+          data_type: VARCHAR(5000)
+        - name: MODIFIED_BY_NAME_LF
+          data_type: VARCHAR(5000)
+        - name: MODIFIED_BY_EMAIL
+          data_type: VARCHAR(5000)
