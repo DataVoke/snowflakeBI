@@ -45,3 +45,22 @@ vars:
 seeds:
   cai_bi:
     +schema: reference
+    zip_code_geolocations:
+      +column_types:
+        zip_code:: varchar(5000)
+        latitude: number(36,5)
+        longitude: number(36,5)
+        geo_point: varchar(5000)
+        geo_location_json: variant
+        latitude_longitude: varchar(5000)
+        city: varchar(5000)
+        state_id: varchar(5000)
+        state_name: varchar(5000)
+        population: number(36,0)
+        density: number(36,1)
+        county_fips: varchar(5000)
+        county_name: varchar(5000)
+        county_weights: varchar(5000)
+        county_names_all: varchar(5000)
+        county_fips_all: varchar(5000)
+        timezone: varchar(5000)
