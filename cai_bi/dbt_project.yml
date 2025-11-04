@@ -51,7 +51,7 @@ seeds:
         latitude: number(36,5)
         longitude: number(36,5)
         geo_point: varchar(5000)
-        geo_location_json: variant
+        geo_location_json: varchar(5000)
         latitude_longitude: varchar(5000)
         city: varchar(5000)
         state_id: varchar(5000)
