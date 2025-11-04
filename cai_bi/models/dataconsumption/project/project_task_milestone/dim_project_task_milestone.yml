@@ -3,7 +3,7 @@ version: 1
 models:
     - name: dim_project_task_milestone
       tests:
-      - dim_project_row_count_matches_sources:
+      - dim_project_task_milestone_row_count_matches_sources:
           source: ref('project_task_milestone')
       columns:
         - name: DTS_CREATED_AT
