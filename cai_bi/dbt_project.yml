@@ -47,7 +47,7 @@ seeds:
     +schema: reference
     zip_code_geolocations:
       +column_types:
-        zip_code:: varchar(5000)
+        zip_code: varchar(5000)
         latitude: number(36,5)
         longitude: number(36,5)
         geo_point: varchar(5000)
