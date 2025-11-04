@@ -4,9 +4,9 @@ seeds:
       - name: ZIP_CODE
         data_type: "VARCHAR(5000)"
       - name: LATITUDE
-        data_type: "NUMBER(19,5)"
+        data_type: "NUMBER(36,5)"
       - name: LONGITUDE
-        data_type: "NUMBER(19,5)"
+        data_type: "NUMBER(36,5)"
       - name: GEO_POINT
         data_type: "VARCHAR(5000)"
       - name: GEO_LOCATION_JSON
