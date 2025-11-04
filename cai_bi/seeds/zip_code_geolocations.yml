@@ -1,0 +1,37 @@
+seeds:
+  - name: zip_code_geolocations
+    columns:
+      - name: ZIP_CODE
+        data_type: "VARCHAR(5000)"
+      - name: LATITUDE
+        data_type: "NUMBER(19,5)"
+      - name: LONGITUDE
+        data_type: "NUMBER(19,5)"
+      - name: GEO_POINT
+        data_type: "VARCHAR(5000)"
+      - name: GEO_LOCATION_JSON
+        data_type: "VARIANT"
+      - name: LATITUDE_LONGITUDE
+        data_type: "VARIANT"
+      - name: CITY
+        data_type: "VARCHAR(5000)"
+      - name: STATE_ID
+        data_type: "VARCHAR(5000)"
+      - name: STATE_NAME
+        data_type: "VARCHAR(5000)"
+      - name: POPULATION
+        data_type: "NUMBER(36,0)"
+      - name: DENSITY
+        data_type: "NUMBER(36,1)"
+      - name: COUNTY_FIPS
+        data_type: "VARCHAR(5000)"
+      - name: COUNTY_NAME
+        data_type: "VARCHAR(5000)"
+      - name: COUNTY_WEIGHTS
+        data_type: "VARCHAR(5000)"
+      - name: COUNTY_NAME_ALL
+        data_type: "VARCHAR(5000)"
+      - name: COUNTY_FIPS_ALL
+        data_type: "VARCHAR(5000)"
+      - name: TIMEZONE
+        data_type: "VARCHAR(5000)"
