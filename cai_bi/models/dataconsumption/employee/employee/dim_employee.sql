@@ -124,18 +124,18 @@ SELECT
 
 -- other fields
     ukg.address_city,
-    ukg.address_country,
+    upper(ukg.address_country) as address_country,
     ukg.address_postal_code,
-    ukg.address_state,
+    upper(ukg.address_state) as address_state,
     ukg.address_street,
     ukg.annual_salary,
-    ukg.bln_exclude_from_resource_planner,
-    ukg.bln_is_active,
-    sin.bln_is_hourly,
-    por.bln_mst,
-    por.bln_pm_qualified,
-    sfc.bln_is_resource,
-    sfc.closed_won_goal,
+    ifnull(sfc.bln_exclude_from_resource_planner,false) as bln_exclude_from_resource_planner,
+    ifnull(ukg.bln_is_active,false) as bln_is_active,
+    ifnull(sin.bln_is_hourly,false) as bln_is_hourly,
+    ifnull(por.bln_mst,false) as bln_mst,
+    ifnull(por.bln_pm_qualified,false) as bln_pm_qualified,
+    ifnull(sfc.bln_is_resource,false) as bln_is_resource,
+    ifnull(sfc.closed_won_goal,0) as closed_won_goal,
     ifnull(shift_codes.shift_percent,0) as cola_percent,
     ifnull(shift_codes.shift_percent,0) * ifnull(ukg.annual_salary,0) as amt_cola,
     ukg_companies.code as company_code,
@@ -155,7 +155,7 @@ SELECT
     initcap(ukg.first_name) as first_name,
     initcap(ukg.first_name_display) as first_name_display,
     initcap(ukg.former_name) as former_name,
-    ukg.historical_utilization_target_hours,
+    ifnull(sfc.historical_utilization_target_hours,0) as historical_utilization_target_hours,
     ukg.home_phone,
     ukg.home_phone_country,
     ukg.hourly_pay_rate,
@@ -177,8 +177,8 @@ SELECT
     ukg.ukg_employee_number,
     ukg.ukg_override_job_title,
     ukg.ukg_status,
-    ukg.utilization_target,
-    ukg.utilization_target_hours,
+    sfc.utilization_target,
+    ifnull(sfc.utilization_target_hours,0) as utilization_target_hours,
     ukg.weekly_pay_rate,
     ukg.work_phone_country,
     por.work_phone_number,
@@ -201,9 +201,9 @@ from ukg_employee ukg
 left join ukg_employee sin on ukg.hash_link = sin.hash_link and sin.src_sys_key = 'int'
 left join ukg_employee por on ukg.hash_link = por.hash_link and por.src_sys_key = 'por'
 left join ukg_employee sfc on ukg.hash_link = sfc.hash_link and sfc.src_sys_key = 'sfc'
-left join states as states on ukg.state_id = states.ukg_id
+left join states as states on lower(ukg.state_id) = lower(states.ukg_id)
 left join contractor_companies as contractor_companies on por.contractor_company_id = contractor_companies.id
-left join countries as countries on ukg.address_country = countries.ukg_id
+left join countries as countries on lower(ukg.address_country) = lower(countries.ukg_id)
 left join departments as departments on ukg.department_id = departments.ukg_id
 left join dol_statuses as dol on ukg.dol_status_id = dol.ukg_id
 left join employee_types as employee_types on ukg.employee_type_id = employee_types.ukg_id
