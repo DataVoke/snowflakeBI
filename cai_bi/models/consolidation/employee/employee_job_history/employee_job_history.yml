@@ -1,11 +1,13 @@
 version: 1
 
 models:
-  - name: employment_job_history
+  - name: employee_job_history
     description: Model for employment job history
     config:
       contract:
         enforced: true
+    tests:
+      - employee_job_history_source_count_match
     columns:
       - name: SRC_SYS_KEY
         data_type: VARCHAR(250)
