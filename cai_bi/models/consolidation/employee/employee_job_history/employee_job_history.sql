@@ -27,7 +27,7 @@ select
     job_history.supervisor_id as key_supervisor,
     md5(job_history.supervisor_id) as hash_key_supervisor,
     job_history.created_by_user_id as src_created_by_id,
-    job_history.employee_status as status_code,
+    job_history.employee_status as employee_status_code,
     job_history.employee_type as employee_type_id,
     job_history.home_company_id as home_company_id,
     job_history.job_id as job_id,

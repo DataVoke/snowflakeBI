@@ -69,7 +69,7 @@ models:
         data_type: VARCHAR(32)
       - name: SRC_CREATED_BY_ID
         data_type: VARCHAR(5000)
-      - name: STATUS_CODE
+      - name: EMPLOYEE_STATUS_CODE
         data_type: VARCHAR(5000)
       - name: EMPLOYEE_TYPE_ID
         data_type: VARCHAR(5000)
