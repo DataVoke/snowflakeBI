@@ -2,7 +2,7 @@ version: 1
 
 models:
   - name: employee_job_history
-    description: Model for employment job history
+    description: Model for employee job history
     config:
       contract:
         enforced: true
