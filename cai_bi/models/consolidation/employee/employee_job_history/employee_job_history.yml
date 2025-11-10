@@ -88,11 +88,11 @@ models:
       - name: FLSA_CATEGORY_ID
         data_type: VARCHAR(5000)
       - name: BLN_IS_FULL_TIME
-        data_type: VARCHAR(5000)
+        data_type: BOOLEAN
       - name: HOURLY_PAY_RATE
         data_type: NUMBER(38,17)
       - name: DTE_INTEGRATION_EFFECTIVE
-        data_type: TIMESTAMP_TZ(9)
+        data_type: DATE
       - name: BLN_IS_JOB_CHANGE
         data_type: BOOLEAN
       - name: BLN_IS_ORG_CHANGE
@@ -112,7 +112,7 @@ models:
       - name: BLN_IS_VIEWABLE_BY_EMPLOYEE
         data_type: BOOLEAN
       - name: DTE_JOB_EFFECTIVE
-        data_type: TIMESTAMP_TZ(9)
+        data_type: DATE
       - name: JOB_TITLE
         data_type: VARCHAR(5000)
       - name: NOTES
