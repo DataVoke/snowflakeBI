@@ -1,0 +1,169 @@
+version: 1
+
+models:
+  - name: employee_job_history
+    description: Model for employee job history
+    config:
+      contract:
+        enforced: true
+    tests:
+      - employee_job_history_source_count_match
+    columns:
+      - name: SRC_SYS_KEY
+        data_type: VARCHAR(250)
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_EFF_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EFF_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: BLN_CURRENT
+        data_type: BOOLEAN
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - not_null
+          - unique
+      - name: HASH_KEY
+        data_type: VARCHAR(32)
+        tests:
+          - not_null
+          - unique
+      - name: LINK
+        data_type: VARCHAR(5000)
+      - name: HASH_LINK
+        data_type: VARCHAR(32)
+      - name: KEY_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_EMPLOYEE
+        data_type: VARCHAR(32)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_ENTITY
+        data_type: VARCHAR(32)
+      - name: KEY_PRACTICE
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PRACTICE
+        data_type: VARCHAR(32)
+      - name: KEY_DEPARTMENT
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_DEPARTMENT
+        data_type: VARCHAR(32)
+      - name: KEY_BASE_TEAM
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_BASE_TEAM
+        data_type: VARCHAR(32)
+      - name: KEY_UKG_LOCATION
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_UKG_LOCATION
+        data_type: VARCHAR(32)
+      - name: KEY_SUPERVISOR
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_SUPERVISOR
+        data_type: VARCHAR(32)
+      - name: SRC_CREATED_BY_ID
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_STATUS_CODE
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_TYPE_ID
+        data_type: VARCHAR(5000)
+      - name: HOME_COMPANY_ID
+        data_type: VARCHAR(5000)
+      - name: JOB_ID
+        data_type: VARCHAR(5000)
+      - name: LOCATION_ID
+        data_type: VARCHAR(5000)
+      - name: PAY_GROUP_ID
+        data_type: VARCHAR(5000)
+      - name: ANNUAL_SALARY
+        data_type: NUMBER(38,17)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: FLSA_CATEGORY_ID
+        data_type: VARCHAR(5000)
+      - name: BLN_IS_FULL_TIME
+        data_type: BOOLEAN
+      - name: HOURLY_PAY_RATE
+        data_type: NUMBER(38,17)
+      - name: DTE_INTEGRATION_EFFECTIVE
+        data_type: DATE
+      - name: BLN_IS_JOB_CHANGE
+        data_type: BOOLEAN
+      - name: BLN_IS_ORG_CHANGE
+        data_type: BOOLEAN
+      - name: BLN_IS_OUTSIDE_GUIDELINES
+        data_type: BOOLEAN
+      - name: BLN_IS_OUTSIDE_RANGE
+        data_type: BOOLEAN
+      - name: BLN_IS_PROMOTION
+        data_type: BOOLEAN
+      - name: BLN_IS_RATE_CHANGE
+        data_type: BOOLEAN
+      - name: BLN_IS_SYSTEM
+        data_type: BOOLEAN
+      - name: BLN_IS_TRANSFER
+        data_type: BOOLEAN
+      - name: BLN_IS_VIEWABLE_BY_EMPLOYEE
+        data_type: BOOLEAN
+      - name: DTE_JOB_EFFECTIVE
+        data_type: DATE
+      - name: JOB_TITLE
+        data_type: VARCHAR(5000)
+      - name: NOTES
+        data_type: VARCHAR(5000)
+      - name: NUMBER_OF_PAYMENTS
+        data_type: NUMBER(38,17)
+      - name: OTHER_RATE_1
+        data_type: NUMBER(38,17)
+      - name: OTHER_RATE_2
+        data_type: NUMBER(38,17)
+      - name: OTHER_RATE_3
+        data_type: NUMBER(38,17)
+      - name: OTHER_RATE_4
+        data_type: NUMBER(38,17)
+      - name: PAY_PERIOD_CODE
+        data_type: VARCHAR(5000)
+      - name: PERCENT_CHANGE
+        data_type: NUMBER(38,17)
+      - name: PERIOD_PAY_RATE
+        data_type: NUMBER(38,17)
+      - name: PIECE_PAY_RATE
+        data_type: NUMBER(38,17)
+      - name: PROJECT_CODE
+        data_type: VARCHAR(5000)
+      - name: REASON_CODE
+        data_type: VARCHAR(5000)
+      - name: SALARY_GRADE
+        data_type: VARCHAR(5000)
+      - name: BLN_IS_SALARY
+        data_type: BOOLEAN
+      - name: SCHEDULED_ANNUAL_HOURS
+        data_type: NUMBER(38,17)
+      - name: SCHEDULED_FULL_TIME_EQUIVALENCY
+        data_type: NUMBER(38,17)
+      - name: SCHEDULED_WORK_HOURS
+        data_type: NUMBER(38,17)
+      - name: SHIFT_CODE
+        data_type: VARCHAR(5000)
+      - name: SHIFT_GROUP_CODE
+        data_type: VARCHAR(5000)
+      - name: STEP_NUMBER
+        data_type: NUMBER(38,17)
+      - name: SUPERVISOR_NAME_FIRST
+        data_type: VARCHAR(5000)
+      - name: SUPERVISOR_NAME_LAST
+        data_type: VARCHAR(5000)
+      - name: BLN_SUPERVISOR_NOT_IN_LIST
+        data_type: BOOLEAN
+      - name: BLN_USE_PAY_SCALES
+        data_type: BOOLEAN
+      - name: WEEKLY_HOURS
+        data_type: NUMBER(38,17)
+      - name: WEEKLY_PAY_RATE
+        data_type: NUMBER(38,17)
