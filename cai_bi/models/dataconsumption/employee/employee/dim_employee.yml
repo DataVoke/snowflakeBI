@@ -35,6 +35,10 @@ models:
         data_type: NUMBER(38,0)
       - name: KEY_EMPLOYEE_TYPE
         data_type: NUMBER(38,0)
+      - name: KEY_EMPLOYEE_COMPANY
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_EMPLOYEE_COMPANY
+        data_type: VARCHAR(32)   
       - name: KEY_ENTITY
         data_type: NUMBER(38,0)
       - name: KEY_ETHNIC_BACKGROUND_ID

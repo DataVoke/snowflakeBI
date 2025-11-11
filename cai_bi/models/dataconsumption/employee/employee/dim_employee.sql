@@ -50,6 +50,7 @@ SELECT
     departments.record_id as key_department,
     dol.record_id as key_dol_status,
     employee_types.record_id as key_employee_type,
+    concat(ukg.key,':',ukg.key_entity) as key_employee_company,
     coalesce(entities.record_id, por_entities.record_id) as key_entity,
     ethnic.record_id as key_ethnic_background_id,
     genders.record_id as key_gender,
