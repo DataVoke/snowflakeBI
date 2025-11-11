@@ -17,6 +17,8 @@ select
     md5(job_history.id) as hash_link,
     job_history.employee_id as key_employee,
     md5(job_history.employee_id) as hash_key_employee,
+    concat(employee_id,':',company_id) as key_employee_company,
+    md5(concat(employee_id,':',company_id)) as hash_key_employee_company,
     job_history.company_id as key_entity,
     md5(job_history.company_id) as hash_key_entity,
     job_history.organization_level_1_id as key_practice,
