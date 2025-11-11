@@ -1,5 +1,6 @@
 with
-    job_history as (select * from {{ source('ukg_pro', 'employee_job_history') }} where _fivetran_deleted = false)
+    job_history as (select * from {{ source('ukg_pro', 'employee_job_history') }} where _fivetran_deleted = false),
+    company as (select * from {{ source('ukg_pro', 'company') }} where _fivetran_deleted = false)
 
 select 
     'ukg' as src_sys_key,
@@ -16,6 +17,8 @@ select
     md5(job_history.id) as hash_link,
     job_history.employee_id as key_employee,
     md5(job_history.employee_id) as hash_key_employee,
+    concat(employee_id,':',company_id) as key_employee_company,
+    md5(concat(employee_id,':',company_id)) as hash_key_employee_company,
     job_history.company_id as key_entity,
     md5(job_history.company_id) as hash_key_entity,
     job_history.organization_level_1_id as key_practice,
@@ -29,6 +32,8 @@ select
     job_history.supervisor_id as key_supervisor,
     md5(job_history.supervisor_id) as hash_key_supervisor,
     cast(job_history.created_by_user_id as varchar(5000)) as src_created_by_id,
+    company.code as company_code,
+    upper(company.currency_code) as currency_code,
     job_history.employee_status as employee_status_code,
     job_history.employee_type as employee_type_id,
     job_history.home_company_id as home_company_id,
@@ -79,3 +84,4 @@ select
     cast(job_history.weekly_hours as number(38,17)) as weekly_hours,
     cast(job_history.weekly_pay_rate as number(38,17)) as weekly_pay_rate
 from job_history
+left join company on job_history.company_id = company.id
