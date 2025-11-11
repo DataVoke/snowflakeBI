@@ -45,7 +45,7 @@ activitybyproject_te as (
           te.employee_name ,
           te.employee_name_lf as employee_name_lf_filter,
           te.employee_name as employee_name_filter,
-          null as record_id, 
+          te.key as record_id, 
           p.currency_iso_code,
           null as base_currency,
           null as currency_code,
@@ -70,7 +70,8 @@ activitybyproject_te as (
           round(coalesce( rate * te.qty,0),2) as cost,
           round(coalesce( rate * te.qty,0),2) as cost_project,
           round(case when rate_div >={{ var('rate_threshold') }} then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd,
-          te.state as status
+          te.state as status,
+          te.bln_billable as bln_billable
      from timesheet_entry te  
      inner join project p on te.key_project = p.key
      left join employee te_e on te.key_employee = te_e.key
@@ -109,7 +110,8 @@ expi_with_project as (
           end as curr_ind, p.amt_po, p.amt_po_usd, coalesce(round(ei.amt,2),0) as amt, coalesce(round(ei.amt_org,2),0) as amt_org, p.project_name, p.project_status, p.practice_area_name, p.department_name,
           coalesce( ei.dte_org_exchrate,ei.dte_entry,ei.exp_dte_when_posted) as dte_exch_rate, ei.exp_dte_when_posted as dte_entry,
           1 as qty, 'EXPENSE' as task_name, p.customer_id , p.customer_name , p.practice_id_intacct, p.billing_type,p.root_parent_name, null as notes,
-          ei.state as status
+          ei.state as status,
+          ei.bln_billable as bln_billable
      from expense_item ei 
      inner join project p on ei.key_project = p.key
      left join employee ei_e on ei.key_employee = ei_e.key
@@ -127,7 +129,8 @@ exchange_matched_ei as (
           coalesce(ex.fx_rate_div,1) as rate_div,
           coalesce(ex.fx_rate_mul,1) as rate_mul, 
           ex.date,
-          ei.status
+          ei.status,
+          ei.bln_billable
      from expi_with_project ei
      left join forex_filtered ex on (ei.currency_iso_code = ex.frm_curr) and ex.date = ei.dte_exch_rate
 ),
@@ -159,7 +162,8 @@ exchange_matched_projcurr_ei as (
                else ( case when rate_div >={{ var('rate_threshold') }} then amt_org/pcurr_rate_div else amt_org * pcurr_rate_mul end) 
                end,2) as cost_project,        
           round(case when rate_div >={{ var('rate_threshold') }} then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd,
-          exm.status
+          exm.status,
+          exm.bln_billable
      from exchange_matched_ei exm
      left join forex_projectcurr ex_pcurr on (exm.currency_iso_code = ex_pcurr.to_curr) and ( ex_pcurr.frm_curr = exm.org_currency) and ex_pcurr.date = exm.dte_exch_rate
 ),
@@ -172,7 +176,8 @@ agg_by_keyei as (
           currency_iso_code,exp_currency as base_currency,org_currency as currency_code,
           project_name,project_status,practice_area_name,department_name,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,root_parent_name,notes,
           amt_po,amt_po_usd , sum(rate) as rate,  sum(rate_project) as rate_project ,sum(rate_project_usd) as rate_project_usd, sum(cost) as cost ,sum(cost_project) as cost_project, sum(cost_project_usd) as cost_project_usd,
-          status
+          status,
+          bln_billable
      from exchange_matched_projcurr_ei 
      group by all   
 ),
@@ -184,7 +189,8 @@ activitybyproject_ei as (
           assistant_project_manager_email, ukg_employee_number,email_address_work,employee_name_lf,employee_name ,employee_name_lf_filter,employee_name_filter,record_id,currency_iso_code,base_currency,currency_code,
           project_name,project_status,practice_area_name,department_name,dte_entry ,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,root_parent_name,notes,
           amt_po,amt_po_usd ,  rate ,rate_project, rate_project_usd,  cost ,cost_project, cost_project_usd,
-          status
+          status,
+          bln_billable
      from agg_by_keyei
 ),
 --*********************************************************************************************************
@@ -203,7 +209,8 @@ apbi_with_project as (
           end as curr_ind, amt_po,amt_po_usd, coalesce(round(apbi.amt,2),0) as amt, coalesce(round(apbi.amt_trx,2),0) as amt_trx, p.project_name, p.project_status, p.practice_area_name, p.department_name,
           coalesce( apbi.dte_exch_rate,apbi.dte_entry,apbi.ap_dte_when_posted) as dte_exch_rate, apbi.ap_dte_when_posted as dte_entry,
           1 as qty, 'AP' as task_name, p.customer_id , p.customer_name , p.practice_id_intacct, p.billing_type,p.root_parent_name, null as notes,
-          apbi.state as status
+          apbi.state as status,
+          apbi.bln_billable as bln_billable
      from ap_bill_item apbi
      inner join project p on apbi.key_project = p.key 
 ),
@@ -217,7 +224,8 @@ exchange_matched_api as (
           coalesce(ex.fx_rate_div,1) as rate_div,
           coalesce(ex.fx_rate_mul,1) as rate_mul, 
           ex.date,
-          apbi.status
+          apbi.status,
+          apbi.bln_billable
      from apbi_with_project apbi
      left join forex_filtered ex on (apbi.currency_iso_code = ex.frm_curr) and ex.date = apbi.dte_exch_rate
 ),
@@ -247,7 +255,8 @@ exchange_matched_projcurr_api as (
                else ( case when rate_div >={{ var('rate_threshold') }} then  amt_trx/pcurr_rate_div else amt_trx * pcurr_rate_mul end)
                end,2) as cost_project,        
           round(case when rate_div >={{ var('rate_threshold') }} then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd,
-          exm.status
+          exm.status,
+          exm.bln_billable
      from exchange_matched_api exm
      left join forex_projectcurr ex_pcurr on (exm.currency_iso_code = ex_pcurr.to_curr) and ( ex_pcurr.frm_curr = exm.currency_code) and ex_pcurr.date = exm.dte_exch_rate
 ),
@@ -259,7 +268,8 @@ agg_by_keyapbill as (
           assistant_project_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,employee_name_lf_filter,employee_name_filter,record_id, currency_iso_code,base_currency,currency_code,curr_ind,
           project_name,project_status,practice_area_name,department_name,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,root_parent_name,notes,
           amt_po,amt_po_usd , sum(rate) as rate,  sum(rate_project) as rate_project ,sum(rate_project_usd) as rate_project_usd, sum(cost) as cost ,sum(cost_project) as cost_project, sum(cost_project_usd) as cost_project_usd,
-          status
+          status,
+          bln_billable
      from exchange_matched_projcurr_api 
      group by all
 ),
@@ -271,7 +281,8 @@ activitybyproject_ap as (
           assistant_project_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,employee_name_lf_filter,employee_name_filter,record_id, currency_iso_code,base_currency,currency_code,project_name,project_status,practice_area_name,department_name,
           dte_entry ,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,root_parent_name,notes,
           amt_po,amt_po_usd ,  rate ,rate_project, rate_project_usd,  cost ,cost_project, cost_project_usd,
-          status
+          status,
+          bln_billable
      from agg_by_keyapbill
 ),
 --*********************************************************************************************************
@@ -298,7 +309,8 @@ ccte_with_project as  (
           end as curr_ind, amt_po,amt_po_usd, coalesce(round(ccte.amt,2),0) as amt, coalesce(round(ccte.amt_trx,2),0) as amt_trx, p.project_name, p.project_status, p.practice_area_name, p.department_name,
           ccte.dts_src_created as dte_exch_rate, ccte.cct_dts_src_created as dte_entry,
           1 as qty, 'EXPENSE - CC' as task_name, p.customer_id , p.customer_name , p.practice_id_intacct, p.billing_type,p.root_parent_name, null as notes,
-          ccte.cct_state as status
+          ccte.cct_state as status,
+          ccte.bln_billable
      from ccte_entry ccte
      inner join project p on ccte.key_project = p.key 
      left join employee ccte_e on ccte.key_employee = ccte_e.key
@@ -313,7 +325,8 @@ exchange_matched_ccte as (
           coalesce(ex.fx_rate_div,1) as rate_div,
           coalesce(ex.fx_rate_mul,1) as rate_mul, 
           ex.date,
-          ccte.status
+          ccte.status,
+          ccte.bln_billable
      from ccte_with_project ccte
      left join forex_filtered ex on (ccte.currency_iso_code = ex.frm_curr) and ex.date = ccte.dte_exch_rate
 ),
@@ -344,7 +357,8 @@ exchange_matched_projcurr_ccte as (
                else ( case when rate_div >={{ var('rate_threshold') }} then  amt_trx/pcurr_rate_div else amt_trx * pcurr_rate_mul end)
                end,2) as cost_project,        
           round(case when rate_div >={{ var('rate_threshold') }} then cost_project/rate_div else cost_project * rate_mul end ,2) as cost_project_usd,
-          exm.status
+          exm.status,
+          exm.bln_billable
      from exchange_matched_ccte exm
      left join forex_projectcurr ex_pcurr on (exm.currency_iso_code = ex_pcurr.to_curr) and (ex_pcurr.frm_curr = exm.currency_code) and ex_pcurr.date = exm.dte_exch_rate
 ),
@@ -356,7 +370,8 @@ activitybyproject_cct as (
           assistant_project_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,employee_name_lf_filter,employee_name_filter,record_id, currency_iso_code,base_currency,currency_code,project_name,project_status,practice_area_name,department_name,
           dte_entry ,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,root_parent_name,notes,
           amt_po,amt_po_usd ,  rate ,rate_project, rate_project_usd,  cost ,cost_project, cost_project_usd,
-          status
+          status,
+          bln_billable
      from exchange_matched_projcurr_ccte
 ), 
 --*********************************************************************************************************
@@ -425,5 +440,6 @@ select
      cost ,
      cost_project, 
      cost_project_usd,
-     status
+     status,
+     bln_billable
 from final
