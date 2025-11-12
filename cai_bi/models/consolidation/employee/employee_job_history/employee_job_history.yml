@@ -47,9 +47,9 @@ models:
         data_type: VARCHAR(5000)
       - name: HASH_KEY_EMPLOYEE_COMPANY
         data_type: VARCHAR(32)
-      - name: KEY_ENTITY
+      - name: KEY_COMPANY
         data_type: VARCHAR(5000)
-      - name: HASH_KEY_ENTITY
+      - name: HASH_KEY_COMPANY
         data_type: VARCHAR(32)
       - name: KEY_PRACTICE
         data_type: VARCHAR(5000)
@@ -63,9 +63,9 @@ models:
         data_type: VARCHAR(5000)
       - name: HASH_KEY_BASE_TEAM
         data_type: VARCHAR(32)
-      - name: KEY_UKG_LOCATION
+      - name: KEY_INTACCT_LOCATION
         data_type: VARCHAR(5000)
-      - name: HASH_KEY_UKG_LOCATION
+      - name: HASH_KEY_INTACCT_LOCATION
         data_type: VARCHAR(32)
       - name: KEY_SUPERVISOR
         data_type: VARCHAR(5000)
