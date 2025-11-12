@@ -121,6 +121,8 @@ models:
         data_type: VARCHAR(5000)
       - name: DTE_JOB_EFFECTIVE
         data_type: DATE
+      - name: DTS_LAST_SYNCED
+        data_type: TIMESTAMP_TZ(9)
       - name: JOB_TITLE
         data_type: VARCHAR(5000)
       - name: NOTES
