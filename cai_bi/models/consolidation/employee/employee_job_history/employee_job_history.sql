@@ -55,6 +55,7 @@ select
     job_history.is_system as bln_is_system,
     job_history.is_transfer as bln_is_transfer,
     job_history.is_viewable_by_employee as bln_is_viewable_by_employee,
+    job_history._fivetran_synced as dts_last_synced,
     cast(job_history.job_effective_date as date) as dte_job_effective,
     job_history.job_title as job_title,
     job_history.notes as notes,
