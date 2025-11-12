@@ -39,9 +39,9 @@ models:
         data_type: VARCHAR(5000)
       - name: HASH_LINK
         data_type: VARCHAR(32)
-      - name: KEY_ENTITY
+      - name: KEY_COMPANY
         data_type: VARCHAR(5000)
-      - name: HASH_KEY_ENTITY
+      - name: HASH_KEY_COMPANY
         data_type: VARCHAR(32)
       - name: KEY_EMPLOYEE
         data_type: VARCHAR(5000)
