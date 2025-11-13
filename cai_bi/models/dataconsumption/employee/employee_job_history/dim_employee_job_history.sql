@@ -69,8 +69,8 @@ select
                     por_salary_grades.record_id as key_salary_grade,
                     por_shift_codes.record_id as key_shift_code,
                     cast(ifnull(por_shift_codes.shift_percent, 0) as number(38,5)) as cola_percent,
-                    cast(ifnull(cc_to_entity.fx_rate_mul, 1) as number(38,10)) as conversion_rate_entity, //Should only be null if the conversion currencies match
-                    cast(ifnull(cc_to_usd.fx_rate_mul, 1) as number(38,10)) as conversion_rate_usd, //Should only be null if the conversion currencies match or the effective date
+                    cast(ifnull(cc_to_entity.fx_rate_mul, 1) as number(38,10)) as conversion_rate_entity, -- Should only be null if the conversion currencies match
+                    cast(ifnull(cc_to_usd.fx_rate_mul, 1) as number(38,10)) as conversion_rate_usd, -- Should only be null if the conversion currencies match or the effective date
                     job_history.src_created_by_id,
                     nullif(job_history.employee_status_code,'') as employee_status_code,
                     nullif(job_history.employee_type_id,'') as ukg_employee_type_id,
@@ -123,7 +123,7 @@ select
                     nullif(job_history.notes,'') as notes,
                     cast(ifnull(job_history.number_of_payments,0) as number(38,0)) as number_of_payments,
                     case 
-                        when ifnull(job_history.other_rate_1,0) < 10 // This is old data that noone knows what it is. I dont want it to skew the metrics for non descrationary bonuses 
+                        when ifnull(job_history.other_rate_1,0) < 10 -- This is old data that noone knows what it is. I dont want it to skew the metrics for non descrationary bonuses 
                             then 0 
                             else cast(ifnull(job_history.other_rate_1, 0) as number(38,2)) 
                         end  as other_rate_1_original,
