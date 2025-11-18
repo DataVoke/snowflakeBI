@@ -1,0 +1,9 @@
+version: 3
+
+sources:
+  - name: reference
+    description: Source for prod datawarehouse UNMANAGED reference data 
+    database: prod_bi_dw
+    schema:  reference
+    tables:
+      - name: postal_code_geolocations

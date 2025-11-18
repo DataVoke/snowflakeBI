@@ -325,3 +325,11 @@ models:
         data_type: NUMBER(18,2)
       - name: VEST_SIZE
         data_type: VARCHAR(5000)
+      - name: BLN_IS_EMPLOYEE
+        data_type: BOOLEAN
+      - name: GEO_POSTAL_CODE
+        data_type: VARCHAR(5000)
+      - name: GEO_LATITUDE
+        data_type: NUMBER(38,17)
+      - name: GEO_LONGITUDE
+        data_type: NUMBER(38,17)

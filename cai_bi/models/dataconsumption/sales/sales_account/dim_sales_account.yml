@@ -163,3 +163,9 @@ models:
         data_type: VARCHAR(5000)
       - name: SFC_LOCATION_ID
         data_type: VARCHAR(5000)
+      - name: GEO_POSTAL_CODE
+        data_type: VARCHAR(5000)
+      - name: GEO_LATITUDE
+        data_type: NUMBER(38,17)
+      - name: GEO_LONGITUDE
+        data_type: NUMBER(38,17)

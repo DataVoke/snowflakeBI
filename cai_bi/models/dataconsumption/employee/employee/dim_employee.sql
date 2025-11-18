@@ -7,7 +7,17 @@
 }}
 
 with
-    ukg_employee         as (select * from {{ ref('employee') }}),
+    ukg_employee         as (select *, upper(trim(replace(replace(nullif(address_postal_code,''),' ',''),'-',''))) as postal_code_clean,
+                                    case 
+                                        when upper(address_country) = 'USA' then trim(left(postal_code_clean,5) )
+                                        when upper(address_country) = 'CAN' then trim(left(postal_code_clean,3))
+                                        when upper(address_country) = 'GBR' then trim(left(postal_code_clean, length(postal_code_clean) - 3))
+                                        when upper(address_country) = 'IRL' then trim(left(postal_code_clean,3))
+                                        when upper(address_country) = 'NLD' then trim(left(postal_code_clean,4))
+                                        when upper(address_country) = 'KOR' then trim(left(postal_code_clean,5))
+                                        else postal_code_clean
+                                    end as geo_postal_code
+                            from {{ ref('employee') }}),
     job_history_latest as (
                             select *, md5(concat(key_employee_company,':',dte_job_effective,':',dts_src_created)) as gold_key
                             from {{ ref('employee_job_history') }} 
@@ -52,7 +62,8 @@ with
     users_forecasts      as (select * from {{ source('portal', 'users_forecasts') }} where _fivetran_deleted = false),
     base_teams           as (select * from {{ source('portal', 'base_teams') }} where _fivetran_deleted = false),
     job_salary_grades    as (select * from {{ source('portal', 'job_salary_grades') }} where _fivetran_deleted = false),
-    ukg_companies        as (select * from {{ source('ukg_pro', 'company') }} where _fivetran_deleted = false)
+    ukg_companies        as (select * from {{ source('ukg_pro', 'company') }} where _fivetran_deleted = false),
+    geo_locations        as (select *, upper(trim(replace(replace(nullif(postal_code,''),' ',''),'-',''))) as postal_code_clean from {{ source('reference', 'postal_code_geolocations') }})
 SELECT 
     current_timestamp as dts_created_at,
     '{{ this.name }}' as created_by,
@@ -217,7 +228,11 @@ SELECT
     users_forecasts_last_year.plan_hours_week as target_bill_hours_week_last,
     users_forecasts_last_year.plan_hours_year as target_bill_hours_year_last,
     users_forecasts_last_year.plan_bill_amount_week as target_bill_amount_week_last,
-    users_forecasts_last_year.plan_bill_amount_year as target_bill_amount_year_last
+    users_forecasts_last_year.plan_bill_amount_year as target_bill_amount_year_last,
+    employee_types.is_employee,
+    ukg.geo_postal_code,
+    gl.latitude as geo_latitude,
+    gl.longitude as geo_code_longitude
 from ukg_employee ukg 
 left join ukg_employee sin on ukg.hash_link = sin.hash_link and sin.src_sys_key = 'int'
 left join ukg_employee por on ukg.hash_link = por.hash_link and por.src_sys_key = 'por'
@@ -256,4 +271,5 @@ left join ukg_companies as ukg_companies on ukg.key_entity = ukg_companies.id
 left join shift_codes as shift_codes on ukg.shift_code = shift_codes.ukg_id
 left join job_history_latest on concat(ukg.key,':',ukg.key_entity) = job_history_latest.key_employee_company
 left join compensation_latest on concat(ukg.key,':',ukg.key_entity) = compensation_latest.key_employee_company
+left join geo_locations gl on ukg.geo_postal_code = gl.postal_code_clean and countries.record_id = gl.key_country
 where ukg.src_sys_key = 'ukg'
