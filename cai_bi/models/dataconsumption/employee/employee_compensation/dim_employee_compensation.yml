@@ -1,0 +1,217 @@
+version: 
+
+models:
+  - name: dim_employee_compensation
+    tests:
+      - dim_employee_compensation_row_count_matches_sources:
+          source: ref('employee_compensation')
+    columns:
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: KEY
+        data_type: VARCHAR(5000)
+        tests:
+          - unique
+          - not_null
+      - name: KEY_COMPANY
+        data_type: VARCHAR(5000)
+      - name: KEY_EMPLOYEE_COMPANY
+        data_type: VARCHAR(5000)
+      - name: KEY_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: KEY_JOB_HISTORY
+        data_type: VARCHAR(5000)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
+      - name: KEY_POSITION
+        data_type: VARCHAR(5000)
+      - name: KEY_SHIFT_CODE
+        data_type: VARCHAR(5000)
+      - name: KEY_SALARY_GRADE
+        data_type: VARCHAR(5000)
+      - name: DISTRIBUTION_CENTER_CODE
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_STATUS_CODE
+        data_type: VARCHAR(5000)
+      - name: JOB_CHANGE_REASON_CODE
+        data_type: VARCHAR(5000)
+      - name: UKG_JOB_SALARY_GRADE
+        data_type: VARCHAR(5000)
+      - name: UKG_JOB_ID
+        data_type: VARCHAR(5000)
+      - name: UKG_SHIFT_CODE
+        data_type: VARCHAR(5000)
+      - name: UKG_INTACCT_LOCATION_ID
+        data_type: VARCHAR(5000)
+      - name: PRIMARY_SHIFT_GROUP_CODE
+        data_type: VARCHAR(5000)
+      - name: ANNUAL_SALARY_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: ANNUAL_SALARY_ENTITY
+        data_type: NUMBER(38,2)
+      - name: ANNUAL_SALARY_USD
+        data_type: NUMBER(38,2)
+      - name: ANNUAL_SALARY_COLA_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: ANNUAL_SALARY_COLA_ENTITY
+        data_type: NUMBER(38,2)
+      - name: ANNUAL_SALARY_COLA_USD
+        data_type: NUMBER(38,2)
+      - name: BENEFITS_RATE
+        data_type: NUMBER(38,5)
+      - name: BLN_IS_AUTO_PAID
+        data_type: BOOLEAN
+      - name: BLN_IS_FULL_TIME
+        data_type: BOOLEAN
+      - name: BLN_IS_HIGHLY_COMPENSATED
+        data_type: BOOLEAN
+      - name: BLN_IS_SALARY
+        data_type: BOOLEAN
+      - name: COLA_PERCENT
+        data_type: NUMBER(38,5)
+      - name: COMPANY_CODE
+        data_type: VARCHAR(5000)
+      - name: COMPANY_NAME
+        data_type: VARCHAR(5000)
+      - name: CONVERSION_RATE_ENTITY
+        data_type: NUMBER(38,10)
+      - name: CONVERSION_RATE_USD
+        data_type: NUMBER(38,10)
+      - name: CURRENCY_CODE_ORIGINAL
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_CODE_ENTITY
+        data_type: VARCHAR(5000)
+      - name: DTE_IN_JOB
+        data_type: DATE
+      - name: DTE_LAST_PAID
+        data_type: DATE
+      - name: DTE_LAST_WORKED
+        data_type: DATE
+      - name: DTE_NEXT_SALARY_REVIEW
+        data_type: DATE
+      - name: DTE_PAID_THRU
+        data_type: DATE
+      - name: DTS_LAST_SYNCED
+        data_type: TIMESTAMP_LTZ
+      - name: EMPLOYEE_EMAIL
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: ENTITY_NAME
+        data_type: VARCHAR(5000)
+      - name: HOURLY_PAY_RATE_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: HOURLY_PAY_RATE_ENTITY
+        data_type: NUMBER(38,2)
+      - name: HOURLY_PAY_RATE_USD
+        data_type: NUMBER(38,2)
+      - name: HOURLY_PAY_RATE_COLA_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: HOURLY_PAY_RATE_COLA_ENTITY
+        data_type: NUMBER(38,2)
+      - name: HOURLY_PAY_RATE_COLA_USD
+        data_type: NUMBER(38,2)
+      - name: JOB_TITLE
+        data_type: VARCHAR(5000)
+      - name: NUMBER_OF_PAYMENTS
+        data_type: NUMBER(38,0)
+      - name: OTHER_RATE_1_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: OTHER_RATE_1_ENTITY
+        data_type: NUMBER(38,2)
+      - name: OTHER_RATE_1_USD
+        data_type: NUMBER(38,2)
+      - name: OTHER_RATE_2_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: OTHER_RATE_3_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: OTHER_RATE_3_ENTITY
+        data_type: NUMBER(38,2)
+      - name: OTHER_RATE_3_USD
+        data_type: NUMBER(38,2)
+      - name: OTHER_RATE_4_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: OTHER_RATE_4_ENTITY
+        data_type: NUMBER(38,2)
+      - name: OTHER_RATE_4_USD
+        data_type: NUMBER(38,2)
+      - name: PAY_PERIOD
+        data_type: VARCHAR(5000)
+      - name: PERIOD_PAY_RATE_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: PERIOD_PAY_RATE_ENTITY
+        data_type: NUMBER(38,2)
+      - name: PERIOD_PAY_RATE_USD
+        data_type: NUMBER(38,2)
+      - name: PERIOD_PAY_RATE_COLA_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: PERIOD_PAY_RATE_COLA_ENTITY
+        data_type: NUMBER(38,2)
+      - name: PERIOD_PAY_RATE_COLA_USD
+        data_type: NUMBER(38,2)
+      - name: PERFORMANCE_BONUS_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: PERFORMANCE_BONUS_ENTITY
+        data_type: NUMBER(38,2)
+      - name: PERFORMANCE_BONUS_USD
+        data_type: NUMBER(38,2)
+      - name: PERFORMANCE_REVIEW_RATING
+        data_type: VARCHAR(5000)
+      - name: PERFORMANCE_REVIEW_TYPE
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_NAME
+        data_type: VARCHAR(5000)
+      - name: SCHEDULED_ANNUAL_WORK_HOURS
+        data_type: NUMBER(38,2)
+      - name: SCHEDULED_FULL_TIME_EQUIVALENCY
+        data_type: NUMBER(38,2)
+      - name: SCHEDULED_PERIOD_WORK_HOURS
+        data_type: NUMBER(38,2)
+      - name: WEEKLY_HOURS
+        data_type: NUMBER(38,2)
+      - name: WEEKLY_PAY_RATE_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: WEEKLY_PAY_RATE_ENTITY
+        data_type: NUMBER(38,2)
+      - name: WEEKLY_PAY_RATE_USD
+        data_type: NUMBER(38,2)
+      - name: WEEKLY_PAY_RATE_COLA_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: WEEKLY_PAY_RATE_COLA_ENTITY
+        data_type: NUMBER(38,2)
+      - name: WEEKLY_PAY_RATE_COLA_USD
+        data_type: NUMBER(38,2)
+      - name: SALARY_GRADE_NAME
+        data_type: VARCHAR(5000)
+      - name: TOTAL_POTENTIAL_COMPENSATION_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: TOTAL_POTENTIAL_COMPENSATION_USD
+        data_type: NUMBER(38,2)
+      - name: TOTAL_POTENTIAL_COMPENSATION_ENTITY
+        data_type: NUMBER(38,2)
+      - name: TOTAL_COMPENSATION_ORIGINAL
+        data_type: NUMBER(38,2)
+      - name: TOTAL_COMPENSATION_USD
+        data_type: NUMBER(38,2)
+      - name: TOTAL_COMPENSATION_ENTITY
+        data_type: NUMBER(38,2)
+      - name: PAYROLL_COMPANY_NAME
+        data_type: VARCHAR(5000)
+      - name: POSITION_NAME
+        data_type: VARCHAR(5000)
+      - name: LOCATION_UKG_NAME
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_TYPE_NAME
+        data_type: VARCHAR(5000)
+      - name: SHIFT_CODE_NAME
+        data_type: VARCHAR(5000)
+      - name: SALARY_GRADE_NAME
+        data_type: VARCHAR(5000)
