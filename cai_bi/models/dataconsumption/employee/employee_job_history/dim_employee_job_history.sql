@@ -48,7 +48,7 @@ select
     '{{ this.name }}' as created_by,
     cast(current_timestamp as timestamp_tz) as dts_updated_at,
     '{{ this.name }}' as updated_by,
-                    job_history.key,
+                    md5(concat(job_history.key_employee_company,':',job_history.dte_job_effective,':',job_history.dts_src_created)) as key,
                     job_history.key_company,
                     job_history.key_employee,
                     job_history.key_employee_company,

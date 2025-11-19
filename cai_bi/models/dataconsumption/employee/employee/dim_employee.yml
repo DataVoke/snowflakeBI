@@ -19,6 +19,10 @@ models:
         tests:
           - unique
           - not_null
+      - name: KEY_JOB_HISTORY
+        data_type: VARCHAR(5000)
+      - name: KEY_COMPENSATION
+        data_type: VARCHAR(5000)
       - name: KEY_BASE_TEAM
         data_type: VARCHAR(5000)
       - name: KEY_COMPANY

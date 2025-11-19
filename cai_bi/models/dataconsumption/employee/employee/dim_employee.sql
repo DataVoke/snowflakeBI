@@ -8,6 +8,24 @@
 
 with
     ukg_employee         as (select * from {{ ref('employee') }}),
+    job_history_latest as (
+                            select *, md5(concat(key_employee_company,':',dte_job_effective,':',dts_src_created)) as gold_key
+                            from {{ ref('employee_job_history') }} 
+                            where src_sys_key = 'ukg'
+                                qualify row_number() over ( 
+                                    partition by key_employee_company 
+                                    order by dts_src_created desc 
+                                ) = 1
+                         ),
+    compensation_latest  as (
+                            select *
+                            from {{ ref('employee_compensation') }}
+                            where src_sys_key = 'ukg'
+                                qualify row_number() over (
+                                partition by key_employee_company
+                                order by dte_in_job desc
+                            ) = 1
+                        ),
     states               as (select * from {{ source('portal', 'states') }} where _fivetran_deleted = false),
     contractor_companies as (select * from {{ source('portal', 'contractor_companies') }} where _fivetran_deleted = false),
     countries            as (select * from {{ source('portal', 'countries') }} where _fivetran_deleted = false),
@@ -42,6 +60,8 @@ SELECT
     '{{ this.name }}' as updated_by,
     --keys
     ukg.key,
+    job_history_latest.gold_key as key_job_history,
+    compensation_latest.key as key_compensation,
     ukg.key_base_team,
     companies.record_id as key_company,
     continents.record_id as key_continent,
@@ -234,4 +254,6 @@ left join base_teams as base_teams on base_teams.ukg_id = ukg.key_base_team
 left join job_salary_grades as job_salary_grades on ukg.job_salary_grade_id = job_salary_grades.id
 left join ukg_companies as ukg_companies on ukg.key_entity = ukg_companies.id
 left join shift_codes as shift_codes on ukg.shift_code = shift_codes.ukg_id
+left join job_history_latest on concat(ukg.key,':',ukg.key_entity) = job_history_latest.key_employee_company
+left join compensation_latest on concat(ukg.key,':',ukg.key_entity) = compensation_latest.key_employee_company
 where ukg.src_sys_key = 'ukg'
