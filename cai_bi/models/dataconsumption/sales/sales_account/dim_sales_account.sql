@@ -115,7 +115,7 @@ select
     silver_rcs.name as rate_card_set_name,
     silver_acct.geo_postal_code,
     gl.latitude as geo_latitude,
-    gl.longitude as geo_code_longitude
+    gl.longitude as geo_longitude
 from silver_acct
 left join ukg_employees as acct_client_manager on silver_acct.key_client_manager = acct_client_manager.sfc_contact_id
 left join ukg_employees as acct_owner on silver_acct.key_owner = acct_owner.sfc_user_id

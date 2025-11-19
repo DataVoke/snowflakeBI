@@ -232,7 +232,7 @@ SELECT
     employee_types.is_employee,
     ukg.geo_postal_code,
     gl.latitude as geo_latitude,
-    gl.longitude as geo_code_longitude
+    gl.longitude as geo_longitude
 from ukg_employee ukg 
 left join ukg_employee sin on ukg.hash_link = sin.hash_link and sin.src_sys_key = 'int'
 left join ukg_employee por on ukg.hash_link = por.hash_link and por.src_sys_key = 'por'
