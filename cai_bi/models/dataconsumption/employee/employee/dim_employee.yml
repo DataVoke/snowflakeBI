@@ -19,6 +19,10 @@ models:
         tests:
           - unique
           - not_null
+      - name: KEY_JOB_HISTORY
+        data_type: VARCHAR(5000)
+      - name: KEY_COMPENSATION
+        data_type: VARCHAR(5000)
       - name: KEY_BASE_TEAM
         data_type: VARCHAR(5000)
       - name: KEY_COMPANY
@@ -249,7 +253,7 @@ models:
         data_type: VARCHAR(5000)
       - name: JOB_SALARY_GRADE
         data_type: NUMBER(38,17)
-        name: JOB_SALARY_GRADE_NAME
+      - name: JOB_SALARY_GRADE_NAME
         data_type: VARCHAR(5000)
       - name: JOB_TITLE
         data_type: VARCHAR(5000)
@@ -321,3 +325,11 @@ models:
         data_type: NUMBER(18,2)
       - name: VEST_SIZE
         data_type: VARCHAR(5000)
+      - name: BLN_IS_EMPLOYEE
+        data_type: BOOLEAN
+      - name: GEO_POSTAL_CODE
+        data_type: VARCHAR(5000)
+      - name: GEO_LATITUDE
+        data_type: NUMBER(38,17)
+      - name: GEO_LONGITUDE
+        data_type: NUMBER(38,17)
