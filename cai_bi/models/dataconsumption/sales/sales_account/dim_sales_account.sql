@@ -6,7 +6,17 @@
 
 with 
     silver_acct as (
-        select * from {{ ref('sales_account') }} where src_sys_key = 'sfc' 
+        select *,trim(replace(replace(nullif(billing_postal_code,''),' ',''),'-','')) as postal_code_clean,
+            case 
+                when upper(billing_country_code) = 'US' then trim(left(postal_code_clean,5) )
+                when upper(billing_country_code) = 'CA' then trim(left(postal_code_clean,3))
+                when upper(billing_country_code) = 'GB' then trim(left(postal_code_clean, length(postal_code_clean) - 3))
+                when upper(billing_country_code) = 'IE' then trim(left(postal_code_clean,3))
+                when upper(billing_country_code) = 'NL' then trim(left(postal_code_clean,4))
+                when upper(billing_country_code) = 'KR' then trim(left(postal_code_clean,5))
+                else postal_code_clean
+            end as geo_postal_code
+        from {{ ref('sales_account') }} where src_sys_key = 'sfc' 
     ),
     ukg_employees as (
         select ifnull(sfc.salesforce_user_id, por.salesforce_user_id) as sfc_user_id, por.salesforce_user_id, ifnull(sfc.key, por.contact_id) as sfc_contact_id, ukg.* 
@@ -32,7 +42,8 @@ with
     ),
     por_countries as (
         select * from {{ source('portal','countries') }} where _fivetran_deleted = false
-    )
+    ),
+    geo_locations as (select *, upper(trim(replace(replace(nullif(postal_code,''),' ',''),'-',''))) as postal_code_clean from {{ source('reference', 'postal_code_geolocations') }})
 
 select 
     silver_acct.key,
@@ -102,6 +113,9 @@ select
     initcap(acct_coord.display_name_lf) as account_coordinator_name_lf,
     acct_coord.email_address_work as account_coordinator_email,
     silver_rcs.name as rate_card_set_name,
+    silver_acct.geo_postal_code,
+    gl.latitude as geo_latitude,
+    gl.longitude as geo_longitude
 from silver_acct
 left join ukg_employees as acct_client_manager on silver_acct.key_client_manager = acct_client_manager.sfc_contact_id
 left join ukg_employees as acct_owner on silver_acct.key_owner = acct_owner.sfc_user_id
@@ -122,3 +136,4 @@ left join silver_acct parent_account6 on parent_account5.key_parent_account = pa
 left join silver_acct parent_account7 on parent_account6.key_parent_account = parent_account7.key
 left join silver_acct parent_account8 on parent_account7.key_parent_account = parent_account8.key
 left join silver_acct parent_account9 on parent_account8.key_parent_account = parent_account9.key
+left join geo_locations gl on silver_acct.geo_postal_code = gl.postal_code_clean and por_countries.record_id = gl.key_country
