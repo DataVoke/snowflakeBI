@@ -1,5 +1,7 @@
 {{ config(
     materialized='table',
+    schema="consolidation",
+    alias="timesheet_entry"
 ) }}
 
 with 
@@ -258,7 +260,7 @@ salesforce as (
         null as qty_utilized,
         null as record_url,
         null as stat_gl_entry_line_no,
-        null as state,
+        th.pse_status_c as state,
         tt.phase_code_name_c as task_name
     from (
         select
