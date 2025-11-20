@@ -175,7 +175,7 @@ sage_intacct as (
         si_timesheetentry.state as state,
         si_timesheetentry.taskname as task_name
     from si_timesheetentry_filtered as si_timesheetentry
-    left join si_timesheet on si_timesheet.recordno = si_timesheetentry.timesheetkey
+    inner join si_timesheet on si_timesheet.recordno = si_timesheetentry.timesheetkey
     left join billrate_currency on billrate_currency.timerecordno = si_timesheetentry.recordno
 ),
 
