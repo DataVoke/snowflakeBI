@@ -149,6 +149,8 @@ models:
         data_type: NUMBER(38,0)
       - name: STATE
         data_type: VARCHAR(5000)
+      - name: SFC_STATUS
+        data_type: VARCHAR(5000)
       - name: TASK_KEY
         data_type: VARCHAR(5000)
       - name: TIMESHEET_ENTRY_REF
