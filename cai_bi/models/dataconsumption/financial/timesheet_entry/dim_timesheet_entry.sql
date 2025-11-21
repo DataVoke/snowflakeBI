@@ -101,15 +101,16 @@ select
     int.record_url,
     int.stat_gl_entry_line_no,
     int.state,
+    sfc.state as sfc_status,
     int.key_task as task_key,
     int.key_timesheet_entry as timesheet_entry_ref,
     int.task_name
 from int
 left join (
-    select hash_link, sum(qty) as qty, listagg(notes, ', ') within group(order by notes) as notes
+    select hash_link, state, sum(qty) as qty, listagg(notes, ', ') within group(order by notes) as notes
     from int
     where src_sys_key = 'sfc'
-    group by hash_link
+    group by all
 ) sfc on int.hash_link = sfc.hash_link 
 left join departments on int.department_id = departments.intacct_id
 left join locations on int.location_id = locations.intacct_id and locations.id != '55-1'
