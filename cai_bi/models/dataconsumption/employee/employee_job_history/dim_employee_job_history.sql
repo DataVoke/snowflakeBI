@@ -77,6 +77,7 @@ select
                     nullif(job_history.home_company_id,'') as home_company_id,
                     nullif(job_history.job_id,'') as ukg_job_id,
                     ifnull(job_history.job_title, positions.display_name) as job_title,
+                    positions.display_name as position_name,
                     nullif(job_history.location_id,'') as ukg_location_id,
                     nullif(job_history.pay_group_id,'') as ukg_pay_group_id,
                     cast(ifnull(job_history.annual_salary, 0) as number(38,2)) as annual_salary_original,
