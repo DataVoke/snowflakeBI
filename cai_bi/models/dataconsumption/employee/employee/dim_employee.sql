@@ -73,7 +73,7 @@ SELECT
     ukg.key,
     job_history_latest.gold_key as key_job_history,
     compensation_latest.key as key_compensation,
-    ukg.key_base_team,
+    base_teams.record_id as key_base_team,
     companies.record_id as key_company,
     continents.record_id as key_continent,
     contractor_companies.record_id as key_contractor_company,
