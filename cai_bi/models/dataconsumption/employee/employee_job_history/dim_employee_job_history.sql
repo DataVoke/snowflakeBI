@@ -101,7 +101,7 @@ select
                     ifnull(job_history.bln_is_viewable_by_employee,false) as bln_is_viewable_by_employee,
                     ifnull(job_history.bln_supervisor_not_in_list,false) as bln_supervisor_not_in_list,
                     ifnull(job_history.bln_use_pay_scales,false) as bln_use_pay_scales,
-                    coalesce(entities_company.display_name,ukg_companies.name) as company_name,
+                    ukg_companies.name as company_name,
                     job_history.company_code,
                     upper(job_history.currency_code) as currency_code_original,
                     upper(coalesce(entities_ukg_location.currency_id, entities_intacct_ref.currency_id, entities_company.currency_id)) as currency_code_entity,
