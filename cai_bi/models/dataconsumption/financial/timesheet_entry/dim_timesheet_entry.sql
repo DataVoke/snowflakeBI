@@ -14,9 +14,9 @@ with
             hash_link, 
             sum(qty) as qty, 
             listagg(notes, ', ') within group(order by notes) as notes
-    from int
-    where src_sys_key = 'sfc'
-    group by hash_link 
+        from int
+        where src_sys_key = 'sfc'
+        group by hash_link 
     ),
     departments as (select * from {{ source('portal', 'departments') }} where _fivetran_deleted = false),
     locations as (select * from {{ source('portal', 'locations') }} where _fivetran_deleted = false),
@@ -25,8 +25,8 @@ with
     practice_areas as (select * from {{ source('portal', 'practice_areas') }} where _fivetran_deleted = false),
     project as (select * from {{ ref('project') }}),
     employee_int as ( select * from {{ ref('employee') }} where src_sys_key = 'int' ),
-    employee_ukg as ( select * from {{ ref('employee') }} where src_sys_key = 'ukg')
-
+    employee_ukg as ( select * from {{ ref('employee') }} where src_sys_key = 'ukg'),
+    vw_employe_pay as (select * from {{ ref('vw_employee_pay_history') }})
 select 
     current_timestamp as dts_created_at,
     '{{ this.name }}' as created_by,
@@ -120,4 +120,5 @@ left join practice_areas on int.department_id = practice_areas.intacct_id
 left join project on int.hash_key_project = project.hash_key
 left join employee_int on int.employee_id_intacct = employee_int.intacct_employee_id
 left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
+left join vw_employe_pay pay on employee_ukg.key = pay.key_employee and int.dte_entry between pay.date_from and pay.date_to
 where int.src_sys_key = 'int'
