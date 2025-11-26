@@ -10,7 +10,7 @@ with
     job_history as (select * from {{ ref('employee_job_history') }}),
     int_employee as (select * from {{ ref('employee') }} where src_sys_key='int'),
     ukg_employee as (select * from {{ ref('employee') }} where src_sys_key='ukg'),
-    por_entities as (select * from {{ source('portal', 'entities') }} where _fivetran_deleted = false),
+    por_entities as (select *, work_hours_per_week * 52 as work_hours_per_year from {{ source('portal', 'entities') }} where _fivetran_deleted = false),
     por_practices as (select * from {{ source('portal', 'practices') }} where _fivetran_deleted = false),
     por_positions as (select * from {{ source('portal', 'positions') }} where _fivetran_deleted = false),
     por_locations as (select * from {{ source('portal', 'locations') }} where _fivetran_deleted = false),
@@ -115,7 +115,12 @@ select
                     employee.display_name_lf as employee_name_lf,
                     coalesce(entities_ukg_location.display_name, entities_intacct_ref.display_name, entities_company.display_name) as entity_name,
                     nullif(job_history.flsa_category_id,'') as flsa_category_id,
-                    cast(ifnull(job_history.hourly_pay_rate, 0) as number(38,2)) as hourly_pay_rate_original,
+                    cast(ifnull(
+                        case when nullif(job_history.hourly_pay_rate,0) is null 
+                            then annual_salary_original / ifnull(entities_company.work_hours_per_year,2080)
+                            else job_history.hourly_pay_rate
+                        end
+                    , 0) as number(38,2)) as hourly_pay_rate_original,
                     cast(hourly_pay_rate_original * conversion_rate_entity as number(38,2)) as hourly_pay_rate_entity,
                     cast(hourly_pay_rate_original * conversion_rate_usd as number(38,2)) as hourly_pay_rate_usd,
                     cast(hourly_pay_rate_original * (1+cola_percent) as number(38,2)) as hourly_pay_rate_cola_original,
@@ -142,7 +147,13 @@ select
                     cast(annual_salary_original * other_rate_2_original as number(38,2)) as performance_bonus_original,
                     cast(annual_salary_entity * other_rate_2_original as number(38,2)) as performance_bonus_entity,
                     cast(annual_salary_usd * other_rate_2_original as number(38,2)) as performance_bonus_usd,
-                    cast(ifnull(period_pay_rate,0) as number(38,2)) as period_pay_rate_original,
+                    cast(ifnull(job_history.scheduled_work_hours, 0) as number(38,2)) as scheduled_work_hours,
+                    cast(ifnull(
+                        case when nullif(job_history.period_pay_rate,0) is null 
+                            then hourly_pay_rate_original * scheduled_work_hours
+                            else job_history.period_pay_rate
+                        end
+                    , 0) as number(38,2)) as period_pay_rate_original,
                     cast(period_pay_rate_original * conversion_rate_entity as number(38,2)) as period_pay_rate_entity,
                     cast(job_history.period_pay_rate * conversion_rate_usd as number(38,2)) as period_pay_rate_usd,
                     cast(period_pay_rate_original * (1+cola_percent) as number(38,2)) as period_pay_rate_cola_original,
@@ -156,7 +167,6 @@ select
                     por_salary_grades.display_name as salary_grade_name,
                     cast(ifnull(job_history.scheduled_annual_hours, 0) as number(38,2)) as scheduled_annual_hours,
                     cast(ifnull(job_history.scheduled_full_time_equivalency, 0) as number(38,2)) as scheduled_full_time_equivalency,
-                    cast(ifnull(job_history.scheduled_work_hours, 0) as number(38,2)) as scheduled_work_hours,
                     nullif(job_history.shift_code,'') as shift_code,
                     nullif(job_history.shift_group_code,'') as shift_group_code,
                     por_shift_codes.display_name as shift_code_name,
@@ -169,7 +179,12 @@ select
                     por_payroll_companies.display_name as payroll_company_name,
                     por_locations_ukg.display_name as ukg_location_name,
                     cast(ifnull(job_history.weekly_hours,0) as number(38,2)) as weekly_hours,
-                    cast(ifnull(job_history.weekly_pay_rate,0) as number(38,2)) as weekly_pay_rate_original,
+                    cast(ifnull(
+                        case when nullif(job_history.weekly_pay_rate,0) is null 
+                            then annual_salary_original / 52
+                            else job_history.weekly_pay_rate
+                        end
+                    , 0) as number(38,2)) as weekly_pay_rate_original,
                     cast(weekly_pay_rate_original * conversion_rate_entity as number(38,2)) as weekly_pay_rate_entity,
                     cast(weekly_pay_rate_original * conversion_rate_usd as number(38,2)) as weekly_pay_rate_usd,
                     cast(weekly_pay_rate_original * (1+cola_percent) as number(38,2)) as weekly_pay_rate_cola_original,
