@@ -199,5 +199,5 @@ with
         )
         qualify row_number() over ( 
             partition by key_employee, dte_job_effective
-            order by dte_job_effective desc 
+            order by dte_job_effective desc, src desc  
         ) = 1
