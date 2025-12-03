@@ -52,7 +52,7 @@ select
     compensation.key_employee_company,
     compensation.key_employee,
     job_history.key as key_job_history,
-    ifnull(entities_company.record_id,entities_int.record_id) as key_entity,
+    ifnull(entities_int.record_id,entities_company.record_id) as key_entity,
     por_positions.record_id as key_position,
     por_shift_codes.record_id as key_shift_code,
     por_salary_grades.record_id as key_salary_grade,
@@ -67,7 +67,7 @@ select
     employee.display_name as employee_name,
     employee.display_name_lf as employee_name_lf,
     upper(compensation.currency_code) as currency_code_original,
-    upper(ifnull(entities_company.currency_id,entities_int.currency_id)) as currency_code_entity,
+    upper(ifnull(entities_int.currency_id,entities_company.currency_id)) as currency_code_entity,
     cast(ifnull(por_shift_codes.shift_percent, 0) as number(38,5)) as cola_percent,
     cast(ifnull(cc_to_entity.fx_rate_mul, 1) as number(38,10)) as conversion_rate_entity, -- Should only be null if the conversion currencies match
     cast(ifnull(cc_to_usd.fx_rate_mul, 1) as number(38,10)) as conversion_rate_usd, -- Should only be null if the conversion currencies match or the effective date
@@ -90,7 +90,7 @@ select
     cast(compensation.dte_next_salary_review as date) as dte_next_salary_review,
     cast(compensation.dte_paid_thru as date) as dte_paid_thru,
     cast(compensation.dts_last_synced as timestamp_ltz) as dts_last_synced,
-    ifnull(entities_company.display_name,entities_int.display_name) as entity_name,
+    ifnull(entities_int.display_name,entities_company.display_name) as entity_name,
     cast(ifnull(compensation.hourly_pay_rate,0) as number(38,2)) as hourly_pay_rate_original,
     cast(hourly_pay_rate_original * conversion_rate_entity as number(38,2)) as hourly_pay_rate_entity,
     cast(hourly_pay_rate_original * conversion_rate_usd as number(38,2)) as hourly_pay_rate_usd,
@@ -151,7 +151,7 @@ left join por_positions on compensation.primary_job_id = por_positions.ukg_id
 left join int_employee on compensation.key_employee = int_employee.link
 left join por_entities as entities_int on int_employee.key_entity = entities_int.id
 left join por_entities as entities_company on compensation.key_company = entities_company.ukg_id
-left join benefits_rate on year(coalesce(compensation.dte_in_job, compensation.dte_last_worked, current_date())) = benefits_rate.timeframe_id and ifnull(entities_company.id,entities_int.id) = benefits_rate.entity_id
+left join benefits_rate on year(coalesce(compensation.dte_in_job, compensation.dte_last_worked, current_date())) = benefits_rate.timeframe_id and ifnull(entities_int.id,entities_company.id) = benefits_rate.entity_id
 left join por_shift_codes on compensation.primary_shift_code = por_shift_codes.ukg_id
 left join por_salary_grades on compensation.job_salary_grade = por_salary_grades.ukg_id
 left join ukg_companies as companies on compensation.key_company = companies.id
