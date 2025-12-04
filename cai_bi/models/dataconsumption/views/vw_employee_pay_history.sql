@@ -7,10 +7,16 @@
 }}
 
 with 
+    job_history_raw as (select *, LAG(shift_code, -1) OVER (partition by key_employee ORDER BY key_employee,dte_job_effective desc) AS previous_shift_code
+        from {{ref('dim_employee_job_history')}}
+    ),
     job_history as (
         select 'Job History' as src, *
-        from {{ref('dim_employee_job_history')}}
-        where (percent_change!=0 or bln_is_rate_change = true or reason_code in ('101','100'))
+        from job_history_raw
+        where  (percent_change!=0 
+                or bln_is_rate_change = true 
+                or reason_code in ('101','100')) 
+                or (previous_shift_code != shift_code)
         qualify row_number() over ( 
             partition by key_employee, dte_job_effective
             order by dts_src_created desc 
