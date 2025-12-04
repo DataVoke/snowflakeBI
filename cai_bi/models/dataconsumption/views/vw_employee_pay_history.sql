@@ -10,7 +10,7 @@ with
     job_history as (
         select 'Job History' as src, *
         from {{ref('dim_employee_job_history')}}
-        where bln_is_rate_change = true or reason_code in ('100','101')
+        where (percent_change!=0 or bln_is_rate_change = true or reason_code in ('101','100'))
         qualify row_number() over ( 
             partition by key_employee, dte_job_effective
             order by dts_src_created desc 
