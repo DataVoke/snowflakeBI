@@ -26,7 +26,7 @@ with
     compensation as (
         select 'Compensation' as src, *
         from {{ref('dim_employee_compensation')}}
-        where key_employee not in (select distinct key_employee from job_history)
+        where key_employee_company not in (select distinct key_employee_company from job_history)
     ),
     employee as (
         select * from {{ref('dim_employee')}}
