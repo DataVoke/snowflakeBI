@@ -164,7 +164,7 @@ with
                     job_history.company_code,
                     job_history.conversion_rate_entity,
                     job_history.conversion_rate_usd,
-                    job_history.currency_code_original,
+                    ifnull(job_history.currency_code_pay,job_history.currency_code_original)  as currency_code_original,
                     job_history.currency_code_entity,
                     job_history.department_name,
                     job_history.entity_name,
