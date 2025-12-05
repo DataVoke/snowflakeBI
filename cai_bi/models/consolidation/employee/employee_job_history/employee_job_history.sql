@@ -1,6 +1,19 @@
 with
     job_history as (select * from {{ source('ukg_pro', 'employee_job_history') }} where _fivetran_deleted = false),
-    company as (select * from {{ source('ukg_pro', 'company') }} where _fivetran_deleted = false)
+    company as (select * from {{ source('ukg_pro', 'company') }} where _fivetran_deleted = false),
+    compensation_currency as (
+        select *, 
+            case when LAG(cast(comp_date_in_job as date), 1, null) OVER (partition by comp_employee_id ORDER BY comp_employee_id,comp_date_in_job asc) is null then '1900-01-01'
+                else comp_date_in_job
+            end as date_from,
+            LAG(cast(comp_date_in_job as date) - 1, 1, '9999-12-31') OVER (partition by comp_employee_id ORDER BY comp_employee_id,comp_date_in_job desc) AS date_to
+        from(
+            select distinct employee_id as comp_employee_id, 
+                date_in_job as comp_date_in_job, 
+                upper(currency_code) as comp_currency_code
+            from {{ source('ukg_pro', 'compensation') }}
+        )
+    )
 
 select 
     'ukg' as src_sys_key,
@@ -33,7 +46,7 @@ select
     md5(job_history.supervisor_id) as hash_key_supervisor,
     cast(job_history.created_by_user_id as varchar(5000)) as src_created_by_id,
     company.code as company_code,
-    upper(company.currency_code) as currency_code,
+    ifnull(cc.comp_currency_code,upper(company.currency_code)) as currency_code,
     job_history.employee_status as employee_status_code,
     job_history.employee_type as employee_type_id,
     job_history.home_company_id as home_company_id,
@@ -86,3 +99,4 @@ select
     cast(job_history.weekly_pay_rate as number(38,17)) as weekly_pay_rate
 from job_history
 left join company on job_history.company_id = company.id
+left join compensation_currency cc on job_history.employee_id = cc.comp_employee_id and dte_job_effective between cc.date_from and cc.date_to

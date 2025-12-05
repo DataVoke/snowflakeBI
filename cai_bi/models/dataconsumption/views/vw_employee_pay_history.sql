@@ -10,20 +10,9 @@ with
     job_history_raw as (select *, LAG(shift_code, -1) OVER (partition by key_employee ORDER BY key_employee,dte_job_effective desc) AS previous_shift_code
         from {{ref('dim_employee_job_history')}}
     ),
-    compensation_pay_dates as (
-        select distinct key_employee, 
-            dte_in_job, 
-            currency_code_original,
-            case when LAG(dte_in_job, 1, null) OVER (partition by key_employee ORDER BY key_employee,dte_in_job asc) is null then '1900-01-01'
-                        else dte_in_job
-                    end as date_from,
-                    LAG(dte_in_job-1, 1, '9999-12-31') OVER (partition by key_employee ORDER BY key_employee,dte_in_job desc) AS date_to
-        from {{ref('dim_employee_compensation')}}
-    ),
     job_history as (
-        select 'Job History' as src, jh.*, c.currency_code_original as currency_code_pay
+        select 'Job History' as src, jh.*
         from job_history_raw jh
-        left join compensation_pay_dates c on jh.key_employee = c.key_employee and jh.dte_job_effective between c.date_from and c.date_to
         where  (jh.percent_change!=0 
                 or jh.bln_is_rate_change = true 
                 or jh.reason_code in ('101','100')) 
@@ -164,7 +153,7 @@ with
                     job_history.company_code,
                     job_history.conversion_rate_entity,
                     job_history.conversion_rate_usd,
-                    ifnull(job_history.currency_code_pay,job_history.currency_code_original)  as currency_code_original,
+                    job_history.currency_code_original,
                     job_history.currency_code_entity,
                     job_history.department_name,
                     job_history.entity_name,
