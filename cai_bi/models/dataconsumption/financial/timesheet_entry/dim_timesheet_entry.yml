@@ -29,6 +29,8 @@ models:
         data_type: NUMBER(38,0)
       - name: KEY_ENTITY
         data_type: NUMBER(38,0)
+      - name: KEY_ENTITY_EMPLOYEE
+        data_type: VARCHAR(5000)
       - name: KEY_PRACTICE_AREA
         data_type: NUMBER(38,0)
       - name: KEY_PROJECT
@@ -40,6 +42,8 @@ models:
       - name: LOCATION_NAME
         data_type: VARCHAR(5000)
       - name: ENTITY_NAME
+        data_type: VARCHAR(5000)
+      - name: ENTITY_NAME_EMPLOYEE
         data_type: VARCHAR(5000)
       - name: PRACTICE_AREA_NAME
         data_type: VARCHAR(5000)
@@ -66,6 +70,8 @@ models:
       - name: EMPLOYEE_ID_INTACCT
         data_type: VARCHAR(5000)
       - name: ENTITY_ID
+        data_type: VARCHAR(5000)
+      - name: ENTITY_ID_EMPLOYEE
         data_type: VARCHAR(5000)
       - name: ITEM_ID
         data_type: VARCHAR(5000)
@@ -188,10 +194,18 @@ models:
       - name: BILL_RATE_EMPLOYEE_USD
         data_type: NUMBER(38,2)
       - name: CURRENCY_CODE_EMPLOYEE_INTACCT
-        data_type: NUMBER(38,2)
+        data_type: VARCHAR(5000)
       - name: EMPLOYEE_PAY_HOURLY_RATE_INTACCT
         data_type: NUMBER(38,2)
       - name: EMPLOYEE_PAY_HOURLY_RATE_COLA_INTACCT
         data_type: NUMBER(38,2)
       - name: BILL_RATE_EMPLOYEE_INTACCT
+        data_type: NUMBER(38,2)
+      - name: CURRENCY_CODE_PROJECT_ENTITY
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_PAY_HOURLY_RATE_PROJECT_ENTITY
+        data_type: NUMBER(38,2)
+      - name: EMPLOYEE_PAY_HOURLY_RATE_COLA_PROJECT_ENTITY
+        data_type: NUMBER(38,2)
+      - name: BILL_RATE_EMPLOYEE_PROJECT_ENTITY
         data_type: NUMBER(38,2)

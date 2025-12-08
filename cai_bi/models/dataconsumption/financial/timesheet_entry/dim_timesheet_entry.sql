@@ -49,11 +49,12 @@ with
         current_timestamp as dts_updated_at,
         '{{ this.name }}' as updated_by,
         -- keys
-             int.key,
+        int.key,
         int.key_timesheet,
         departments.record_id as key_department,
         locations.record_id as key_location,
         entities.record_id as key_entity,
+        entities_employee.record_id as key_entity_employee,
         practice_areas.record_id as key_practice_area,
         project.key as key_project,
         employee_ukg.key as key_employee,
@@ -61,6 +62,7 @@ with
         departments.display_name as department_name,
         locations.display_name as location_name,
         entities.display_name as entity_name,
+        entities_employee.display_name as entity_name_employee,
         practice_areas.display_name as practice_area_name,
         project.project_id as project_id,
         project.project_name as project_name,
@@ -75,6 +77,7 @@ with
         int.employee_earning_type_key,
         int.employee_id_intacct,
         ifnull(nullif(locations_intacct.parentid,''),int.location_id) as entity_id,
+        entities_employee.display_name as entity_id_employee,
         int.item_id,
         int.labor_gl_batch_key,
         int.location_id,
@@ -143,11 +146,24 @@ with
         cast(ifnull(int.bill_rate,0) * ifnull(cc_bill_to_original.fx_rate_mul,1) as number(38,2)) as bill_rate_employee_original,
 
         -- *************************************************************************
-        --- get pay and bill in entity currency
-        upper(coalesce(pay.currency_code_entity, entities.currency_id, 'USD')) as currency_code_employee_entity,
+        --- get pay and bill in employee entity currency
+        upper(coalesce(pay.currency_code_entity, entities_employee.currency_id, 'USD')) as currency_code_employee_entity,
         cast(ifnull(pay.hourly_pay_rate_entity, ifnull(labor_gl_entry_cost_rate,0) * ifnull(cc_ic_to_entity.fx_rate_mul,1)) as number(38,2)) as employee_pay_hourly_rate_entity,
         cast(ifnull(pay.hourly_pay_rate_cola_entity, ifnull(labor_gl_entry_cost_rate,0) * ifnull(cc_ic_to_entity.fx_rate_mul,1)) as number(38,2)) as employee_pay_hourly_rate_cola_entity,
         cast(ifnull(int.bill_rate,0) * ifnull(cc_bill_to_entity.fx_rate_mul,1) as number(38,2)) as bill_rate_employee_entity,
+
+        -- *************************************************************************
+        --- get pay and bill in project entity currency
+        upper(entities.currency_id) as currency_code_project_entity,
+        ifnull(
+            cast(pay.hourly_pay_rate_original * ifnull(cc_pay_to_project_entity.fx_rate_mul,1) as number(38,2)),
+            cast(ifnull(labor_gl_entry_cost_rate,0) * ifnull(cc_ic_to_project_entity.fx_rate_mul,1) as number(38,2))
+        ) as employee_pay_hourly_rate_project_entity,
+        ifnull(
+            cast(pay.hourly_pay_rate_cola_original * ifnull(cc_pay_to_project_entity.fx_rate_mul,1) as number(38,2)),
+            cast(ifnull(labor_gl_entry_cost_rate,0) * ifnull(cc_ic_to_project_entity.fx_rate_mul,1) as number(38,2))
+        ) as employee_pay_hourly_rate_cola_project_entity,
+        cast(ifnull(int.bill_rate,0) * ifnull(cc_bill_to_project_entity.fx_rate_mul,1) as number(38,2)) as bill_rate_employee_project_entity,
 
         -- *************************************************************************
         --- get pay and bill in usd
@@ -180,6 +196,7 @@ with
     left join project on int.hash_key_project = project.hash_key
     left join employee_int on int.employee_id_intacct = employee_int.intacct_employee_id
     left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
+    left join entities as entities_employee on employee_int.key_entity = entities_employee.id
     left join vw_employee_pay pay on employee_ukg.key = pay.key_employee and int.dte_entry between pay.date_from and pay.date_to
     --*****************************************************************************************************************************
     --conversion rate from original pay to project cost.
@@ -193,6 +210,11 @@ with
                                                                 and cc_pay_to_intacct.to_curr = currency_code_employee_intacct
                                                                 and cc_pay_to_intacct.date = pay.dte_job_effective
                                                             )
+    left join currency_conversion as cc_pay_to_project_entity on (
+                                                                cc_pay_to_project_entity.frm_curr = currency_code_employee_original
+                                                                and cc_pay_to_project_entity.to_curr = currency_code_project_entity
+                                                                and cc_pay_to_project_entity.date = pay.dte_job_effective
+                                                            )
     --*****************************************************************************************************************************
     --conversion rates from the bill rate to original, entity and usd rates
     left join currency_conversion as cc_bill_to_original on (
@@ -204,6 +226,11 @@ with
                                                                 cc_bill_to_entity.frm_curr = currency_code_project
                                                                 and cc_bill_to_entity.to_curr = currency_code_employee_entity
                                                                 and cc_bill_to_entity.date = int.dte_entry
+                                                            )
+    left join currency_conversion as cc_bill_to_project_entity on (
+                                                                cc_bill_to_project_entity.frm_curr = currency_code_project
+                                                                and cc_bill_to_project_entity.to_curr = currency_code_project_entity
+                                                                and cc_bill_to_project_entity.date = int.dte_entry
                                                             )
     left join currency_conversion as cc_bill_to_usd on (
                                                                 cc_bill_to_usd.frm_curr = currency_code_project
@@ -233,5 +260,10 @@ with
                                                                 cc_ic_to_project.frm_curr = currency_code_employee_original
                                                                 and cc_ic_to_project.to_curr = currency_code_project
                                                                 and cc_ic_to_project.date = int.dte_entry
+                                                            )
+    left join currency_conversion as cc_ic_to_project_entity on (
+                                                                cc_ic_to_project_entity.frm_curr = currency_code_employee_original
+                                                                and cc_ic_to_project_entity.to_curr = currency_code_project_entity
+                                                                and cc_ic_to_project_entity.date = int.dte_entry
                                                             )
     where int.src_sys_key = 'int'
