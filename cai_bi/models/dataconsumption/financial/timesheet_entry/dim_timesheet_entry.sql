@@ -49,7 +49,7 @@ with
         current_timestamp as dts_updated_at,
         '{{ this.name }}' as updated_by,
         -- keys
-        int.key,
+             int.key,
         int.key_timesheet,
         departments.record_id as key_department,
         locations.record_id as key_location,
@@ -64,7 +64,7 @@ with
         practice_areas.display_name as practice_area_name,
         project.project_id as project_id,
         project.project_name as project_name,
-        project.currency_iso_code,
+        ifnull(nullif(project.currency_iso_code,''),'USD') as currency_iso_code,
         ifnull(employee_ukg.display_name, initcap(int.employee_name)) as employee_name,
         ifnull(employee_ukg.display_name_lf, initcap(int.employee_name)) as employee_name_lf,
         -- fields
@@ -84,10 +84,6 @@ with
         int.stat_gl_batch_key,
         int.stat_journal_key,
         int.task_id,
-        cast(ifnull(int.amt_labor_gl_entry,0) as number(38,2)) as amt_labor_gl_entry,
-        cast(ifnull(int.amt_labor_glentry_trx,0) as number(38,2)) as amt_labor_glentry_trx,
-        cast(ifnull(int.amt_stat_gl_entry,0) as number(38,2)) as amt_stat_gl_entry,
-        cast(ifnull(int.bill_rate,0) as number(38,2)) as bill_rate,
         int.bln_billable,
         int.bln_billed,
         int.customer_name,
@@ -98,7 +94,6 @@ with
         int.dte_src_modified,
         cast(int.dte_src_start as date) as dte_src_start,
         int.item_name,
-        cast(ifnull(int.labor_gl_entry_cost_rate,0) as number(38,2)) as labor_gl_entry_cost_rate,
         int.labor_gl_entry_line_no,
         int.labor_gl_entry_offset_line_no,
         int.line_no,
@@ -121,14 +116,47 @@ with
         int.key_task as task_key,
         int.key_timesheet_entry as timesheet_entry_ref,
         int.task_name,
-        upper(ifnull(pay.currency_code_original, employee_int.currency_code))  as currency_code_employee_original,
+        cast(ifnull(int.amt_labor_gl_entry,0) as number(38,2)) as amt_labor_gl_entry,
+        cast(ifnull(int.amt_labor_glentry_trx,0) as number(38,2)) as amt_labor_glentry_trx,
+        cast(ifnull(int.amt_stat_gl_entry,0) as number(38,2)) as amt_stat_gl_entry,
+        cast(ifnull(int.labor_gl_entry_cost_rate,0) as number(38,2)) as labor_gl_entry_cost_rate,
+        cast(ifnull(int.bill_rate,0) as number(38,2)) as bill_rate,
+        
+        -- *************************************************************************
+        --- get pay and bill in intacct's currency
+        upper(ifnull(nullif(employee_int.currency_code,''),'USD')) as currency_code_employee_intacct,
+        ifnull(
+            cast(pay.hourly_pay_rate_original * ifnull(cc_pay_to_intacct.fx_rate_mul,1) as number(38,2)),
+            cast(ifnull(labor_gl_entry_cost_rate,0) as number(38,2))
+        ) as employee_pay_hourly_rate_intacct,
+        ifnull(
+            cast(pay.hourly_pay_rate_cola_original * ifnull(cc_pay_to_intacct.fx_rate_mul,1) as number(38,2)),
+            cast(ifnull(labor_gl_entry_cost_rate,0) as number(38,2))
+        ) as employee_pay_hourly_rate_cola_intacct,
+        cast(ifnull(int.bill_rate,0) * ifnull(cc_bill_to_intacct.fx_rate_mul,1) as number(38,2)) as bill_rate_employee_intacct,
+
+        -- *************************************************************************
+        --- get pay and bill in pay currency
+        upper(coalesce(pay.currency_code_original, currency_code_employee_intacct,'USD'))  as currency_code_employee_original,
         cast(ifnull(pay.hourly_pay_rate_original,  ifnull(labor_gl_entry_cost_rate,0)) as number(38,2))  as employee_pay_hourly_rate_original,
         cast(ifnull(pay.hourly_pay_rate_cola_original, ifnull(labor_gl_entry_cost_rate,0)) as number(38,2)) as employee_pay_hourly_rate_cola_original,
-        upper(ifnull(pay.currency_code_entity, entities.currency_id)) as currency_code_employee_entity,
+        cast(ifnull(int.bill_rate,0) * ifnull(cc_bill_to_original.fx_rate_mul,1) as number(38,2)) as bill_rate_employee_original,
+
+        -- *************************************************************************
+        --- get pay and bill in entity currency
+        upper(coalesce(pay.currency_code_entity, entities.currency_id, 'USD')) as currency_code_employee_entity,
         cast(ifnull(pay.hourly_pay_rate_entity, ifnull(labor_gl_entry_cost_rate,0) * ifnull(cc_ic_to_entity.fx_rate_mul,1)) as number(38,2)) as employee_pay_hourly_rate_entity,
         cast(ifnull(pay.hourly_pay_rate_cola_entity, ifnull(labor_gl_entry_cost_rate,0) * ifnull(cc_ic_to_entity.fx_rate_mul,1)) as number(38,2)) as employee_pay_hourly_rate_cola_entity,
+        cast(ifnull(int.bill_rate,0) * ifnull(cc_bill_to_entity.fx_rate_mul,1) as number(38,2)) as bill_rate_employee_entity,
+
+        -- *************************************************************************
+        --- get pay and bill in usd
         cast(ifnull(pay.hourly_pay_rate_usd, ifnull(labor_gl_entry_cost_rate,0) * ifnull(cc_ic_to_usd.fx_rate_mul,1)) as number(38,2)) as employee_pay_hourly_rate_usd,
         cast(ifnull(pay.hourly_pay_rate_cola_usd, ifnull(labor_gl_entry_cost_rate,0) * ifnull(cc_ic_to_usd.fx_rate_mul,1)) as number(38,2)) as employee_pay_hourly_rate_cola_usd,
+        cast(ifnull(int.bill_rate,0) * ifnull(cc_bill_to_usd.fx_rate_mul,1) as number(38,2)) as bill_rate_employee_usd,
+
+        --- get pay and bill in project currency
+        upper(ifnull(nullif(project.currency_iso_code,''),'USD')) as currency_code_project,
         ifnull(
             cast(pay.hourly_pay_rate_original * ifnull(cc_pay_to_project.fx_rate_mul,1) as number(38,2)),
             cast(ifnull(labor_gl_entry_cost_rate,0) * ifnull(cc_ic_to_project.fx_rate_mul,1) as number(38,2))
@@ -136,11 +164,7 @@ with
         ifnull(
             cast(pay.hourly_pay_rate_cola_original * ifnull(cc_pay_to_project.fx_rate_mul,1) as number(38,2)),
             cast(ifnull(labor_gl_entry_cost_rate,0) * ifnull(cc_ic_to_project.fx_rate_mul,1) as number(38,2))
-        ) as employee_pay_hourly_rate_cola_project,
-        upper(project.currency_iso_code) as currency_code_project,
-        cast(ifnull(int.bill_rate,0) * ifnull(cc_bill_to_original.fx_rate_mul,1) as number(38,2)) as bill_rate_employee_original,
-        cast(ifnull(int.bill_rate,0) * ifnull(cc_bill_to_entity.fx_rate_mul,1) as number(38,2)) as bill_rate_employee_entity,
-        cast(ifnull(int.bill_rate,0) * ifnull(cc_bill_to_usd.fx_rate_mul,1) as number(38,2)) as bill_rate_employee_usd
+        ) as employee_pay_hourly_rate_cola_project
     from int
     left join (
         select hash_link, state, sum(qty) as qty, listagg(notes, ', ') within group(order by notes) as notes
@@ -157,41 +181,56 @@ with
     left join employee_int on int.employee_id_intacct = employee_int.intacct_employee_id
     left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
     left join vw_employee_pay pay on employee_ukg.key = pay.key_employee and int.dte_entry between pay.date_from and pay.date_to
+    --*****************************************************************************************************************************
+    --conversion rate from original pay to project cost.
     left join currency_conversion as cc_pay_to_project on (
-                                                                upper(currency_code_employee_original) = cc_pay_to_project.frm_curr 
+                                                                cc_pay_to_project.frm_curr = currency_code_employee_original
                                                                 and cc_pay_to_project.to_curr = currency_code_project
                                                                 and cc_pay_to_project.date = pay.dte_job_effective
                                                             )
+    left join currency_conversion as cc_pay_to_intacct on (
+                                                                cc_pay_to_intacct.frm_curr = currency_code_employee_original
+                                                                and cc_pay_to_intacct.to_curr = currency_code_employee_intacct
+                                                                and cc_pay_to_intacct.date = pay.dte_job_effective
+                                                            )
+    --*****************************************************************************************************************************
+    --conversion rates from the bill rate to original, entity and usd rates
     left join currency_conversion as cc_bill_to_original on (
-                                                                upper(currency_code_project) = cc_bill_to_original.frm_curr 
+                                                                cc_bill_to_original.frm_curr = currency_code_project
                                                                 and cc_bill_to_original.to_curr = currency_code_employee_original
                                                                 and cc_bill_to_original.date = int.dte_entry
                                                             )
     left join currency_conversion as cc_bill_to_entity on (
-                                                                upper(currency_code_project) = cc_bill_to_entity.frm_curr 
+                                                                cc_bill_to_entity.frm_curr = currency_code_project
                                                                 and cc_bill_to_entity.to_curr = currency_code_employee_entity
                                                                 and cc_bill_to_entity.date = int.dte_entry
                                                             )
     left join currency_conversion as cc_bill_to_usd on (
-                                                                upper(currency_code_project) = cc_bill_to_usd.frm_curr 
+                                                                cc_bill_to_usd.frm_curr = currency_code_project
                                                                 and cc_bill_to_usd.to_curr = 'USD'
                                                                 and cc_bill_to_usd.date = int.dte_entry
+                                                            )
+    left join currency_conversion as cc_bill_to_intacct on (
+                                                                cc_bill_to_intacct.frm_curr = currency_code_employee_original
+                                                                and cc_bill_to_intacct.to_curr = currency_code_employee_intacct
+                                                                and cc_bill_to_intacct.date = int.dte_entry
                                                             )
 
     --*****************************************************************************************************************************
     -- because we dont have the intacct rate ids, we have to default the conversion date to whatever the entry date is...
+    -- conversion rates pay currency to entity, project and usd to convert intacct cost (ic) to the respected rates.
     left join currency_conversion as cc_ic_to_entity on (
-                                                                upper(currency_code_employee_original) = cc_ic_to_entity.frm_curr 
+                                                                cc_ic_to_entity.frm_curr = currency_code_employee_original
                                                                 and cc_ic_to_entity.to_curr = currency_code_employee_entity
                                                                 and cc_ic_to_entity.date = int.dte_entry
                                                             )
     left join currency_conversion as cc_ic_to_usd on (
-                                                                upper(currency_code_employee_original) = cc_ic_to_usd.frm_curr 
+                                                                cc_ic_to_usd.frm_curr = currency_code_employee_original
                                                                 and cc_ic_to_usd.to_curr = 'USD'
                                                                 and cc_ic_to_usd.date = int.dte_entry
                                                             )
     left join currency_conversion as cc_ic_to_project on (
-                                                                upper(currency_code_employee_original) = cc_ic_to_project.frm_curr 
+                                                                cc_ic_to_project.frm_curr = currency_code_employee_original
                                                                 and cc_ic_to_project.to_curr = currency_code_project
                                                                 and cc_ic_to_project.date = int.dte_entry
                                                             )

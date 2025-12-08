@@ -187,3 +187,11 @@ models:
         data_type: NUMBER(38,2)
       - name: BILL_RATE_EMPLOYEE_USD
         data_type: NUMBER(38,2)
+      - name: CURRENCY_CODE_EMPLOYEE_INTACCT
+        data_type: NUMBER(38,2)
+      - name: EMPLOYEE_PAY_HOURLY_RATE_INTACCT
+        data_type: NUMBER(38,2)
+      - name: EMPLOYEE_PAY_HOURLY_RATE_COLA_INTACCT
+        data_type: NUMBER(38,2)
+      - name: BILL_RATE_EMPLOYEE_INTACCT
+        data_type: NUMBER(38,2)
