@@ -190,7 +190,7 @@ blank_data as (
     total_data as (  
         --********************WEEK TOTAL*********************
         select
-            'Total' as type, 1 as type_sort, te.key_employee, te.key_entity, te.employee_id, te.date_group_id, te.date_group_type_id, te.date_group_year,
+            'Total' as type, 'Employee' as entity_grouping, 1 as type_sort, te.key_employee, te.key_entity, te.employee_id, te.date_group_id, te.date_group_type_id, te.date_group_year,
             sum(te.qty) as hours,
             iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_employee) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_employee,
             iff(sum(iff(te.bill_rate > 0, te.qty, 0)) > 0 , sum(te.bill_rate_usd) / sum(iff(te.bill_rate > 0, 1, 0)), 0) as avg_rate_usd,
@@ -200,7 +200,7 @@ blank_data as (
         group by all
     ),
     billable_data as (
-        select 'Billable' as type,2 as type_sort, key_employee, key_entity,employee_id, date_group_id, date_group_type_id, date_group_year,
+        select 'Billable' as type, 'Employee' as entity_grouping, 2 as type_sort, key_employee, key_entity,employee_id, date_group_id, date_group_type_id, date_group_year,
             sum(hours) as hours, sum(avg_rate_employee) as avg_rate_employee, sum(avg_rate_usd) as avg_rate_usd, sum(amount_employee) as amount_employee, sum(amount_usd) as amount_usd
         from (
             select
@@ -222,7 +222,7 @@ blank_data as (
     ),
     
      pto_data as (
-        select 'PTO' as type,3 as type_sort, key_employee, key_entity,employee_id, date_group_id, date_group_type_id, date_group_year,
+        select 'PTO' as type, 'Employee' as entity_grouping, 3 as type_sort, key_employee, key_entity,employee_id, date_group_id, date_group_type_id, date_group_year,
             sum(hours) as hours, sum(avg_rate_employee) as avg_rate_employee, sum(avg_rate_usd) as avg_rate_usd, sum(amount_employee) as amount_employee, sum(amount_usd) as amount_usd
         from (
             select
@@ -244,7 +244,7 @@ blank_data as (
     ),
 
     internal_data as (
-        select 'Internal' as type, 4 as type_sort, key_employee, key_entity,employee_id, date_group_id, date_group_type_id, date_group_year,
+        select 'Internal' as type, 'Employee' as entity_grouping, 4 as type_sort, key_employee, key_entity,employee_id, date_group_id, date_group_type_id, date_group_year,
             sum(hours) as hours, sum(avg_rate_employee) as avg_rate_employee, sum(avg_rate_usd) as avg_rate_usd, sum(amount_employee) as amount_employee, sum(amount_usd) as amount_usd
         from (
             select
@@ -268,7 +268,7 @@ blank_data as (
     ),
 
     tvl_data as (
-        select 'TVL' as type, 5 as type_sort, key_employee, key_entity,employee_id, date_group_id, date_group_type_id, date_group_year,
+        select 'TVL' as type, 'Employee' as entity_grouping, 5 as type_sort, key_employee, key_entity,employee_id, date_group_id, date_group_type_id, date_group_year,
             sum(hours) as hours, sum(avg_rate_employee) as avg_rate_employee, sum(avg_rate_usd) as avg_rate_usd, sum(amount_employee) as amount_employee, sum(amount_usd) as amount_usd
         from (
             select
@@ -290,7 +290,7 @@ blank_data as (
     ),
     
     disfun_data as (
-        select 'DISFUN' as type, 6 as type_sort, key_employee, key_entity,employee_id, date_group_id, date_group_type_id, date_group_year,
+        select 'DISFUN' as type, 'Employee' as entity_grouping,  6 as type_sort, key_employee, key_entity,employee_id, date_group_id, date_group_type_id, date_group_year,
             sum(hours) as hours, sum(avg_rate_employee) as avg_rate_employee, sum(avg_rate_usd) as avg_rate_usd, sum(amount_employee) as amount_employee, sum(amount_usd) as amount_usd
         from (
             select
@@ -385,12 +385,13 @@ blank_data as (
 
     select pto_hours,
         current_timestamp as dts_created_at,
-        '{{ this.name }}' as created_by,
+        'timesheet_entry_aggregates' as created_by,
         current_timestamp as dts_updated_at,
-        '{{ this.name }}' as updated_by,
+        'timesheet_entry_aggregates' as updated_by,
         concat(te.employee_id, te.date_group_id, te.type) as id,
         te.key_employee,
         te.type,
+        te.entity_grouping,
         te.type_sort,
         te.date_group_id,
         dgt.id as date_group_type_id,
