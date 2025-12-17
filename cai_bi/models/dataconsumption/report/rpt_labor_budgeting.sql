@@ -21,6 +21,9 @@ with
         from {{ source('portal','entities') }} as e
         left join {{ source('portal','entities_benefit_rates') }} as eb on e.id = eb.entity_id and eb.timeframe_id = year(current_timestamp)
     ),
+    timesheet_aggregates as (
+        select * from {{ ref('dim_timesheet_entry_aggregates') }} where entity_grouping='Employee'
+    ),
     portal_departments as (
         select * from {{ source('portal','departments') }}
     ),
@@ -45,11 +48,11 @@ with
             currency_employee,
             avg(hours) as avg_hours, 
             sum(hours) as total_hours, 
-            avg(amount_employee) as avg_amount_entity, 
-            sum(amount_employee) as total_amount_entity,
-            avg(amount_usd) as avg_amount_usd, 
-            sum(amount_usd) as total_amount_usd
-        from {{ ref('dim_timesheet_entry_aggregates') }} 
+            avg(amt_bill_entity) as avg_amount_entity, 
+            sum(amt_bill_entity) as total_amount_entity,
+            avg(amt_bill_usd) as avg_amount_usd, 
+            sum(amt_bill_usd) as total_amount_usd
+        from timesheet_aggregates
         where year = year(current_timestamp()) and date_group_type_id='W' and type = 'Billable' and DATE_VALUE <= WEEKOFYEAR(current_timestamp())-1
         group by all
     ),
@@ -58,11 +61,11 @@ with
             currency_employee,
             avg(hours) as avg_hours, 
             sum(hours) as total_hours, 
-            avg(amount_employee) as avg_amount_entity, 
-            sum(amount_employee) as total_amount_entity,
-            avg(amount_usd) as avg_amount_usd, 
-            sum(amount_usd) as total_amount_usd
-        from {{ ref('dim_timesheet_entry_aggregates') }} 
+            avg(amt_bill_entity) as avg_amount_entity, 
+            sum(amt_bill_entity) as total_amount_entity,
+            avg(amt_bill_usd) as avg_amount_usd, 
+            sum(amt_bill_usd) as total_amount_usd
+        from timesheet_aggregates
         where year = year(current_timestamp()) and date_group_type_id='W' and type = 'Total' and DATE_VALUE <= WEEKOFYEAR(current_timestamp())-1
         group by all
     ),
@@ -71,11 +74,11 @@ with
             currency_employee,
             avg(hours) as avg_hours, 
             sum(hours) as total_hours, 
-            avg(amount_employee) as avg_amount_entity, 
-            sum(amount_employee) as total_amount_entity,
-            avg(amount_usd) as avg_amount_usd, 
-            sum(amount_usd) as total_amount_usd
-        from {{ ref('dim_timesheet_entry_aggregates') }} 
+            avg(amt_bill_entity) as avg_amount_entity, 
+            sum(amt_bill_entity) as total_amount_entity,
+            avg(amt_bill_usd) as avg_amount_usd, 
+            sum(amt_bill_usd) as total_amount_usd
+        from timesheet_aggregates
         where year = year(current_timestamp())-1 and date_group_type_id='W' and type = 'Billable'
         group by all
     ),
@@ -84,11 +87,11 @@ with
             currency_employee,
             avg(hours) as avg_hours, 
             sum(hours) as total_hours, 
-            avg(amount_employee) as avg_amount_entity, 
-            sum(amount_employee) as total_amount_entity,
-            avg(amount_usd) as avg_amount_usd, 
-            sum(amount_usd) as total_amount_usd
-        from {{ ref('dim_timesheet_entry_aggregates') }}  
+            avg(amt_bill_entity) as avg_amount_entity, 
+            sum(amt_bill_entity) as total_amount_entity,
+            avg(amt_bill_usd) as avg_amount_usd, 
+            sum(amt_bill_usd) as total_amount_usd
+        from timesheet_aggregates 
         where year = year(current_timestamp())-1 and date_group_type_id='W' and type = 'Total'
         group by all
     )
