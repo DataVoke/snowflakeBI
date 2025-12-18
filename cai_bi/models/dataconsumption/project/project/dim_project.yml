@@ -135,19 +135,19 @@ models:
         data_type: VARCHAR(5000)
       - name: ASSISTANT_PROJECT_MANAGER_EMAIL
         data_type: VARCHAR(5000)
-        name: KEY_REGIONAL_MANAGER
+      - name: KEY_REGIONAL_MANAGER
         data_type: VARCHAR(5000)
-        name: REGIONAL_MANAGER_NAME
+      - name: REGIONAL_MANAGER_NAME
         data_type: VARCHAR(5000)
-        name: REGIONAL_MANAGER_NAME_LF
+      - name: REGIONAL_MANAGER_NAME_LF
         data_type: VARCHAR(5000)
       - name: REGIONAL_MANAGER_EMAIL
         data_type: VARCHAR(5000)
-        name: KEY_SAFETY_REP
+      - name: KEY_SAFETY_REP
         data_type: VARCHAR(5000)
-        name: SAFETY_REP_NAME
+      - name: SAFETY_REP_NAME
         data_type: VARCHAR(5000)
-        name: SAFETY_REP_NAME_LF
+      - name: SAFETY_REP_NAME_LF
         data_type: VARCHAR(5000)
       - name: SAFETY_REP_EMAIL
         data_type: VARCHAR(5000)
