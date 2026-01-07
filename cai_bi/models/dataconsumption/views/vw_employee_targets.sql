@@ -55,7 +55,12 @@ case when l12m_percentage >= 100
     then 'On Track' 
     else 'Off Track' 
 end l12m_status, 
-cast(ytd_actual / decode(ytd.billable_hours_per_year,0,1,ytd.billable_hours_per_year ) *100 as number(38,2)) as progress, 
+cast(
+    iff(ifnull(ytd.billable_hours_per_year,0) = 0, 
+        0, 
+        ytd_actual / decode(ytd.billable_hours_per_year,0,1,ytd.billable_hours_per_year ) * 100
+    )
+as number(38,2)) as progress, 
 ytd.dts_Updated_at as last_updated
 from ytd 
 left join last_12_mths on ytd.ukg_employee_number = last_12_mths.ukg_employee_number
