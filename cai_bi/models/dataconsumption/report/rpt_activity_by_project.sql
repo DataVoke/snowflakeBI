@@ -105,12 +105,13 @@ expi_with_project as (
           ei.employee_name_lf as employee_name_lf_filter,
           ei.employee_name as employee_name_filter,
           exp_record_id as record_id, 
-          p.currency_iso_code, ei.exp_currency , ei.org_currency ,
+          p.currency_iso_code, ei.exp_currency , ei.org_currency ,ei.exp_base_currency,
           case
                when ei.org_currency = p.currency_iso_code then 1
-               when ei.exp_currency =  p.currency_iso_code  then 2
-               else 3
-          end as curr_ind, p.amt_po, p.amt_po_usd, coalesce(round(ei.amt,2),0) as amt, coalesce(round(ei.amt_org,2),0) as amt_org, p.project_name, p.project_status, p.practice_area_name, p.department_name,
+               when ei.exp_base_currency = p.currency_iso_code  then 2
+               when ei.exp_currency = p.currency_iso_code  then 3
+               else 4
+          end as curr_ind, p.amt_po, p.amt_po_usd, coalesce(round(ei.amt,2),0) as amt, coalesce(round(ei.amt_org,2),0) as amt_org, coalesce(round(ei.amt_trx,2),0) as amt_trx, p.project_name, p.project_status, p.practice_area_name, p.department_name,
           coalesce( ei.dte_org_exchrate,ei.dte_entry,ei.exp_dte_when_posted) as dte_exch_rate, ei.exp_dte_when_posted as dte_entry,
           1 as qty, 'EXPENSE' as task_name, p.customer_id , p.customer_name , p.practice_id_intacct, p.billing_type,p.root_parent_name, null as notes,
           ei.state as status,
@@ -129,7 +130,7 @@ exchange_matched_ei as (
           client_manager_id,
           client_manager_name,client_manager_name_lf,client_manager_email, assistant_project_manager_id, assistant_project_manager_name, assistant_project_manager_name_lf,
           assistant_project_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,employee_name_lf_filter,employee_name_filter,record_id,
-          currency_iso_code,exp_currency,org_currency ,curr_ind,amt_po, amt_po_usd, amt, amt_org,project_name,project_status,practice_area_name,department_name,dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,root_parent_name,notes,
+          currency_iso_code,exp_currency,org_currency ,exp_base_currency,curr_ind,amt_po, amt_po_usd, amt, amt_org,amt_trx,project_name,project_status,practice_area_name,department_name,dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,root_parent_name,notes,
           coalesce(ex.fx_rate_div,1) as rate_div,
           coalesce(ex.fx_rate_mul,1) as rate_mul, 
           ex.date,
@@ -146,24 +147,28 @@ exchange_matched_projcurr_ei as (
           project_manager_email,project_manager_personal_email, client_manager_id,
           client_manager_name,client_manager_name_lf,client_manager_email,assistant_project_manager_id, assistant_project_manager_name, assistant_project_manager_name_lf,
           assistant_project_manager_email,ukg_employee_number,email_address_work,employee_name_lf,employee_name ,employee_name_lf_filter,employee_name_filter,record_id,currency_iso_code,
-          exp_currency,org_currency,curr_ind,project_name,project_status,practice_area_name,department_name,dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,root_parent_name,notes,
+          exp_currency,org_currency,exp_base_currency,curr_ind,project_name,project_status,practice_area_name,department_name,dte_exch_rate,dte_entry,qty,task_name,customer_id ,customer_name ,practice_id_intacct,billing_type,root_parent_name,notes,
           exm.rate_div,exm.rate_mul, coalesce(ex_pcurr.fx_rate_div,1) as pcurr_rate_div, coalesce(ex_pcurr.fx_rate_mul,1) as pcurr_rate_mul,  exm.date, ex_pcurr.date as pcurr_date,
           amt_po, amt_po_usd,
-          round(case when curr_ind =1 then amt_org 
-               when curr_ind =2 then amt
+          round(case when curr_ind = 1 then amt_org 
+               when curr_ind = 2 then amt
+               when curr_ind = 3 then amt_trx
                else amt_org
                end,2) as rate,    
-          round(case when curr_ind =1 then amt_org 
-               when curr_ind =2 then amt
+          round(case when curr_ind = 1 then amt_org 
+               when curr_ind = 2 then amt
+               when curr_ind = 3 then amt_trx
                else ( case when rate_div >={{ var('rate_threshold') }} then amt_org/pcurr_rate_div else amt_org * pcurr_rate_mul end ) 
                end,2) as rate_project,
           round(case when rate_div >={{ var('rate_threshold') }} then rate_project/rate_div else rate_project*rate_mul end ,2) as rate_project_usd,
           round(case when curr_ind =1 then amt_org 
-               when curr_ind =2 then amt
+               when curr_ind = 2 then amt
+               when curr_ind = 3 then amt_trx
                else amt_org
                end,2) as cost,
-          round(case when curr_ind =1 then amt_org 
-               when curr_ind =2 then amt
+          round(case when curr_ind = 1 then amt_org 
+               when curr_ind = 2 then amt
+               when curr_ind = 3 then amt_trx
                else ( case when rate_div >={{ var('rate_threshold') }} then amt_org/pcurr_rate_div else amt_org * pcurr_rate_mul end) 
                end,2) as cost_project,        
           round(case when rate_div >={{ var('rate_threshold') }} then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd,
