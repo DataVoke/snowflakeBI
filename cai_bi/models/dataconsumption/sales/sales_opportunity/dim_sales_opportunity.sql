@@ -116,7 +116,7 @@ select
     silver_oppty.src_created_by_id as src_created_by_id,
     silver_oppty.src_modified_by_id as src_modified_by_id,
     silver_oppty.key_location as sfc_location_id,
-    coalesce(silver_oppty.key_project, parent_oppty.key_project) as sfc_project_id,
+    ifnull(silver_oppty.key_project, parent_oppty.key_project) as sfc_project_id,
     ifnull(silver_oppty.key_practice, silver_acct.key_practice) as sfc_practice_id,
     silver_oppty.key_owner as sfc_owner_id,
     silver_oppty.key_identified_by as sfc_identified_by_id,
