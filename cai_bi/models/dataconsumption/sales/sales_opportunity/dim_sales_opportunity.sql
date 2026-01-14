@@ -97,7 +97,7 @@ select
     emp_owner.key as key_owner,
     silver_oppty.key_parent_opportunity as key_parent_opportunity,
     ifnull(por_practices.record_id, por_practices_account.record_id) as key_practice,
-    int_project.key as key_project,
+    ifnull(int_project.key, int_project_parent.key) as key_project,
     silver_oppty.key_proposal as key_proposal,
     silver_oppty.key_rate_card_set,
     por_regions.record_id as key_region,
@@ -116,7 +116,7 @@ select
     silver_oppty.src_created_by_id as src_created_by_id,
     silver_oppty.src_modified_by_id as src_modified_by_id,
     silver_oppty.key_location as sfc_location_id,
-    silver_oppty.key_project as sfc_project_id,
+    ifnull(silver_oppty.key_project, parent_oppty.key_project) as sfc_project_id,
     ifnull(silver_oppty.key_practice, silver_acct.key_practice) as sfc_practice_id,
     silver_oppty.key_owner as sfc_owner_id,
     silver_oppty.key_identified_by as sfc_identified_by_id,
@@ -228,8 +228,8 @@ select
     emp_client_manager.display_name as client_site_manager_name,
     emp_client_manager.display_name_lf as client_site_manager_name_lf,
     emp_client_manager.email_address_work as client_site_manager_email,
-    int_project.project_id,
-    int_project.project_name,
+    ifnull(int_project.project_id,int_project_parent.project_id) as project_id,
+    ifnull(int_project.project_name, int_project_parent.project_name) as project_name,
     silver_rcs.name as rate_card_set_name
 from silver_oppty
 left join silver_oppty as parent_oppty on silver_oppty.key_parent_opportunity = parent_oppty.key
@@ -240,6 +240,7 @@ left join all_employees as emp_identified_by on silver_oppty.key_identified_by =
 left join all_employees as emp_owner on silver_oppty.key_owner = emp_owner.sfc_user_id
 left join all_employees as emp_client_manager on silver_acct.key_client_manager = emp_client_manager.sfc_contact_id
 left join int_project on silver_oppty.key_project = int_project.sfc_project_id
+left join int_project as int_project_parent on parent_oppty.key_project = int_project_parent.sfc_project_id
 left join silver_rcs on silver_oppty.key_rate_card_set = silver_rcs.key
 left join por_practices on silver_oppty.key_practice = por_practices.salesforce_id
 left join por_practices as por_practices_account on silver_acct.key_practice = por_practices_account.salesforce_id
