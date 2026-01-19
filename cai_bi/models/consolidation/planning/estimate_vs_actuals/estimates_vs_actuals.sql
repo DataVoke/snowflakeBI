@@ -1,5 +1,5 @@
 with 
-    eva as (select * from {{ source('salesforce', 'pse_est_vs_actuals_c') }} where _fivetran_deleted=false)
+    eva as (select * from {{ source('salesforce', 'pse_est_vs_actuals_c') }} where is_deleted = false and _fivetran_deleted=false)
 
 select 
     'sfc' as src_sys_key,
