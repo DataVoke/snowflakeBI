@@ -6,8 +6,8 @@ models:
     config:
       contract:
         enforced: true
-    tests:
-      - estimates_vs_actuals_source_count_match
+    data_tests:
+      - test_name: estimates_vs_actuals_source_count_match
     columns:
       - name: SRC_SYS_KEY
         data_type: VARCHAR(250)
@@ -27,12 +27,12 @@ models:
         data_type: BOOLEAN
       - name: KEY
         data_type: VARCHAR(5000)
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: HASH_KEY
         data_type: VARCHAR(32)
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: LINK
