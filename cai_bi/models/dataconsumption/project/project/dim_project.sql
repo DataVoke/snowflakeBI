@@ -177,6 +177,7 @@ select
     int.currency_iso_code,
     int.customer_name,
     int.dte_src_end,
+    ifnull(int.dte_src_end, pts.dte_src_end) as dte_src_end_expected,
     int.dte_src_start,
     pts.dts_int_last_assignment_sync,
     pts.dts_int_last_phase_code_sync,
