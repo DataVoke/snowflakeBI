@@ -193,6 +193,8 @@ models:
         data_type: VARCHAR(5000)
       - name: DTE_SRC_END
         data_type: DATE
+      - name: DTE_SRC_END_EXPECTED
+        data_type: DATE
       - name: DTE_SRC_START
         data_type: DATE
       - name: DTS_INT_LAST_ASSIGNMENT_SYNC
