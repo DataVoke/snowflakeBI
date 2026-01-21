@@ -70,8 +70,8 @@ activitybyproject_te as (
           coalesce(round(te.bill_rate,2),0) as rate_project,
           round(case when rate_div >={{ var('rate_threshold') }} then rate_project/rate_div else rate_project*rate_mul end ,2) as rate_project_usd,
           round(coalesce( rate * te.qty,0),2) as cost,
-          round(coalesce( rate * te.qty,0),2) as cost_project,
-          round(case when rate_div >={{ var('rate_threshold') }} then cost_project/rate_div else cost_project*rate_mul end ,2) as cost_project_usd,
+          round(coalesce( rate_project * te.qty,0),2) as cost_project,
+          round(rate_project_usd * te.qty ,2) as cost_project_usd,
           te.state as status,
           te.bln_billable as bln_billable,
           te.sfc_status
