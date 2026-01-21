@@ -1,0 +1,114 @@
+version: 1
+
+models:
+  - name: dim_estimates_vs_actuals
+    data_tests:
+      - test_name: dim_estimates_vs_actuals_source_count_match
+        arguments:
+            source: ref('estimates_vs_actuals')
+    columns:
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: KEY
+        data_type: VARCHAR(5000)
+        data_tests:
+          - unique
+          - not_null        
+      - name: KEY_ASSIGNMENT
+        data_type: VARCHAR(5000)
+      - name: KEY_PROJECT_MANAGER
+        data_type: VARCHAR(5000)
+      - name: KEY_PROJECT
+        data_type: VARCHAR(5000)
+      - name: KEY_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: KEY_RESOURCE_REQUEST
+        data_type: VARCHAR(5000)
+      - name: KEY_TIME_PERIOD
+        data_type: VARCHAR(5000)
+      - name: OWNER_ID
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY
+        data_type: VARCHAR(5000)
+      - name: SRC_MODIFIED_BY
+        data_type: VARCHAR(5000)
+      - name: TIME_PERIOD_TYPE_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_PROJECT_MANAGER_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_RESOURCE_ID
+        data_type: VARCHAR(5000)
+      - name: ACTUAL_DAYS
+        data_type: NUMBER(38,17)
+      - name: ACTUAL_DAYS_AGGREGATED
+        data_type: NUMBER(38,17)
+      - name: ACTUAL_HOURS_SFC
+        data_type: NUMBER(38,17)
+      - name: ACTUAL_HOURS
+        data_type: NUMBER(38,17)
+      - name: AMT_ACTUAL
+        data_type: NUMBER(38,17)
+      - name: AMT_ACTUAL_BILLABLE_SFC
+        data_type: NUMBER(38,17)
+      - name: BLN_TIMECARD_IS_SUBMITTED
+        data_type: BOOLEAN
+      - name: CURRENCY_EXCHANGE_RATE
+        data_type: NUMBER(38,17)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: DTE_END
+        data_type: DATE
+      - name: DTE_START
+        data_type: DATE
+      - name: DTE_SYSTEM_MODSTAMP
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: NAME
+        data_type: VARCHAR(5000)
+      - name: PLANNED_BILL_AMOUNT
+        data_type: NUMBER(38,17)
+      - name: BILL_RATE
+        data_type: NUMBER(38,17)
+      - name: PLANNED_BILL_RATE_SFC
+        data_type: NUMBER(38,17)
+      - name: PLANNED_DAYS
+        data_type: NUMBER(38,17)
+      - name: PLANNED_HOURS
+        data_type: NUMBER(38,17)
+      - name: REQUESTED_DAYS
+        data_type: NUMBER(38,17)
+      - name: REQUESTED_HOURS
+        data_type: NUMBER(38,17)
+      - name: EMPLOYEE_NAME
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME_EMAIL
+        data_type: VARCHAR(5000)
+      - name: PROJECT_MANAGER_NAME
+        data_type: VARCHAR(5000)
+      - name: PROJECT_MANAGER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: PROJECT_MANAGER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: PROJECT_NAME
+        data_type: VARCHAR(5000)
+      - name: PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: PROJECT_STATUS
+        data_type: VARCHAR(5000)
+      - name: OPPORTUNITY_NAME
+        data_type: VARCHAR(5000)
+      - name: OPPORTUNITY_STATUS
+        data_type: VARCHAR(5000)
