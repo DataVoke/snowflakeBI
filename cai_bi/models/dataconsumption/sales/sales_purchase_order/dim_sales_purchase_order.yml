@@ -1,8 +1,9 @@
 models:
   - name: dim_sales_purchase_order
-    tests:
+    data_tests:
       - dim_sales_purchase_order_row_count_matches_sources:
-          source: ref('sales_purchase_order')
+          arguments:
+            source: ref('purchaseorder')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ

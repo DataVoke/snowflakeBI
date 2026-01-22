@@ -2,9 +2,10 @@ version:
 
 models:
   - name: dim_employee_compensation
-    tests:
+    data_tests:
       - dim_employee_compensation_row_count_matches_sources:
-          source: ref('employee_compensation')
+          arguments:
+            source: ref('employeecompensation')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ

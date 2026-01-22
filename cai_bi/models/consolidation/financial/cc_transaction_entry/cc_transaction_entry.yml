@@ -5,9 +5,10 @@ models:
     config:
       contract:
         enforced: true
-    tests:
+    data_tests:
       - cc_transaction_entry_source_count_match_int:
-          severity: warn
+          config:
+            severity: warn
     columns:
       - name: src_sys_key
         data_type: varchar(5000)

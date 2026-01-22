@@ -2,9 +2,10 @@ version:
 
 models:
   - name: dim_employee_job_history
-    tests:
+    data_tests:
       - dim_employee_job_history_row_count_matches_sources:
-          source: ref('employee_job_history')
+          arguments:
+            source: ref('employeejobhistory')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ

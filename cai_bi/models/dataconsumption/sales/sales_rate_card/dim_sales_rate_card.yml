@@ -1,8 +1,9 @@
 models:
   - name: dim_sales_rate_card
-    tests:
+    data_tests:
       - dim_sales_rate_card_row_count_matches_sources:
-          source: ref('sales_rate_card')
+          arguments:
+            source: ref('ratecard')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ

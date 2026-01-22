@@ -2,9 +2,10 @@ version: 1
 
 models:
   - name: dim_sales_lead
-    tests:
+    data_tests:
       - dim_sales_lead_row_count_matches_sources:
-          source: ref('sales_lead')
+          arguments:
+            source: ref('lead')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ

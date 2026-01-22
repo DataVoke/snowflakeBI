@@ -2,9 +2,10 @@ version: 2
 
 models:
   - name: dim_timesheet
-    tests:
+    data_tests:
       - dim_timesheet_row_count_matches_sources:
-          source: ref('timesheet')
+          arguments:
+            source: ref('timesheet')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ
