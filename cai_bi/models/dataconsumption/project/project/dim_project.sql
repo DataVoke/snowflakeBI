@@ -129,6 +129,7 @@ select
     por_loc.record_id as key_location,
     coalesce(por_ent.record_id,dim_employee.key_entity) as key_entity,
     por_grp.record_id as key_group,
+    sfc.opportunity_id as key_opportunity,
     ifnull(por_pract.record_id, por_pract_bkup.record_id) as key_practice,
     employee_ukg.key as key_project_manager,
     por_pract_area.record_id as key_practice_area,
@@ -137,11 +138,11 @@ select
     por_loc.display_name as location_name,
     coalesce(por_ent.display_name,dim_employee.entity_name ) as entity_name,
     por_grp.display_name as group_name,
-   ifnull(por_pract.display_name, por_pract_bkup.display_name) as practice_name,
+    ifnull(por_pract.display_name, por_pract_bkup.display_name) as practice_name,
     employee_ukg.display_name as project_manager_name,
     employee_ukg.display_name_lf as project_manager_name_lf,
     por_pract_area.display_name as practice_area_name,
-
+    
     int.qty_actual,
     int.amt_total_billable,
     int.amt_total_budget,
@@ -178,6 +179,7 @@ select
     int.customer_name,
     int.dte_src_end,
     ifnull(int.dte_src_end, pts.dte_src_end) as dte_src_end_expected,
+    iff(int.dte_src_start > CURRENT_DATE-1,CURRENT_DATE-1, int.dte_src_start ) as dte_conversion_rate,
     int.dte_src_start,
     pts.dts_int_last_assignment_sync,
     pts.dts_int_last_phase_code_sync,
@@ -202,7 +204,7 @@ select
     coalesce(ex.fx_rate_div,1) as rate_div,
     coalesce(ex.fx_rate_mul,1) as rate_mul,
     coalesce(round(int.amt_po,2),0) as amt_po ,
-    coalesce(round(case when rate_div >=0.09 then int.amt_po/rate_div else int.amt_po * rate_mul end,2),0) as amt_po_usd,
+    coalesce(round(case when rate_div >={{ var('rate_threshold') }} then int.amt_po/rate_div else int.amt_po * rate_mul end,2),0) as amt_po_usd,
     int.po_number,
     pts.portal_project_code,
     int.project_category,
@@ -239,6 +241,6 @@ left join dim_employee on dim_employee.key = employee_ukg.key
 --left join por_ent on por_loc.entity_id = por_ent.id
 left join forex_filtered ex on (int.currency_iso_code = ex.frm_curr )
         and ex.to_curr = 'USD'
-        and ex.date = date(int.dts_src_created)
+        and ex.date = date(dte_conversion_rate)
 where lower(int.project_type) <> 'client site'
 --qualify row_number() over ( partition by int.key order by ex.date desc ) =1
