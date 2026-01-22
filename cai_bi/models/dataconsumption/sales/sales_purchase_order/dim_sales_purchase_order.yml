@@ -3,7 +3,7 @@ models:
     data_tests:
       - dim_sales_purchase_order_row_count_matches_sources:
           arguments:
-            source: ref('purchaseorder')
+            source: ref('sales_purchase_order')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ

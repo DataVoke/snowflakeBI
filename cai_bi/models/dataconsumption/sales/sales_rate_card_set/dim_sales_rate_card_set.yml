@@ -3,7 +3,7 @@ models:
     data_tests:
       - dim_sales_rate_card_set_row_count_matches_sources:
           arguments:
-            source: ref('ratecardset')
+            source: ref('sales_rate_card_set')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ

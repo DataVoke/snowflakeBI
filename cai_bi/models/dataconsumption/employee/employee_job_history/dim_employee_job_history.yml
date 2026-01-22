@@ -5,7 +5,7 @@ models:
     data_tests:
       - dim_employee_job_history_row_count_matches_sources:
           arguments:
-            source: ref('employeejobhistory')
+            source: ref('employee_job_history')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ

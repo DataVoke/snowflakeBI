@@ -5,7 +5,7 @@ models:
     data_tests:
       - dim_sales_lead_row_count_matches_sources:
           arguments:
-            source: ref('lead')
+            source: ref('sales_lead')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ

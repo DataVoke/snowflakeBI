@@ -5,7 +5,7 @@ models:
     data_tests:
       - dim_timesheet_entry_row_count_matches_sources:
           arguments:
-            source: ref('timesheetentry')
+            source: ref('timesheet_entry')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ
