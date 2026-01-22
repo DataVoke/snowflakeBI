@@ -67,7 +67,7 @@ dates AS (
 calendar AS (
     SELECT
         dateadd(day, seq4(), '2016-01-01') AS calendar_date
-    FROM table(generator(rowcount => 3650))
+    FROM table(generator(rowcount => 5475)) -- Get 15 years of dates
     CROSS JOIN dates
     WHERE dateadd(day, seq4(), '2016-01-01') <= LEAST(dates.latest_fx_date, dates.today)
 ),
