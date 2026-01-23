@@ -3,7 +3,7 @@ version: 1
 models:
   - name: dim_estimates_vs_actuals
     data_tests:
-      - test_name: dim_estimates_vs_actuals_source_count_match
+      - dim_estimates_vs_actuals_source_count_match:
         arguments:
             source: ref('estimates_vs_actuals')
     columns:
