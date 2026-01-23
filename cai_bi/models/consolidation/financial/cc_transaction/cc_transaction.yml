@@ -5,7 +5,7 @@ models:
     config:
       contract:
         enforced: true
-    tests:
+    data_tests:
       - cc_transaction_source_count_match_int
     columns:
       - name: src_sys_key
@@ -26,12 +26,12 @@ models:
         data_type: boolean
       - name: key
         data_type: varchar(5000)
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: hash_key
         data_type: varchar(32)
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: key_entity
