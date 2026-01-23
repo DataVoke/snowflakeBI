@@ -7,7 +7,7 @@ models:
       contract:
         enforced: true
     data_tests:
-      - test_name: estimates_vs_actuals_source_count_match
+      - estimates_vs_actuals_source_count_match
     columns:
       - name: SRC_SYS_KEY
         data_type: VARCHAR(250)
@@ -53,11 +53,15 @@ models:
         data_type: VARCHAR(32)
       - name: KEY_RESOURCE_REQUEST
         data_type: VARCHAR(5000)
-      - name: HASHKEY_RESOURCE_REQUEST
+      - name: HASH_KEY_RESOURCE_REQUEST
+        data_type: VARCHAR(32)
+      - name: KEY_OPPORTUNITY
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_OPPORTUNITY
         data_type: VARCHAR(32)
       - name: KEY_RESOURCE
         data_type: VARCHAR(5000)
-      - name: HASH_KEY_RESOURCE_REQUEST
+      - name: HASH_KEY_RESOURCE
         data_type: VARCHAR(32)
       - name: KEY_TIME_PERIOD
         data_type: VARCHAR(5000)
