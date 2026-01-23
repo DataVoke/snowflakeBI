@@ -1,5 +1,6 @@
 with 
-    eva as (select * from {{ source('salesforce', 'pse_est_vs_actuals_c') }} where is_deleted = false and _fivetran_deleted=false)
+    eva as (select * from {{ source('salesforce', 'pse_est_vs_actuals_c') }} where is_deleted = false and _fivetran_deleted=false),
+    rr as (select * from prod_bi_raw.salesforce.pse_resource_request_c where _fivetran_deleted=false)
 
 select 
     'sfc' as src_sys_key,
@@ -21,11 +22,13 @@ select
     eva.pse_project_c as key_project,
     md5(eva.pse_project_c) as hash_key_project,
     eva.pse_resource_request_c as key_resource_request,
-    eva.pse_resource_request_c as hashkey_resource_request,
+    md5(eva.pse_resource_request_c) as hash_key_resource_request,
     eva.pse_resource_c as key_resource,
-    md5(eva.pse_resource_c) as hash_key_resource_request,
+    md5(eva.pse_resource_c) as hash_key_resource,
     eva.pse_time_period_c as key_time_period,
     md5(eva.pse_time_period_c) as hash_key_time_period,
+    rr.id as key_opportunity,
+    md5(rr.id) as hash_key_opportunity,
     eva.owner_id as owner_id,
     eva.created_by_id as src_created_by,
     eva.last_modified_by_id as src_modified_by,
@@ -50,3 +53,4 @@ select
     cast(eva.pse_resource_request_days_c as number(38,17)) as requested_days,
     cast(eva.pse_resource_request_hours_c as number(38,17)) as requested_hours
 from eva
+left join rr on eva.pse_resource_request_c = rr.id
