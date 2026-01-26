@@ -11,7 +11,7 @@ select
     cast(current_timestamp as timestamp_tz) as dts_eff_start,
     cast('9999-12-31' as timestamp_tz ) as dts_eff_end,
     true as bln_current,
-eva.id as key,
+    eva.id as key,
     md5(eva.id) as hash_key,
     eva.id as link,
     md5(eva.id) as hash_link,
