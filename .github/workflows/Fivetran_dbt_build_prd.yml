@@ -2,7 +2,7 @@ name: Run Fivetran and dbt Build in Production
 
 on:
   schedule:
-    - cron: '0 12-23 * * *'  # 9:00 AM UTC / 4:00 AM EST
+    - cron: '0 12-23 * * *' # 12:00 PM UTC / 7:00 AM EST - 11:00 PM UTC / 6:00 PM EST
   workflow_dispatch:
 
 jobs:
