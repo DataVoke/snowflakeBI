@@ -1,7 +1,7 @@
 with 
     eva as (select * from {{ source('salesforce', 'pse_est_vs_actuals_c') }} where is_deleted = false and _fivetran_deleted=false),
-    rr as (select * from prod_bi_raw.salesforce.pse_resource_request_c where _fivetran_deleted=false)
-
+    rr as (select * from {{ source('salesforce', 'pse_resource_request_c') }} where _fivetran_deleted=false and is_deleted=false),
+    assignments as (select * from {{ source('salesforce', 'pse_assignment_c') }} where _fivetran_deleted=false and is_deleted=false)
 select 
     'sfc' as src_sys_key,
     cast(current_timestamp as timestamp_tz) as dts_created_at,
@@ -11,12 +11,14 @@ select
     cast(current_timestamp as timestamp_tz) as dts_eff_start,
     cast('9999-12-31' as timestamp_tz ) as dts_eff_end,
     true as bln_current,
-    eva.id as key,
+eva.id as key,
     md5(eva.id) as hash_key,
     eva.id as link,
     md5(eva.id) as hash_link,
     eva.pse_assignment_c as key_assignment,
     md5(eva.pse_assignment_c) as hash_key_assignment,
+    a.pse_schedule_c as key_schedule,
+    md5(a.pse_schedule_c) as hash_key_schedule,
     eva.pse_project_manager_c as key_project_manager,
     md5(eva.pse_project_manager_c) as hash_key_project_manager,
     eva.pse_project_c as key_project,
@@ -38,19 +40,21 @@ select
     cast(eva.pse_actual_hours_c as number(38,17)) as actual_hours,
     cast(eva.pse_actual_billable_amount_c as number(38,17)) as amt_actual_billable,
     eva.pse_timecards_submitted_c as bln_timecard_is_submitted,
-    cast(eva.pse_project_currency_exchange_rate_c as number(38,17)) as currency_exchange_rate,
     eva.currency_iso_code as currency_iso_code,
+    ifnull(a.currency_iso_code,eva.currency_iso_code) as currency_iso_code_bill_rate,
     eva.pse_end_date_c as dte_end,
     eva.pse_start_date_c as dte_start,
     eva.system_modstamp as dte_system_modstamp,
     eva.created_date as dts_src_created,
     eva.last_modified_date as dts_src_modified,
     eva.name as name,
-    cast(eva.pse_scheduled_billable_amount_c as number(38,17)) as planned_bill_amount,
-    cast(eva.pse_resource_request_bill_rate_c as number(38,17)) as planned_bill_rate,
-    cast(eva.pse_estimated_days_c as number(38,17)) as planned_days,
     cast(eva.pse_estimated_hours_c as number(38,17)) as planned_hours,
+    cast(ifnull(a.pse_bill_rate_c,eva.pse_resource_request_bill_rate_c) as number(38,17)) as planned_bill_rate,
+    cast(planned_bill_rate * planned_hours as number(38,17)) as planned_bill_amount,    
+    cast(eva.pse_estimated_days_c as number(38,17)) as planned_days,
     cast(eva.pse_resource_request_days_c as number(38,17)) as requested_days,
-    cast(eva.pse_resource_request_hours_c as number(38,17)) as requested_hours
+    cast(eva.pse_resource_request_hours_c as number(38,17)) as requested_hours,
+    a.pse_exclude_from_planners_c as bln_exclude_from_planners
 from eva
 left join rr on eva.pse_resource_request_c = rr.id
+left join assignments a on eva.pse_assignment_c = a.id
