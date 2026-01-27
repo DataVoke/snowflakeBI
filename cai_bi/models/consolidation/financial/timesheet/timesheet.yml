@@ -6,7 +6,7 @@ models:
     config:
       contract:
         enforced: true
-    tests:
+    data_tests:
       - timesheet_source_count_match_sage
       - timesheet_source_count_match_sf
     columns:
@@ -28,12 +28,12 @@ models:
         data_type: BOOLEAN
       - name: KEY
         data_type: VARCHAR(5000)
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: HASH_KEY
         data_type: VARCHAR(32)
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: LINK

@@ -20,7 +20,7 @@ models:
       - name: ID
         data_type: VARCHAR(5000)
         description: Primary key
-        tests:
+        data_tests:
           - not_null
       - name: GROUP_ID
         data_type: VARCHAR(255)

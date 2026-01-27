@@ -1,8 +1,9 @@
 models:
   - name: dim_sales_rate_card_set
-    tests:
+    data_tests:
       - dim_sales_rate_card_set_row_count_matches_sources:
-          source: ref('sales_rate_card_set')
+          arguments:
+            source: ref('sales_rate_card_set')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ
@@ -14,7 +15,7 @@ models:
         data_type: VARCHAR(250)
       - name: KEY
         data_type: VARCHAR(5000)
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: KEY_OWNER

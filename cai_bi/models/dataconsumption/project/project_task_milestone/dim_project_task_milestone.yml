@@ -2,9 +2,10 @@ version: 1
 
 models:
     - name: dim_project_task_milestone
-      tests:
+      data_tests:
       - dim_project_task_milestone_row_count_matches_sources:
-          source: ref('project_task_milestone')
+          arguments:
+            source: ref('project_task_milestone')
       columns:
         - name: DTS_CREATED_AT
           data_type: TIMESTAMP_LTZ

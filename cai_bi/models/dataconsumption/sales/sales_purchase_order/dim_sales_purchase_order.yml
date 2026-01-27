@@ -1,8 +1,9 @@
 models:
   - name: dim_sales_purchase_order
-    tests:
+    data_tests:
       - dim_sales_purchase_order_row_count_matches_sources:
-          source: ref('sales_purchase_order')
+          arguments:
+            source: ref('sales_purchase_order')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ
@@ -14,7 +15,7 @@ models:
         data_type: VARCHAR(250)
       - name: KEY
         data_type: VARCHAR(5000)
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: KEY_PROPOSAL

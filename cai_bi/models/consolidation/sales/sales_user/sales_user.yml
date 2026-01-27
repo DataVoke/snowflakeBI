@@ -23,12 +23,12 @@ models:
         data_type: BOOLEAN
       - name: KEY
         data_type: VARCHAR(5000)
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: HASH_KEY
         data_type: VARCHAR(32)
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: LINK
