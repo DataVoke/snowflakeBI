@@ -5,7 +5,7 @@ models:
     description: "Consolidated employee dimension combining UKG, Salesforce, Sage Intacct, and Portal sources."
     contract:
       enforced: true
-    tests:
+    data_tests:
       - employee_source_count_match_portal
       - employee_source_count_match_sage
       - employee_source_count_match_sf
@@ -29,12 +29,12 @@ models:
         data_type: BOOLEAN
       - name: KEY
         data_type: VARCHAR(5000)
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: HASH_KEY
         data_type: VARCHAR(32)
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: LINK
