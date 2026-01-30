@@ -7,7 +7,7 @@ models:
       contract:
         enforced: true
     data_tests:
-      - test_name: estimates_vs_actuals_source_count_match
+      - estimates_vs_actuals_source_count_match
     columns:
       - name: SRC_SYS_KEY
         data_type: VARCHAR(250)
