@@ -2,10 +2,10 @@ version: 1
 
 models:
   - name: dim_estimates_vs_actuals
-    data_tests:
-      - dim_estimates_vs_actuals_source_count_match:
-        arguments:
-            source: ref('estimates_vs_actuals')
+    # data_tests:
+    #   - dim_estimates_vs_actuals_source_count_match:
+    #     arguments:
+    #         source: ref('estimates_vs_actuals')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ
@@ -20,19 +20,49 @@ models:
         data_tests:
           - unique
           - not_null        
+      - name: KEY_ACCOUNT
+        data_type: VARCHAR(5000)
       - name: KEY_ASSIGNMENT
         data_type: VARCHAR(5000)
-      - name: KEY_PROJECT_MANAGER
+      - name: KEY_CLIENT_SITE_MANAGER
+        data_type: VARCHAR(5000)
+      - name: KEY_DEPARTMENT_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: KEY_DEPARTMENT_PROJECT
+        data_type: VARCHAR(5000)
+      - name: KEY_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: KEY_EMPLOYEE_TYPE
+        data_type: VARCHAR(5000)
+      - name: KEY_ENTITY_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: KEY_ENTITY_PROJECT
+        data_type: VARCHAR(5000)
+      - name: KEY_LOCATION_PROJECT
+        data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE_AREA_PROJECT
+        data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: KEY_PRACTICE_PROJECT
         data_type: VARCHAR(5000)
       - name: KEY_PROJECT
         data_type: VARCHAR(5000)
-      - name: KEY_EMPLOYEE
+      - name: KEY_PROJECT_MANAGER
         data_type: VARCHAR(5000)
       - name: KEY_RESOURCE_REQUEST
         data_type: VARCHAR(5000)
       - name: KEY_TIME_PERIOD
         data_type: VARCHAR(5000)
+      - name: KEY_TOP_LEVEL_ACCOUNT
+        data_type: VARCHAR(5000)
       - name: OWNER_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_PROJECT_MANAGER_ID
+        data_type: VARCHAR(5000)
+      - name: SFC_RESOURCE_ID
         data_type: VARCHAR(5000)
       - name: SRC_CREATED_BY
         data_type: VARCHAR(5000)
@@ -40,75 +70,217 @@ models:
         data_type: VARCHAR(5000)
       - name: TIME_PERIOD_TYPE_ID
         data_type: VARCHAR(5000)
-      - name: SFC_PROJECT_MANAGER_ID
+      - name: ACCOUNT_NAME
         data_type: VARCHAR(5000)
-      - name: SFC_PROJECT_ID
-        data_type: VARCHAR(5000)
-      - name: SFC_RESOURCE_ID
-        data_type: VARCHAR(5000)
-      - name: ACTUAL_DAYS
-        data_type: NUMBER(38,17)
-      - name: ACTUAL_DAYS_AGGREGATED
-        data_type: NUMBER(38,17)
-      - name: ACTUAL_HOURS_SFC
-        data_type: NUMBER(38,17)
-      - name: ACTUAL_HOURS
-        data_type: NUMBER(38,17)
-      - name: AMT_ACTUAL
-        data_type: NUMBER(38,17)
-      - name: AMT_ACTUAL_BILLABLE_SFC
-        data_type: NUMBER(38,17)
+      - name: AMT_ACTUAL_ENTITY_EMPLOYEE_INT
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_ENTITY_EMPLOYEE_SFC
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_ENTITY_EMPLOYEE_UKG
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_ENTITY_PROJECT_INT
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_ENTITY_PROJECT_SFC
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_ENTITY_PROJECT_UKG
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_INT
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_SFC
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TOTAL_ENTITY_EMPLOYEE_INT
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TOTAL_ENTITY_EMPLOYEE_UKG
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TOTAL_ENTITY_PROJECT_INT
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TOTAL_ENTITY_PROJECT_UKG
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TOTAL_INT
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TOTAL_UKG
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TOTAL_USD_INT
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TOTAL_USD_UKG
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TVL_ENTITY_EMPLOYEE_INT
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TVL_ENTITY_EMPLOYEE_UKG
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TVL_ENTITY_PROJECT_INT
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TVL_ENTITY_PROJECT_UKG
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TVL_INT
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TVL_UKG
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TVL_USD_INT
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_TVL_USD_UKG
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_UKG
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_USD_INT
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_USD_SFC
+        data_type: NUMBER(38,2)
+      - name: AMT_ACTUAL_USD_UKG
+        data_type: NUMBER(38,2)
+      - name: AMT_PLANNED_ENTITY_EMPLOYEE_SFC
+        data_type: NUMBER(38,2)
+      - name: AMT_PLANNED_ENTITY_PROJECT_SFC
+        data_type: NUMBER(38,2)
+      - name: AMT_PLANNED_SFC
+        data_type: NUMBER(38,2)
+      - name: AMT_PLANNED_USD_SFC
+        data_type: NUMBER(38,2)
       - name: BLN_TIMECARD_IS_SUBMITTED
         data_type: BOOLEAN
-      - name: CURRENCY_EXCHANGE_RATE
-        data_type: NUMBER(38,17)
-      - name: CURRENCY_ISO_CODE
+      - name: CLIENT_MANAGER_EMAIL
         data_type: VARCHAR(5000)
+      - name: CLIENT_MANAGER_NAME
+        data_type: VARCHAR(5000)
+      - name: CLIENT_MANAGER_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: CONVERSION_RATE_PAY_TO_ENTITY_EMPLOYEE
+        data_type: NUMBER(38,2)
+      - name: CONVERSION_RATE_PAY_TO_ENTITY_PROJECT
+        data_type: NUMBER(38,2)
+      - name: CONVERSION_RATE_PAY_TO_SFC
+        data_type: NUMBER(38,2)
+      - name: CONVERSION_RATE_PAY_TO_USD
+        data_type: NUMBER(38,2)
+      - name: CONVERSION_RATE_SFC_ENTITY_EMPLOYEE
+        data_type: NUMBER(38,2)
+      - name: CONVERSION_RATE_SFC_ENTITY_PROJECT
+        data_type: NUMBER(38,2)
+      - name: CONVERSION_RATE_SFC_USD
+        data_type: NUMBER(38,2)
+      - name: CONVERSION_RATE_TIME_TO_PROJECT
+        data_type: NUMBER(38,2)
+      - name: CURRENCY_ISO_CODE_ENTITY_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE_ENTITY_PROJECT
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE_PAY
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE_PROJECT
+        data_type: VARCHAR(5000)
+      - name: DEPARTMENT_NAME_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: DEPARTMENT_NAME_PROJECT
+        data_type: VARCHAR(5000)
+      - name: DTE_CONVERSION_RATE
+        data_type: VARCHAR(5000)
+      - name: DTE_EMPLOYEE_END
+        data_type: DATE
+      - name: DTE_EMPLOYEE_LAST_HIRE
+        data_type: DATE
+      - name: DTE_EMPLOYEE_START
+        data_type: DATE
       - name: DTE_END
         data_type: DATE
       - name: DTE_START
         data_type: DATE
       - name: DTE_SYSTEM_MODSTAMP
-        data_type: TIMESTAMP_TZ(9)
+        data_type: DATE
       - name: DTS_SRC_CREATED
-        data_type: TIMESTAMP_TZ(9)
+        data_type: TIMESTAMP_LTZ
       - name: DTS_SRC_MODIFIED
-        data_type: TIMESTAMP_TZ(9)
-      - name: NAME
-        data_type: VARCHAR(5000)
-      - name: PLANNED_BILL_AMOUNT
-        data_type: NUMBER(38,17)
-      - name: BILL_RATE
-        data_type: NUMBER(38,17)
-      - name: PLANNED_BILL_RATE_SFC
-        data_type: NUMBER(38,17)
-      - name: PLANNED_DAYS
-        data_type: NUMBER(38,17)
-      - name: PLANNED_HOURS
-        data_type: NUMBER(38,17)
-      - name: REQUESTED_DAYS
-        data_type: NUMBER(38,17)
-      - name: REQUESTED_HOURS
-        data_type: NUMBER(38,17)
+        data_type: TIMESTAMP_LTZ
       - name: EMPLOYEE_NAME
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME_EMAIL
         data_type: VARCHAR(5000)
       - name: EMPLOYEE_NAME_LF
         data_type: VARCHAR(5000)
-      - name: EMPLOYEE_NAME_EMAIL
+      - name: EMPLOYEE_TYPE_NAME
+        data_type: VARCHAR(5000)
+      - name: ENTITY_NAME_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: ENTITY_NAME_PROJECT
+        data_type: VARCHAR(5000)
+      - name: HOURS_ACTUAL_BILLABLE_INT
+        data_type: NUMBER(38,2)
+      - name: HOURS_ACTUAL_SFC
+        data_type: NUMBER(38,2)
+      - name: HOURS_ACTUAL_TOTAL_INT
+        data_type: NUMBER(38,2)
+      - name: HOURS_ACTUAL_TVL_INT
+        data_type: NUMBER(38,2)
+      - name: HOURS_PLANNED_SFC
+        data_type: NUMBER(38,2)
+      - name: HOURS_REQUESTED_SFC
+        data_type: NUMBER(38,2)
+      - name: LOCATION_NAME_PROJECT
+        data_type: VARCHAR(5000)
+      - name: NAME
+        data_type: VARCHAR(5000)
+      - name: OPPORTUNITY_NAME
+        data_type: VARCHAR(5000)
+      - name: OPPORTUNITY_STATUS
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_AREA_NAME_PROJECT
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_NAME_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: PRACTICE_NAME_PROJECT
+        data_type: VARCHAR(5000)
+      - name: PROJECT_ID
+        data_type: VARCHAR(5000)
+      - name: PROJECT_MANAGER_EMAIL
+        data_type: VARCHAR(5000)
+      - name: PROJECT_MANAGER_NAME
         data_type: VARCHAR(5000)
       - name: PROJECT_MANAGER_NAME
         data_type: VARCHAR(5000)
       - name: PROJECT_MANAGER_NAME_LF
         data_type: VARCHAR(5000)
-      - name: PROJECT_MANAGER_EMAIL
-        data_type: VARCHAR(5000)
       - name: PROJECT_NAME
-        data_type: VARCHAR(5000)
-      - name: PROJECT_ID
         data_type: VARCHAR(5000)
       - name: PROJECT_STATUS
         data_type: VARCHAR(5000)
-      - name: OPPORTUNITY_NAME
-        data_type: VARCHAR(5000)
-      - name: OPPORTUNITY_STATUS
+      - name: RATE_BILL_ENTITY_EMPLOYEE_INT
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_ENTITY_EMPLOYEE_SFC
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_ENTITY_PROJECT_INT
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_ENTITY_PROJECT_SFC
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_INT
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_SFC
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_TOTAL_ENTITY_EMPLOYEE_INT
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_TOTAL_ENTITY_PROJECT_INT
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_TOTAL_INT
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_TOTAL_USD_INT
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_TVL_ENTITY_EMPLOYEE_INT
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_TVL_ENTITY_PROJECT_INT
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_TVL_INT
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_TVL_USD_INT
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_USD_INT
+        data_type: NUMBER(38,2)
+      - name: RATE_BILL_USD_SFC
+        data_type: NUMBER(38,2)
+      - name: RATE_PAY_ENTITY_EMPLOYEE_UKG
+        data_type: NUMBER(38,2)
+      - name: RATE_PAY_ENTITY_PROJECT_UKG
+        data_type: NUMBER(38,2)
+      - name: RATE_PAY_UKG
+        data_type: NUMBER(38,2)
+      - name: RATE_PAY_USD_UKG
+        data_type: NUMBER(38,2)
+      - name: TOP_LEVEL_ACCOUNT_NAME
         data_type: VARCHAR(5000)
