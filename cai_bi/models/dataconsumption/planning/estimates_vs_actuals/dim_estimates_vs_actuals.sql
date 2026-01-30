@@ -10,11 +10,12 @@ with
     eva as (select * from {{ ref('estimates_vs_actuals') }} where bln_exclude_from_planners=false),
     entities as (select id, record_id, currency_id, display_name, ukg_id from {{ source('portal', 'entities') }} where _fivetran_deleted = false),
     opportunities as (select key, name, stage_name from {{ ref('sales_opportunity') }} where src_sys_key='sfc'),
-    locations as (select record_id, id, intacct_id, display_name, from {{ source('portal', 'locations') }} where _fivetran_deleted = false and id != '55-1'),
+    locations as (select record_id, id, intacct_id, display_name, entity_id from {{ source('portal', 'locations') }} where _fivetran_deleted = false and id != '55-1'),
     ukg_employees as (
         select 
             ifnull(sfc.salesforce_user_id, por.salesforce_user_id) as sfc_user_id,
             ifnull(sfc.key, por.contact_id) as sfc_contact_id, 
+
             coalesce(override_entity.record_id, entities.record_id, companies.record_id) as employee_key_entity,
             coalesce(override_entity.display_name, entities.display_name, companies.display_name) as employee_entity_name,
             coalesce(override_entity.currency_id, entities.currency_id, companies.currency_id) as employee_currency,
@@ -29,7 +30,7 @@ with
         left join {{ ref('employee') }} as sfc on ukg.hash_link = sfc.hash_link and sfc.src_sys_key = 'sfc'
         left join {{ ref('employee') }} as por on ukg.hash_link = por.hash_link and por.src_sys_key = 'por'
         left join {{ ref('employee') }} as int on ukg.hash_link = int.hash_link and int.src_sys_key = 'int'
-        left join entities as por_loc on int.location_id_intacct = por_loc.intacct_id
+        left join locations as por_loc on int.location_id_intacct = por_loc.intacct_id
         left join entities on por_loc.entity_id = entities.id
         left join entities companies on ukg.key_entity = companies.ukg_id
         left join entities override_entity on por.intacct_override_entity_id = override_entity.display_name
@@ -372,10 +373,10 @@ with
                                                             and pay_cc_to_entity_employee.date = dte_conversion_rate  
                                                         )
         left join currency_conversion as cc_int_bill_to_project on (
-                                                                cc_int_bill_to_project.frm_curr = int_currency_code_original
-                                                                and cc_int_bill_to_project.to_curr = currency_iso_code_project
-                                                                and cc_int_bill_to_project.date = dte_conversion_rate
-                                                            )
+                                                            cc_int_bill_to_project.frm_curr = int_currency_code_original
+                                                            and cc_int_bill_to_project.to_curr = currency_iso_code_project
+                                                            and cc_int_bill_to_project.date = dte_conversion_rate
+                                                        )
         
         group by all
     )    
