@@ -8,7 +8,7 @@
         select 
             count(*) as cnt 
         from eva sfc
-        where sfc.src_sys_key = 'sfc'
+        where sfc.src_sys_key = 'sfc' and bln_exclude_from_planners=false
     )
     select 1
     where (select cnt from model_count) != (select cnt from source_count)

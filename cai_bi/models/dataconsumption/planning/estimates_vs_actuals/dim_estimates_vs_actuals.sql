@@ -7,7 +7,7 @@
 }}
 
 with 
-    eva as (select * from {{ ref('estimates_vs_actuals') }} where bln_exclude_from_planners=false),
+    eva as (select * from {{ ref('estimates_vs_actuals') }} where src_sys_key = 'sfc' and bln_exclude_from_planners=false),
     entities as (select id, record_id, currency_id, display_name, ukg_id from {{ source('portal', 'entities') }} where _fivetran_deleted = false),
     opportunities as (select key, name, stage_name from {{ ref('sales_opportunity') }} where src_sys_key='sfc'),
     locations as (select record_id, id, intacct_id, display_name, entity_id from {{ source('portal', 'locations') }} where _fivetran_deleted = false and id != '55-1'),
