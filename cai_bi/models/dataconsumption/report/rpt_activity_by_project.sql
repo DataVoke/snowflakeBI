@@ -398,10 +398,14 @@ activitybyproject_cct as (
 ), 
 --*********************************************************************************************************
 final as (
-     select * from activitybyproject_te
-     union(select * from activitybyproject_ei)
-     union(select * from activitybyproject_ap)
-     union(select * from activitybyproject_cct)
+    select f.*, p.key_location, p.key_practice, p.key_practice_area
+    from (
+         select * from activitybyproject_te
+         union(select * from activitybyproject_ei)
+         union(select * from activitybyproject_ap)
+         union(select * from activitybyproject_cct)
+    ) as f
+    left join project p on f.key_project = p.key
 )
 
 --*********************************************************************************************************
@@ -414,6 +418,9 @@ select
      coalesce(key_parent,'') as key_parent,
      coalesce(activity_type,'') as activity_type,
      coalesce(key_task,'') as key_task,
+     key_location,
+     key_practice,
+     key_practice_area,
      coalesce(location_id_intacct,'') as location_id_intacct,
      coalesce(project_id,'') as project_id,
      coalesce(location_name,'') as location_name,
