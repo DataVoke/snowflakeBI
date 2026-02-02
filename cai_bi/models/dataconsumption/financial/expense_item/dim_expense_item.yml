@@ -2,11 +2,13 @@ version: 2
 
 models:
   - name: dim_expense_item
-    tests:
+    data_tests:
       - dim_expense_item_row_count_matches_sources:
-          source1: ref('expenseitem')
-          source2: ref('expense')
-          severity: warn
+          arguments:
+            source1: ref('expenseitem')
+            source2: ref('expense')
+          config:
+            severity: warn
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ
@@ -18,7 +20,7 @@ models:
         data_type: VARCHAR(250)        
       - name: KEY
         data_type: VARCHAR(5000)
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: KEY_EXPENSE

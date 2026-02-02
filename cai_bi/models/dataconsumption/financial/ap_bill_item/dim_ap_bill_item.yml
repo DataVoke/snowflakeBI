@@ -2,10 +2,11 @@ version: 2
 
 models:
   - name: dim_ap_bill_item
-    tests:
+    data_tests:
       - dim_ap_bill_item_row_count_matches_sources:
-          apbillitem: ref('apbillitem')
-          apbill: ref('apbill')
+          arguments:
+            apbillitem: ref('apbillitem')
+            apbill: ref('apbill')
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ
@@ -17,7 +18,7 @@ models:
         data_type: VARCHAR(250)    
       - name: KEY
         data_type: VARCHAR(5000)
-        tests:
+        data_tests:
           - not_null
           - unique
       - name: KEY_AP_BILL
