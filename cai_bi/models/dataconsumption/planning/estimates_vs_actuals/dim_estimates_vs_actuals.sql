@@ -7,7 +7,36 @@
 }}
 
 with 
-    eva as (select * from {{ ref('estimates_vs_actuals') }} where src_sys_key = 'sfc' and bln_exclude_from_planners=false),
+    eva as (
+        select 
+            key,
+            key_assignment,
+            key_resource_request,
+            key_time_period,
+            key_resource,
+            key_project_manager,
+            key_project,
+            key_opportunity,
+            owner_id,
+            src_created_by,
+            src_modified_by,
+            time_period_type_id,
+            dte_start,
+            dte_end,
+            dte_system_modstamp,
+            dts_src_created,
+            dts_src_modified,
+            name,
+            currency_iso_code_bill_rate,
+            actual_hours,
+            planned_hours,
+            requested_hours,
+            planned_bill_rate,
+            bln_timecard_is_submitted,
+            src_sys_key
+        from {{ ref('estimates_vs_actuals') }} 
+        where src_sys_key = 'sfc' and bln_exclude_from_planners=false
+    ),
     entities as (select id, record_id, currency_id, display_name, ukg_id from {{ source('portal', 'entities') }} where _fivetran_deleted = false),
     opportunities as (select key, name, stage_name from {{ ref('sales_opportunity') }} where src_sys_key='sfc'),
     locations as (select record_id, id, intacct_id, display_name, entity_id from {{ source('portal', 'locations') }} where _fivetran_deleted = false and id != '55-1'),
