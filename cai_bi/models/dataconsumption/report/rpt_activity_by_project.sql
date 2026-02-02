@@ -8,6 +8,7 @@
 
 with
 project as ( select * from {{ ref('dim_project') }} where dte_src_start is not null),
+account as ( select key, name as account_name, key_top_level_parent_account, top_level_parent_account_name from {{ ref('dim_sales_account') }}),
 ap_bill_item as ( select * from {{ ref('dim_ap_bill_item') }} where bln_billable =true  ),
 timesheet_entry as (select * from {{ ref('dim_timesheet_entry') }} ),
 employee as (select * from {{ ref('dim_employee') }}  ),
@@ -398,7 +399,7 @@ activitybyproject_cct as (
 ), 
 --*********************************************************************************************************
 final as (
-    select f.*, p.key_location, p.key_practice, p.key_practice_area
+    select f.*, p.key_location, p.key_practice, p.key_practice_area, a.key as key_account, a.account_name, a.key_top_level_parent_account, a.top_level_parent_account_name 
     from (
          select * from activitybyproject_te
          union(select * from activitybyproject_ei)
@@ -406,6 +407,7 @@ final as (
          union(select * from activitybyproject_cct)
     ) as f
     left join project p on f.key_project = p.key
+    left join account a on p.account_id = a.key
 )
 
 --*********************************************************************************************************
@@ -421,8 +423,12 @@ select
      key_location,
      key_practice,
      key_practice_area,
+     key_top_level_parent_account,
+     key_account,
      coalesce(location_id_intacct,'') as location_id_intacct,
      coalesce(project_id,'') as project_id,
+     coalesce(account_name,'') as account_name,
+     coalesce(top_level_parent_account_name,'') as top_level_parent_account_name,
      coalesce(location_name,'') as location_name,
      coalesce(group_name,'') as group_name,
      coalesce(entity_name,'') as entity_name,
