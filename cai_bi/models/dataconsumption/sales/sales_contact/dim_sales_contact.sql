@@ -1,4 +1,8 @@
-
+{{ config(
+    materialized = "table",
+    schema = "dataconsumption",
+    alias="sales_contact"
+) }}
 
 
 with 

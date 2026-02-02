@@ -1,3 +1,9 @@
+{{ config(
+    materialized = "table",
+    schema = "dataconsumption",
+    alias="sales_lead"
+) }}
+
 with
     sf_leads as (select * from {{ ref('sales_lead') }}),
     por_practices as (
