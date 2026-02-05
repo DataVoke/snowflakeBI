@@ -81,7 +81,7 @@ final as (
         employee_ukg.display_name_lf as employee_name_lf,
         project.project_id,
         project.project_name,
-        project.currency_iso_code,
+        int_e.currency as currency_iso_code,
 
         -- direct fields
         int_ei.account_key,
