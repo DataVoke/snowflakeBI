@@ -274,7 +274,7 @@ with
             coalesce( apbi.dte_exch_rate,apbi.dte_entry,apbi.ap_dte_when_posted) as dte_exch_rate, 
             apbi.ap_dte_when_posted as dte_entry,
             apbi.state as status,
-            apbi.bln_billable as bln_billable,
+            apbi.bln_billable as bln_billable
         from {{ ref("dim_ap_bill_item") }} apbi
         inner join project p on apbi.key_project = p.key
         left join currency_conversion cc_proj on (
