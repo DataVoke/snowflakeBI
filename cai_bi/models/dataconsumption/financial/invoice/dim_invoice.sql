@@ -132,7 +132,6 @@ select
     inv.description,
     inv.description_2,
     inv.doc_number,
-    
     inv.dte_when_discount,
     inv.dte_when_due,
     inv.dte_when_paid,
