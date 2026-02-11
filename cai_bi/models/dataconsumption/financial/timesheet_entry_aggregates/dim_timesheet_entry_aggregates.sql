@@ -590,7 +590,7 @@ WITH
             from base_timesheet_entry as te
             where (te.task_name in (select phase_code from time_type_phase_codes where time_type = 'internaltvl'))
             or (te.task_name in (select phase_code from time_type_phase_codes where time_type = 'tvl') and te.bln_billable=false)
-            or (te.task_name not in (select phase_code from time_type_phase_codes where time_type in ('internal','disfun')) and te.bln_billable=false)
+            or (te.task_name not in (select phase_code from time_type_phase_codes where time_type in ('internal','disfun','nowork')) and te.bln_billable=false)
             group by all
             union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -652,7 +652,7 @@ WITH
             from base_timesheet_entry as te
             where (te.task_name in (select phase_code from time_type_phase_codes where time_type = 'internaltvl'))
             or (te.task_name in (select phase_code from time_type_phase_codes where time_type = 'tvl') and te.bln_billable=false)
-            or (te.task_name not in (select phase_code from time_type_phase_codes where time_type in ('internal','disfun')) and te.bln_billable=false)
+            or (te.task_name not in (select phase_code from time_type_phase_codes where time_type in ('internal','disfun','nowork')) and te.bln_billable=false)
             group by all
             union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -903,6 +903,126 @@ WITH
         ) as d
         group by all
     ),
+    
+    -- ************************************************************************************************************************************************
+    -- NOWORK_DATA: get the sum of all no work data grouped by employee entity limiting to only no work entries
+    nowork_data as (
+         select 'No Work' as type, 'Employee' as entity_grouping, 6 as type_sort, key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year,
+            sum(hours) as hours,
+            sum(hours_billable) as hours_billable,
+            
+            -- get aggregates for entity
+            currency_code_entity,
+            sum(amt_bill_entity) as amt_bill_entity,
+            sum(amt_cost_entity) as amt_cost_entity,
+            sum(amt_cost_cola_entity) as amt_cost_cola_entity,
+            sum(avg_bill_rate_entity) as avg_bill_rate_entity,
+            sum(avg_cost_rate_entity) as avg_cost_rate_entity,
+            sum(avg_cost_rate_cola_entity) as avg_cost_rate_cola_entity,
+
+            -- get aggregates for USD
+            'USD' as currency_code_usd,
+            sum(amt_bill_usd) as amt_bill_usd,
+            sum(amt_cost_usd) as amt_cost_usd,
+            sum(amt_cost_cola_usd) as amt_cost_cola_usd,
+            sum(avg_bill_rate_usd) as avg_bill_rate_usd,
+            sum(avg_cost_rate_usd) as avg_cost_rate_usd,
+            sum(avg_cost_rate_cola_usd) as avg_cost_rate_cola_usd
+        from (
+            select
+                te.key_employee, key_entity_employee as key_entity, te.employee_id, te.date_group_id, te.date_group_type_id, te.date_group_year,
+                sum(te.qty) as hours,
+                0 as hours_billable,
+                
+                -- get aggregates for employee entity
+                currency_code_employee_entity as currency_code_entity,
+                cast(sum(te.bill_amount_employee_entity) as number(38,2)) as amt_bill_entity,
+                cast(sum(te.cost_amount_employee_entity) as number(38,2)) as amt_cost_entity,
+                cast(sum(te.cost_amount_cola_employee_entity) as number(38,2)) as amt_cost_cola_entity,
+                cast(div0(amt_bill_entity, hours) as number(38,2)) as avg_bill_rate_entity,
+                cast(div0(amt_cost_entity, hours) as number(38,2)) as avg_cost_rate_entity,
+                cast(div0(amt_cost_cola_entity, hours) as number(38,2)) as avg_cost_rate_cola_entity,
+                
+                -- get aggregates for USD
+                currency_code_employee_usd as currency_code_usd,
+                cast(sum(te.bill_amount_usd) as number(38,2)) as amt_bill_usd,
+                cast(sum(te.cost_amount_usd) as number(38,2)) as amt_cost_usd,
+                cast(sum(te.cost_amount_cola_usd) as number(38,2)) as amt_cost_cola_usd,
+                cast(div0(amt_bill_usd, hours) as number(38,2)) as avg_bill_rate_usd,
+                cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
+                cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
+            from base_timesheet_entry as te
+            where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'nowork') and te.bln_billable = false
+            group by all
+        union (
+                select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
+                    amt_cost_cola_entity, avg_bill_rate_entity, avg_cost_rate_entity, avg_cost_rate_cola_entity, currency_code_usd, amt_bill_usd, amt_cost_usd, amt_cost_cola_usd, avg_bill_rate_usd, 
+                    avg_cost_rate_usd, avg_cost_rate_cola_usd
+                from blank_data
+            )
+        ) as d
+        group by all
+    ),
+
+    -- ************************************************************************************************************************************************
+    -- NOWORK_DATA_PROJECT_ENTITY: get the sum of all nowork data grouped by project entity limiting to only nowork entries
+    nowork_data_project_entity as (
+         select 'No Work' as type, 'Project' as entity_grouping, 106 as type_sort, key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year,
+            sum(hours) as hours,
+            sum(hours_billable) as hours_billable,
+            
+            -- get aggregates for entity
+            currency_code_entity,
+            sum(amt_bill_entity) as amt_bill_entity,
+            sum(amt_cost_entity) as amt_cost_entity,
+            sum(amt_cost_cola_entity) as amt_cost_cola_entity,
+            sum(avg_bill_rate_entity) as avg_bill_rate_entity,
+            sum(avg_cost_rate_entity) as avg_cost_rate_entity,
+            sum(avg_cost_rate_cola_entity) as avg_cost_rate_cola_entity,
+
+            -- get aggregates for USD
+            'USD' as currency_code_usd,
+            sum(amt_bill_usd) as amt_bill_usd,
+            sum(amt_cost_usd) as amt_cost_usd,
+            sum(amt_cost_cola_usd) as amt_cost_cola_usd,
+            sum(avg_bill_rate_usd) as avg_bill_rate_usd,
+            sum(avg_cost_rate_usd) as avg_cost_rate_usd,
+            sum(avg_cost_rate_cola_usd) as avg_cost_rate_cola_usd
+        from (
+            select
+                te.key_employee, key_entity_project as key_entity, te.employee_id, te.date_group_id, te.date_group_type_id, te.date_group_year,
+                sum(te.qty) as hours,
+                0 as hours_billable,
+                
+                -- get aggregates for project entity
+                currency_code_project_entity as currency_code_entity,
+                cast(sum(te.bill_amount_project_entity) as number(38,2)) as amt_bill_entity,
+                cast(sum(te.cost_amount_project_entity) as number(38,2)) as amt_cost_entity,
+                cast(sum(te.cost_amount_cola_project_entity) as number(38,2)) as amt_cost_cola_entity,
+                cast(div0(amt_bill_entity, hours_billable) as number(38,2)) as avg_bill_rate_entity,
+                cast(div0(amt_cost_entity, hours) as number(38,2)) as avg_cost_rate_entity,
+                cast(div0(amt_cost_cola_entity, hours) as number(38,2)) as avg_cost_rate_cola_entity,
+                
+                -- get aggregates for USD
+                currency_code_employee_usd as currency_code_usd,
+                cast(sum(te.bill_amount_usd) as number(38,2)) as amt_bill_usd,
+                cast(sum(te.cost_amount_usd) as number(38,2)) as amt_cost_usd,
+                cast(sum(te.cost_amount_cola_usd) as number(38,2)) as amt_cost_cola_usd,
+                cast(div0(amt_bill_usd, hours_billable) as number(38,2)) as avg_bill_rate_usd,
+                cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
+                cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
+            from base_timesheet_entry as te
+            where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'nowork')
+            group by all
+        union (
+                select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
+                    amt_cost_cola_entity, avg_bill_rate_entity, avg_cost_rate_entity, avg_cost_rate_cola_entity, currency_code_usd, amt_bill_usd, amt_cost_usd, amt_cost_cola_usd, avg_bill_rate_usd, 
+                    avg_cost_rate_usd, avg_cost_rate_cola_usd
+                from blank_data_project_entity
+            )
+        ) as d
+        group by all
+    ),
 
     -- ************************************************************************************************************************************************
     -- COMBINED: get the sum of all disfun data grouped by employee entity limiting to only disfun entries
@@ -988,6 +1108,10 @@ WITH
                 select 0 as pto_hours, d.* from disfun_data d
             union
                 select 0 as pto_hours, d.* from disfun_data_project_entity d
+            union
+                select 0 as pto_hours, d.* from nowork_data d
+            union
+                select 0 as pto_hours, d.* from nowork_data_project_entity d
         ) as te
         left join users_forecast f on te.key_employee = f.key_employee and te.date_group_year = f.year
         left join portal_entities entities on te.key_entity = entities.record_id
