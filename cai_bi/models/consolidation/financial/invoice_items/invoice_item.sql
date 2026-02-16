@@ -99,7 +99,7 @@ select
     inv.line_no as line_no,
     nullif(inv.locationname,'') as location_name,
     inv.previous_offset_account as qty_previous_offset_account,
-    inv.projectname as project_name,
+    nullif(inv.projectname,'') as project_name,
     inv.totalselected as qty_total_selected,
     inv.trx_discountapplied as qty_trx_discount_applied,
     inv.trx_totalselected as qty_trx_total_selected,
