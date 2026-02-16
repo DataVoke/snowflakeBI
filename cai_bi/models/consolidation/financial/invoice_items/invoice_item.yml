@@ -1,0 +1,218 @@
+version: 1
+models:
+  - name: invoice_item
+    description: Model for consolidated invoice item data
+    config:
+      contract:
+        enforced: true
+    data_tests:
+      - invoice_item_source_count_match
+    columns:
+      - name: SRC_SYS_KEY
+        data_type: VARCHAR(250)
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_EFF_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EFF_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: BLN_CURRENT
+        data_type: BOOLEAN
+      - name: KEY
+        data_type: VARCHAR(5000)
+        data_tests:
+          - not_null
+          - unique
+      - name: HASH_KEY
+        data_type: VARCHAR(32)
+        data_tests:
+          - not_null
+          - unique
+      - name: LINK
+        data_type: VARCHAR(5000)
+      - name: HASH_LINK
+        data_type: VARCHAR(32)
+      - name: KEY_INVOICE
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_INVOICE
+        data_type: VARCHAR(32)
+      - name: KEY_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_EMPLOYEE
+        data_type: VARCHAR(32)
+      - name: KEY_PARENT_ENTRY
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PARENT_ENTRY
+        data_type: VARCHAR(32)
+      - name: KEY_PROJECT
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_PROJECT
+        data_type: VARCHAR(32)
+      - name: ACCOUNT_KEY
+        data_type: NUMBER(38,0)
+      - name: ALLOCATION_KEY
+        data_type: NUMBER(38,0)
+      - name: BASE_LOCATION
+        data_type: NUMBER(38,0)
+      - name: CREATED_BY_LOGIN_ID
+        data_type: VARCHAR(5000)
+      - name: CUSTOMER_KEY
+        data_type: NUMBER(38,0)
+      - name: CUSTOMER_ID
+        data_type: VARCHAR(5000)
+      - name: DEPARTMENT_ID
+        data_type: VARCHAR(5000)
+      - name: DETAIL_KEY
+        data_type: NUMBER(38,0)
+      - name: EMPLOYEE_ID
+        data_type: VARCHAR(5000)
+      - name: EXCH_RATE_TYPE_ID
+        data_type: NUMBER(38,0)
+      - name: GL_VAT_CODE
+        data_type: NUMBER(38,0)
+      - name: ITEM_KEY
+        data_type: NUMBER(38,0)
+      - name: ITEM_ID
+        data_type: VARCHAR(5000)
+      - name: LOCATION_ID
+        data_type: VARCHAR(5000)
+      - name: MODIFIED_BY_LOGIN_ID
+        data_type: VARCHAR(5000)
+      - name: OFFSET_ACCOUNT_KEY
+        data_type: NUMBER(38,0)
+      - name: PROJECTID
+        data_type: VARCHAR(5000)
+      - name: SRC_CREATED_BY
+        data_type: NUMBER(38,0)
+      - name: SRC_MODIFIED_BY
+        data_type: NUMBER(38,0)
+      - name: TASK_ID
+        data_type: NUMBER(38,0)
+      - name: TASK_KEY
+        data_type: NUMBER(38,0)
+      - name: VENDOR_KEY
+        data_type: NUMBER(38,0)
+      - name: VENDOR_ID
+        data_type: VARCHAR(5000)
+      - name: ACCOUNT_TITLE
+        data_type: VARCHAR(5000)
+      - name: AMT
+        data_type: NUMBER(38,17)
+      - name: AMT_BASE_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_NET_OF_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_NET_OF_VAT_BASE
+        data_type: NUMBER(38,17)
+      - name: AMT_NON_RECLAIM_VAT
+        data_type: NUMBER(38,17)
+      - name: AMT_NON_RECLAIM_VAT_BASE
+        data_type: NUMBER(38,17)
+      - name: QTY_RECLAIM_VAT_AMOUNT
+        data_type: NUMBER(38,0)
+      - name: QTY_RECLAIM_VAT_BASE
+        data_type: NUMBER(38,0)
+      - name: QTY_RETAINED
+        data_type: NUMBER(38,0)
+      - name: QTY_REVERSE_TXN_VAT
+        data_type: NUMBER(38,0)
+      - name: QTY_REVERSE_TXN_VAT_BASE
+        data_type: NUMBER(38,0)
+      - name: SUBTOTAL
+        data_type: VARCHAR(5000)
+      - name: AMT_TOTAL_PAID
+        data_type: NUMBER(38,17)
+      - name: AMT_TRX
+        data_type: NUMBER(38,17)
+      - name: AMT_TRX_TOTAL_PAID
+        data_type: NUMBER(38,17)
+      - name: AMT_VAT
+        data_type: NUMBER(38,17)
+      - name: CURRENCY_ISO_CODE_BASE
+        data_type: VARCHAR(5000)
+      - name: BLN_INDIA_CGST_AR
+        data_type: BOOLEAN
+      - name: BLN_INDIA_IGST_AR
+        data_type: BOOLEAN
+      - name: BLN_INDIA_RCM_AR
+        data_type: BOOLEAN
+      - name: BLN_INDIA_SGST_AR
+        data_type: BOOLEAN
+      - name: BLN_IS_RETAIN_AGE_RELEASE
+        data_type: BOOLEAN
+      - name: BLN_IS_SUMMARIZED
+        data_type: BOOLEAN
+      - name: BLN_LINE_ITEM
+        data_type: BOOLEAN
+      - name: BLN_MANUAL_VAT_AMOUNT
+        data_type: BOOLEAN
+      - name: BLN_PAYMENT_TAX_CAPTURE
+        data_type: BOOLEAN
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: CUSTOMER_NAME
+        data_type: VARCHAR(5000)
+      - name: DEPARTMENT_NAME
+        data_type: VARCHAR(5000)
+      - name: DTE_ENTRY
+        data_type: DATE
+      - name: DTE_EXCH_RATE
+        data_type: DATE
+      - name: DTE_REV_REC_START
+        data_type: DATE
+      - name: DTS_SRC_CREATED
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_SRC_MODIFIED
+        data_type: TIMESTAMP_TZ(9)
+      - name: EMPLOYEE_NAME
+        data_type: VARCHAR(5000)
+      - name: ENTRY_DESCRIPTION
+        data_type: VARCHAR(5000)
+      - name: EXCHANGE_RATE
+        data_type: NUMBER(38,17)
+      - name: GL_ACCOUNT_NO
+        data_type: NUMBER(38,0)
+      - name: GL_ACCOUNT_NO_OFFSET
+        data_type: NUMBER(38,0)
+      - name: GL_ACCOUNT_TITLE_OFFSET
+        data_type: VARCHAR(5000)
+      - name: GL_LINE_TAX_DETAIL
+        data_type: NUMBER(38,0)
+      - name: ITEM_NAME
+        data_type: VARCHAR(5000)
+      - name: LINE_NO
+        data_type: NUMBER(38,0)
+      - name: LOCATION_NAME
+        data_type: VARCHAR(5000)
+      - name: QTY_PREVIOUS_OFFSET_ACCOUNT
+        data_type: NUMBER(38,0)
+      - name: PROJECT_NAME
+        data_type: VARCHAR(5000)
+      - name: QTY_TOTAL_SELECTED
+        data_type: NUMBER(38,0)
+      - name: QTY_TRX_DISCOUNT_APPLIED
+        data_type: NUMBER(38,0)
+      - name: QTY_TRX_TOTAL_SELECTED
+        data_type: NUMBER(38,0)
+      - name: RATE_VAT
+        data_type: NUMBER(38,17)
+      - name: QTY_RECLAIM
+        data_type: NUMBER(38,0)
+      - name: RECORD_TYPE
+        data_type: VARCHAR(5000)
+      - name: RECORD_URL
+        data_type: VARCHAR(5000)
+      - name: QTY_RETAIN_AGE_PERCENTAGE
+        data_type: NUMBER(38,0)
+      - name: STATUS
+        data_type: VARCHAR(5000)
+      - name: TASK_NAME
+        data_type: VARCHAR(5000)
+      - name: VENDOR_NAME
+        data_type: VARCHAR(5000)
