@@ -7,7 +7,7 @@
 }}
 
 with 
-    invoice_items as (select * from prod_bi_raw.sage_intacct.ar_invoice_item)
+    invoice_items as (select * from {{ source('sage_intacct', 'ar_invoice_item') }})
 
 select 
     'int' as src_sys_key,
