@@ -106,6 +106,7 @@ final as (
         te.record_url,
         te.stat_gl_entry_line_no,
         te.state,
+        te.sfc_status,
         te.task_key,
         te.timesheet_entry_ref,
         te.task_name,
