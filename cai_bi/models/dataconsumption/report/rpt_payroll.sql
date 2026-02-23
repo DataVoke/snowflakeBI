@@ -25,6 +25,8 @@ final as (
         ts.department_name,
         ts.location_name,
         ts.entity_name,
+        e.key_base_team,
+        e.key_employee_type,
         ts.employee_name,
         ts.employee_department_id,
         ts.employee_id_intacct,
@@ -107,14 +109,16 @@ final as (
         te.task_key,
         te.timesheet_entry_ref,
         te.task_name,
+        e.base_team_name,
         e.state_name,
         e.country_name,
         e.ukg_employee_number,
+        e.employee_type_name,
         case when te.task_name in (select phase_code from time_type_phase_codes where time_type ='sicktime') then '1'
-        when te.task_name in (select phase_code from time_type_phase_codes where time_type ='vacholtime') then '2'
-        when te.task_name in (select phase_code from time_type_phase_codes where time_type ='dulltime') then '3'
-        when te.task_name in (select phase_code from time_type_phase_codes where time_type ='tvltime') then '4'
-        when te.task_name not in (select phase_code from time_type_phase_codes where time_type ='excludepayroll') then '5'
+            when te.task_name in (select phase_code from time_type_phase_codes where time_type ='vacholtime') then '2'
+            when te.task_name in (select phase_code from time_type_phase_codes where time_type ='dulltime') then '3'
+            when te.task_name in (select phase_code from time_type_phase_codes where time_type ='tvltime') then '4'
+            when te.task_name in (select phase_code from time_type_phase_codes where time_type ='excludepayroll') then '5'
         else '0' end as time_type_ind 
     from timesheet ts
     inner join timesheet_entry te on te.key_timesheet = ts.key

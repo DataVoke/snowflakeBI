@@ -73,6 +73,7 @@ internal,LASTWEEK,2025-07-05 19:27:08.834
 nowork,NO WORK,2026-02-11 00:00:00.000
 nowork,NOWORK,2026-02-11 00:00:00.000
 nowork,NORMAL WEEK,2026-02-16 00:00:00.000
+nowork,Planned Unpaid,2026-02-23 09:46:29.964
 tvl,TVL,2025-07-05 19:27:08.834
 internaltvl,Internal TVL,2025-07-05 19:27:08.834
 billable,Allattamento Leave,2025-07-05 19:27:08.834
@@ -147,6 +148,8 @@ excludepayroll,TH,2025-07-07 12:46:29.964
 excludepayroll,FLEX,2025-07-07 12:46:29.964
 excludepayroll,164,2025-07-07 12:46:29.964
 excludepayroll,10221,2025-07-07 12:46:29.964
+excludepayroll,Planned Unpaid,2026-02-23 09:46:29.964
+excludepayroll,NORMAL WEEK,2025-07-07 12:46:29.964
 sicktime,SICK,2025-07-15 12:46:29.964
 vacholtime,VACHOL,2025-07-15 12:46:29.964
 dulltime,DULL,2025-07-15 12:46:29.964
