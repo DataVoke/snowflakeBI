@@ -14,9 +14,9 @@ with
 final as (
     select
         current_timestamp as dts_created_at,
-        'payroll' as created_by,
+        '{{ this.name }}' as created_by,
         current_timestamp as dts_updated_at,
-        'payroll' as updated_by,
+        '{{ this.name }}' as updated_by,
         te.key,
         ts.key_location,
         ts.key_department,
