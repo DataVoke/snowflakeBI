@@ -1,3 +1,10 @@
+{{ 
+    config(
+        materialized="table",
+        schema="consolidation"
+    )
+}}
+
 with 
     compensation as (select * from {{ source('ukg_pro', 'compensation') }} where _fivetran_deleted=false),
     company as (select * from {{ source('ukg_pro', 'company') }} where _fivetran_deleted=false)

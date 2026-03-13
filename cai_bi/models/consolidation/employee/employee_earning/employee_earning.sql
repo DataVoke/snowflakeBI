@@ -1,0 +1,73 @@
+{{ 
+    config(
+        materialized="table",
+        schema="consolidation"
+    )
+}}
+
+with
+    earning as (
+        select * from {{ source('ukg_pro', 'earning_history_base_element') }} where _fivetran_deleted = false
+    )
+select 
+    'ukg' as src_sys_key,
+    cast(current_timestamp as timestamp_tz) as dts_created_at,
+    '{{ this.name }}' as created_by,
+    cast(current_timestamp as timestamp_tz) as dts_updated_at,
+    '{{ this.name }}' as updated_by,
+    cast(current_timestamp as timestamp_tz) as dts_eff_start,
+    cast('9999-12-31' as timestamp_tz ) as dts_eff_end,
+    true as bln_current,
+    earning._fivetran_id as key,
+    md5(earning._fivetran_id) as hash_key,
+    earning._fivetran_id as link,
+    md5(earning._fivetran_id) as hash_link,
+    earning.company_id as key_company,
+    md5(earning.company_id) as hash_key_company,
+    earning.employee_id as key_employee,
+    md5(earning.employee_id) as hash_key_employee,
+    earning.employment_id as key_employment,
+    md5(earning.employment_id) as hash_key_employment,
+    earning.earning_id as earning_id,
+    earning.job_id as job_id,
+    earning.location_id as location_id,
+    earning.pay_group as pay_group_id,
+    earning.tax_calculation_group_id as tax_calculation_group_id,
+    earning.tax_category as tax_category_id,
+    earning.time_clock_code as time_clock_code_id,
+    earning.accrual_code as accrual_code,
+    cast(earning.base_amount as number(38,17)) as amt_base,
+    cast(earning.current_amount as number(38,17)) as amt_current,
+    cast(earning.job_premium_amount as number(38,17)) as amt_job_premium,
+    cast(earning.ytd_amount as number(38,17)) as amt_ytd,
+    cast(earning.ytd_shift_amount as number(38,17)) as amt_ytd_shift,
+    earning.include_in_deferred_compensation as bln_include_in_deferred_compensation,
+    earning.include_in_deferred_compensation_hours as bln_include_in_deferred_compensation_hours,
+    earning.is_voided as bln_is_voided,
+    earning.is_voiding_record as bln_is_voiding_record,
+    earning.use_deduction_off_set as bln_use_deduction_off_set,
+    earning.calculation_rule as calculation_rule,
+    earning.calculation_sequence as calculation_sequence,
+    earning.pay_date as dte_pay,
+    earning.gen_number as gen_number,
+    earning.gl_follow_base_account_allocation as gl_follow_base_account_allocation,
+    earning.gross_up as gross_up,
+    cast(earning.gross_up_target as number(38,17)) as gross_up_target,
+    earning.gross_up_tax_calculation_method as gross_up_tax_calculation_method,
+    cast(earning.current_hours as number(38,17)) as hours_current,
+    cast(earning.job_premium_rate_or_percent as number(38,17)) as job_premium_rate_or_percent,
+    earning.number_of_days as number_of_days,
+    earning.number_of_games as number_of_games,
+    earning.payout_rate_type as payout_rate_type,
+    earning.period_control as period_control,
+    cast(earning.piece_count as number(38,17)) as piece_count,
+    earning.project as project,
+    cast(earning.hourly_pay_rate as number(38,17)) as rate_hourly_pay,
+    cast(earning.pay_rate as number(38,17)) as rate_pay,
+    cast(earning.period_pay_rate as number(38,17)) as rate_period_pay,
+    cast(earning.piece_pay_rate as number(38,17)) as rate_piece_pay,
+    earning.report_category as report_category,
+    cast(earning.tip_credit as number(38,17)) as tip_credit,
+    cast(earning.tip_gross_receipts as number(38,17)) as tip_gross_receipts,
+    earning.tip_type as tip_type
+from earning

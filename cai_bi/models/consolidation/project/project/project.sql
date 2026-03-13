@@ -1,6 +1,9 @@
-{{ config(
-    materialized = 'table'
-)}}
+{{ 
+    config(
+        materialized="table",
+        schema="consolidation"
+    )
+}}
 
 with 
     si_project        as (select * from {{ source('sage_intacct', 'project') }} where _fivetran_deleted = false),
