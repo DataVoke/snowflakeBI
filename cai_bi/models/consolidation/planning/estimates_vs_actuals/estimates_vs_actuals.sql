@@ -1,3 +1,9 @@
+{{ 
+    config(
+        materialized="table",
+        schema="consolidation"
+    )
+}}
 with 
     eva as (select * from {{ source('salesforce', 'pse_est_vs_actuals_c') }} where is_deleted = false and _fivetran_deleted=false),
     rr as (select * from {{ source('salesforce', 'pse_resource_request_c') }} where _fivetran_deleted=false and is_deleted=false),
