@@ -1,3 +1,10 @@
+{{ 
+    config(
+        materialized="table",
+        schema="consolidation"
+    )
+}}
+
 with
     job_history as (select * from {{ source('ukg_pro', 'employee_job_history') }} where _fivetran_deleted = false),
     company as (select * from {{ source('ukg_pro', 'company') }} where _fivetran_deleted = false),
