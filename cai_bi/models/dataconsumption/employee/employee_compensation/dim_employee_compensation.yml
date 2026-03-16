@@ -1,4 +1,4 @@
-version: 
+version: 1
 
 models:
   - name: dim_employee_compensation
