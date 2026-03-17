@@ -1,9 +1,8 @@
-{{
-    config(
-        schema="dataconsumption",
-        alias="timesheet_entry_aggregates",
-    )
-}}
+{{ config(
+    materialized='table',
+    schema='dataconsumption',
+    alias="timesheet_entry_aggregates"
+) }}
 
 WITH
 

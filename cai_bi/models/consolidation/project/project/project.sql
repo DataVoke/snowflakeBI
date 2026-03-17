@@ -1,7 +1,8 @@
 {{ 
     config(
         materialized="table",
-        schema="consolidation"
+        schema="consolidation",
+        alias="project"
     )
 }}
 

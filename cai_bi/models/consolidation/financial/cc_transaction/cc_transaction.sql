@@ -2,6 +2,7 @@
     config(
         materialized="table",
         schema="consolidation",
+        alias="cc_transaction"
     )
 }}
 

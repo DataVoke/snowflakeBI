@@ -1,56 +1,33 @@
 version: 2
 
 models:
-  - name: employee_earning
-    description: Model for employee earning / paycheck information
-    config:
-      contract:
-        enforced: true
+  - name: dim_employee_earning
     data_tests:
-      - employee_earning_source_count_match
+      - dim_employee_earning_row_count_matches_sources:
+          arguments:
+            source: ref('employee_earning')
     columns:
-      - name: SRC_SYS_KEY
-        data_type: VARCHAR(250)
       - name: DTS_CREATED_AT
-        data_type: TIMESTAMP_TZ(9)
+        data_type: TIMESTAMP_LTZ
       - name: CREATED_BY
         data_type: VARCHAR(250)
       - name: DTS_UPDATED_AT
-        data_type: TIMESTAMP_TZ(9)
+        data_type: TIMESTAMP_LTZ
       - name: UPDATED_BY
         data_type: VARCHAR(250)
-      - name: DTS_EFF_START
-        data_type: TIMESTAMP_TZ(9)
-      - name: DTS_EFF_END
-        data_type: TIMESTAMP_TZ(9)
-      - name: BLN_CURRENT
-        data_type: BOOLEAN
       - name: KEY
         data_type: VARCHAR(5000)
         data_tests:
-          - not_null
           - unique
-      - name: HASH_KEY
-        data_type: VARCHAR(32)
-        data_tests:
           - not_null
-          - unique
-      - name: LINK
-        data_type: VARCHAR(5000)
-      - name: HASH_LINK
-        data_type: VARCHAR(32)
       - name: KEY_COMPANY
         data_type: VARCHAR(5000)
-      - name: HASH_KEY_COMPANY
-        data_type: VARCHAR(32)
       - name: KEY_EMPLOYEE
         data_type: VARCHAR(5000)
-      - name: HASH_KEY_EMPLOYEE
-        data_type: VARCHAR(32)
       - name: KEY_EMPLOYMENT
         data_type: VARCHAR(5000)
-      - name: HASH_KEY_EMPLOYMENT
-        data_type: VARCHAR(32)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
       - name: EARNING_ID
         data_type: VARCHAR(5000)
       - name: JOB_ID
@@ -68,15 +45,35 @@ models:
       - name: ACCRUAL_CODE
         data_type: VARCHAR(5000)
       - name: AMT_BASE
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
+      - name: AMT_BASE_ENTITY
+        data_type: NUMBER(38,2)
+      - name: AMT_BASE_USD
+        data_type: NUMBER(38,2)
       - name: AMT_CURRENT
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
+      - name: AMT_CURRENT_ENTITY
+        data_type: NUMBER(38,2)
+      - name: AMT_CURRENT_USD
+        data_type: NUMBER(38,2)
       - name: AMT_JOB_PREMIUM
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
+      - name: AMT_JOB_PREMIUM_ENTITY
+        data_type: NUMBER(38,2)
+      - name: AMT_JOB_PREMIUM_USD
+        data_type: NUMBER(38,2)
       - name: AMT_YTD
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
+      - name: AMT_YTD_ENTITY
+        data_type: NUMBER(38,2)
       - name: AMT_YTD_SHIFT
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
+      - name: AMT_YTD_SHIFT_ENTITY
+        data_type: NUMBER(38,2)
+      - name: AMT_YTD_SHIFT_USD
+        data_type: NUMBER(38,2)
+      - name: AMT_YTD_USD
+        data_type: NUMBER(38,2)
       - name: BLN_INCLUDE_IN_DEFERRED_COMPENSATION
         data_type: BOOLEAN
       - name: BLN_INCLUDE_IN_DEFERRED_COMPENSATION_HOURS
@@ -91,8 +88,24 @@ models:
         data_type: VARCHAR(5000)
       - name: CALCULATION_SEQUENCE
         data_type: NUMBER(38,0)
+      - name: COMPANY_NAME
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE_ENTITY
+        data_type: VARCHAR(5000)
       - name: DTE_PAY
         data_type: TIMESTAMP_NTZ(9)
+      - name: EMPLOYEE_EMAIL
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME_LF
+        data_type: VARCHAR(5000)
+      - name: ENTITY_ID
+        data_type: VARCHAR(5000)
+      - name: ENTITY_NAME
+        data_type: VARCHAR(5000)
       - name: GEN_NUMBER
         data_type: VARCHAR(5000)
       - name: GL_FOLLOW_BASE_ACCOUNT_ALLOCATION
@@ -100,13 +113,13 @@ models:
       - name: GROSS_UP
         data_type: VARCHAR(5000)
       - name: GROSS_UP_TARGET
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
       - name: GROSS_UP_TAX_CALCULATION_METHOD
         data_type: NUMBER(38,0)
       - name: HOURS_CURRENT
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
       - name: JOB_PREMIUM_RATE_OR_PERCENT
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
       - name: NUMBER_OF_DAYS
         data_type: NUMBER(38,0)
       - name: NUMBER_OF_GAMES
@@ -116,22 +129,34 @@ models:
       - name: PERIOD_CONTROL
         data_type: NUMBER(38,0)
       - name: PIECE_COUNT
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
       - name: PROJECT
         data_type: VARCHAR(5000)
       - name: RATE_HOURLY_PAY
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
+      - name: RATE_HOURLY_PAY_ENTITY
+        data_type: NUMBER(38,2)
+      - name: RATE_HOURLY_PAY_USD
+        data_type: NUMBER(38,2)
       - name: RATE_PAY
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
+      - name: RATE_PAY_ENTITY
+        data_type: NUMBER(38,2)
+      - name: RATE_PAY_USD
+        data_type: NUMBER(38,2)
       - name: RATE_PERIOD_PAY
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
+      - name: RATE_PERIOD_PAY_ENTITY
+        data_type: NUMBER(38,2)
+      - name: RATE_PERIOD_PAY_USD
+        data_type: NUMBER(38,2)
       - name: RATE_PIECE_PAY
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
       - name: REPORT_CATEGORY
         data_type: VARCHAR(5000)
       - name: TIP_CREDIT
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
       - name: TIP_GROSS_RECEIPTS
-        data_type: NUMBER(38,17)
+        data_type: NUMBER(38,2)
       - name: TIP_TYPE
         data_type: VARCHAR(5000)
