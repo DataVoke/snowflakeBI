@@ -1,7 +1,7 @@
 {{
     config(
         materialized='table',
-        schema='consolidation'
+        schema='consolidation',
         alias="expense"
     )
 }}
