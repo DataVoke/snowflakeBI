@@ -160,7 +160,8 @@ with
                when upper(nullif(ei.org_currency,'')) is null and upper(ifnull(nullif(ei.org_currency,''),ei.currency_iso_code)) != upper(ifnull(nullif(p.currency_iso_code,''),'USD')) then -1
                when upper(nullif(ei.org_currency,'')) is null then 0
                when upper(ifnull(nullif(ei.org_currency,''),ei.currency_iso_code)) = upper(ifnull(nullif(p.currency_iso_code,''),'USD')) then 1 -- use amt_org
-               when upper(ifnull(nullif(ei.currency_iso_code,''),'USD')) = upper(ifnull(nullif(p.currency_iso_code,''),'USD'))  then 2 -- use amt
+               when upper(ifnull(nullif(ei.currency_iso_code,''),'USD')) = upper(ifnull(nullif(p.currency_iso_code,''),'USD'))
+                    or upper(ifnull(nullif(ei.exp_base_currency,''),'USD')) = upper(ifnull(nullif(p.currency_iso_code,''),'USD')) then 2 -- use amt
                when upper(ifnull(nullif(ei.exp_currency,''),'USD')) = upper(ifnull(nullif(p.currency_iso_code,''),'USD'))  then 3 -- amt_trx
                else 4
             end as curr_ind, 
@@ -200,7 +201,7 @@ with
                     when curr_ind = 3 then amt_trx
                     else ifnull(amt_org, amt_trx) * ex_currency_conversion_project -- should handle curr_ind = -1
                 end,0)
-            ,2) as cost_project,        
+            ,2) as cost_project,     
             round(ifnull(cost_project * ex_currency_conversion_project_usd,0),2) as cost_project_usd,
             coalesce( ei.dte_org_exchrate,ei.dte_entry,ei.exp_dte_when_posted) as dte_exch_rate,
             ei.exp_dte_when_posted as dte_entry,
