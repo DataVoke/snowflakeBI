@@ -2,6 +2,7 @@
     config(
         materialized="table",
         schema="consolidation"
+        alias="estimates_vs_actuals"
     )
 }}
 with 

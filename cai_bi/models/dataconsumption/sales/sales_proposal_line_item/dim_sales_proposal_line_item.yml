@@ -1,3 +1,5 @@
+version: 2
+
 models:
   - name: dim_sales_proposal_line_item
     data_tests:

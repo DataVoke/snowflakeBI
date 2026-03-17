@@ -1,3 +1,9 @@
+{{ config(
+    materialized='table',
+    schema='dataconsumption',
+    alias="invoice_item"
+) }}
+
 with 
     invoice_items as (
         select key, hash_key, link, hash_link, key_invoice, hash_key_invoice, key_employee, hash_key_employee, key_parent_entry, hash_key_parent_entry, key_project, 
