@@ -1,4 +1,5 @@
 version: 2
+
 models:
   - name: expenseitem
     description: Model for consolidated expense data

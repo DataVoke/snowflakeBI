@@ -1,6 +1,10 @@
-{{ config(
-    materialized='table',
-) }}
+{{
+    config(
+        materialized="table",
+        schema="consolidation",
+        alias="timesheet"
+    )
+}}
 
 with 
     pse    as (select * from {{ source('salesforce', 'pse_timecard_header_c') }} where _fivetran_deleted = false),
