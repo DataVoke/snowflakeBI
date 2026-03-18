@@ -1,0 +1,195 @@
+version: 2
+
+models:
+  - name: employee_payroll_deductions
+    description: Model for employee payroll deductions
+    config:
+      contract:
+        enforced: true
+    data_tests:
+      - employee_payroll_deductions_source_count_match
+    columns:
+      - name: SRC_SYS_KEY
+        data_type: VARCHAR(250)
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_TZ(9)
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_EFF_START
+        data_type: TIMESTAMP_TZ(9)
+      - name: DTS_EFF_END
+        data_type: TIMESTAMP_TZ(9)
+      - name: BLN_CURRENT
+        data_type: BOOLEAN
+      - name: KEY
+        data_type: VARCHAR(5000)
+        data_tests:
+          - not_null
+          - unique
+      - name: HASH_KEY
+        data_type: VARCHAR(32)
+        data_tests:
+          - not_null
+          - unique
+      - name: LINK
+        data_type: VARCHAR(5000)
+      - name: HASH_LINK
+        data_type: VARCHAR(32)
+      - name: KEY_COMPANY
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_COMPANY
+        data_type: VARCHAR(32)
+      - name: KEY_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: HASH_KEY_EMPLOYEE
+        data_type: VARCHAR(32)
+      - name: CHECK_ID
+        data_type: VARCHAR(5000)
+      - name: DEDUCTION_CODE
+        data_type: VARCHAR(5000)
+      - name: PAY_GROUP_ID
+        data_type: VARCHAR(5000)
+      - name: PAYEE_ID
+        data_type: VARCHAR(5000)
+      - name: TAX_CALCULATION_GROUP_ID
+        data_type: VARCHAR(5000)
+      - name: TIMECLOCK_CODE
+        data_type: VARCHAR(5000)
+      - name: WAGE_GARNISHMENT_WAGE_CODE
+        data_type: VARCHAR(5000)
+      - name: AMT_BENEFIT
+        data_type: NUMBER(38,17)
+      - name: AMT_CURRENT_ARREARS
+        data_type: NUMBER(38,17)
+      - name: AMT_CUSTOM_1
+        data_type: NUMBER(38,17)
+      - name: AMT_CUSTOM_2
+        data_type: NUMBER(38,17)
+      - name: AMT_DEDUCTION_CALCULATION_BASIS
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_CURRENT
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_GOAL
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_GOAL_TO_DATE
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_ORIGINAL
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYER_CURRENT
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_ADDITIONAL_ARREARAGE
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_DISPOSABLE_INCOME
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMPT
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMPT_FROM_LEVY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMT_FROM_GARN
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_SUBJECT_TO_CS
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_SUBJECT_TO_GARNISHMENT
+        data_type: NUMBER(38,17)
+      - name: AMT_YEAR_TO_DATE_DEFERRED_COMPENSATION_COMBINED
+        data_type: NUMBER(38,17)
+      - name: BENEFIT_OPTION
+        data_type: VARCHAR(5000)
+      - name: BENEFIT_PROVIDER
+        data_type: VARCHAR(5000)
+      - name: BLN_ALLOW_PARTIAL_DEDUCTION
+        data_type: BOOLEAN
+      - name: BLN_DEDUCTION_FOR_BONUS_ONLY
+        data_type: BOOLEAN
+      - name: BLN_EXCLUDE_FROM_WORKERS_COMPENSATION
+        data_type: BOOLEAN
+      - name: BLN_IS_401_K
+        data_type: BOOLEAN
+      - name: BLN_IS_403_B
+        data_type: BOOLEAN
+      - name: BLN_IS_408_K
+        data_type: BOOLEAN
+      - name: BLN_IS_408_P
+        data_type: BOOLEAN
+      - name: BLN_IS_457
+        data_type: BOOLEAN
+      - name: BLN_IS_457_B
+        data_type: BOOLEAN
+      - name: BLN_IS_457_F
+        data_type: BOOLEAN
+      - name: BLN_IS_501_C
+        data_type: BOOLEAN
+      - name: BLN_IS_D_125
+        data_type: BOOLEAN
+      - name: BLN_IS_DEDUCTION_OFF_SET
+        data_type: BOOLEAN
+      - name: BLN_IS_DEFERRED_COMPENSATION
+        data_type: BOOLEAN
+      - name: BLN_IS_DEPENDENT_CARE
+        data_type: BOOLEAN
+      - name: BLN_IS_HOUSING
+        data_type: BOOLEAN
+      - name: BLN_IS_NON_QUALIFIED_PLAN
+        data_type: BOOLEAN
+      - name: BLN_IS_PRORATED
+        data_type: BOOLEAN
+      - name: BLN_IS_PUBLIC_EMPLOYEE_RETIREMENT
+        data_type: BOOLEAN
+      - name: BLN_IS_SECTION_125
+        data_type: BOOLEAN
+      - name: BLN_IS_VOIDED
+        data_type: BOOLEAN
+      - name: BLN_IS_VOIDING_RECORD
+        data_type: BOOLEAN
+      - name: WAGE_GARNISHMENT_MINIMUM_WAGE_FACTOR
+        data_type: NUMBER(38,17)
+      - name: CHILD_SUPPORT_TYPE
+        data_type: VARCHAR(5000)
+      - name: DEDUCTION_PLAN_TYPE
+        data_type: VARCHAR(5000)
+      - name: DEDUCTION_TYPE
+        data_type: VARCHAR(5000)
+      - name: DEFERRED_COMPENSATION_CAP
+        data_type: NUMBER(38,17)
+      - name: DEFERRED_COMPENSATION_REGULAR_CAP
+        data_type: NUMBER(38,17)
+      - name: DTE_CUSTOM
+        data_type: TIMESTAMP_NTZ(9)
+      - name: DTE_EMPLOYEE_DEDUCTION_LAST_PAID
+        data_type: TIMESTAMP_NTZ(9)
+      - name: DTE_PAY
+        data_type: TIMESTAMP_NTZ(9)
+      - name: EMPLOYEE_CALCULAITON_RULE
+        data_type: NUMBER(38,0)
+      - name: EMPLOYEE_CALCULATION_RATE_OR_PERCENT
+        data_type: NUMBER(38,17)
+      - name: EMPLOYEE_GOAL_RULE
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NUMBER
+        data_type: VARCHAR(5000)
+      - name: EMPLOYER_ANNUAL_CAP_CALCULATION_RULE
+        data_type: VARCHAR(5000)
+      - name: EMPLOYER_CALCULATION_RATE_OR_PERCENT
+        data_type: NUMBER(38,17)
+      - name: EMPLOYER_CALCULATION_RULE
+        data_type: NUMBER(38,0)
+      - name: EMPLOYER_PERIOD_CAP_CALCULATION_RULE
+        data_type: VARCHAR(5000)
+      - name: GENERAL_LEDGER_EXPENSE_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: GENERAL_LEDGER_PAY_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: PERIOD_CONTROL
+        data_type: NUMBER(38,0)
+      - name: TAX_CATEGORY
+        data_type: VARCHAR(5000)
+      - name: VENDOR
+        data_type: VARCHAR(5000)
+      - name: BLN_WAGE_GARNISHMENT_ALLOCATE_AS_ARREARS
+        data_type: BOOLEAN
+      - name: WAGE_GARNISHMENT_DEDUCTION_TAX_CATEGORY
+        data_type: VARCHAR(5000)
