@@ -30,6 +30,7 @@ sources:
       - name: pay_group
       - name: pay_register
       - name: phone_number
+      - name: payroll_deduction_history
       - name: platform_config_employment
       - name: role
       - name: tax_group
