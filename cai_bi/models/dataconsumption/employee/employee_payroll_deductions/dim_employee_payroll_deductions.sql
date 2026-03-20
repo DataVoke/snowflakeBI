@@ -14,7 +14,7 @@ with
     bln_deduction_for_bonus_only, bln_exclude_from_workers_compensation, bln_is_401_k, bln_is_403_b, bln_is_408_k, bln_is_408_p, bln_is_457, bln_is_457_b, 
     bln_is_457_f, bln_is_501_c, bln_is_d_125, bln_is_deduction_off_set, bln_is_deferred_compensation, bln_is_dependent_care, bln_is_housing, bln_is_non_qualified_plan, 
     bln_is_prorated, bln_is_public_employee_retirement, bln_is_section_125, bln_is_voided, bln_is_voiding_record, wage_garnishment_minimum_wage_factor, child_support_type, 
-    deduction_plan_type, deduction_type, deferred_compensation_cap, deferred_compensation_regular_cap, dte_custom, dte_employee_deduction_last_paid, dte_pay, employee_calculaiton_rule, 
+    deduction_plan_type, deduction_type, deferred_compensation_cap, deferred_compensation_regular_cap, dte_custom, dte_employee_deduction_last_paid, dte_pay, employee_calculation_rule, 
     employee_calculation_rate_or_percent, employee_goal_rule, employee_number, employer_annual_cap_calculation_rule, employer_calculation_rate_or_percent, employer_calculation_rule, 
     employer_period_cap_calculation_rule, general_ledger_expense_account, general_ledger_pay_account, period_control, tax_category, vendor, bln_wage_garnishment_allocate_as_arrears, 
     wage_garnishment_deduction_tax_category
@@ -108,7 +108,7 @@ select
     deduction.dte_custom,
     deduction.dte_employee_deduction_last_paid,
     deduction.dte_pay,
-    deduction.employee_calculaiton_rule,
+    deduction.employee_calculation_rule,
     deduction.employee_calculation_rate_or_percent,
     deduction.employee_goal_rule,
     deduction.employee_number,

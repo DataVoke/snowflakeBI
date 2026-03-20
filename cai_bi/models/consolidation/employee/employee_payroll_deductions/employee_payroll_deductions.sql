@@ -88,7 +88,7 @@ select
     deduction.custom_date as dte_custom,
     deduction.employee_deduction_last_paid as dte_employee_deduction_last_paid,
     deduction.pay_date as dte_pay,
-    deduction.employee_calculaiton_rule as employee_calculaiton_rule,
+    deduction.employee_calculaiton_rule as employee_calculation_rule,
     cast(deduction.employee_calculation_rate_or_percent as number(38,17)) as employee_calculation_rate_or_percent,
     deduction.employee_goal_rule as employee_goal_rule,
     deduction.employee_number as employee_number,
