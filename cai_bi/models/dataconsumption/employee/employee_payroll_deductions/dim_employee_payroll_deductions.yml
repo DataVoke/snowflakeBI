@@ -1,0 +1,262 @@
+version: 2
+
+models:
+  - name: dim_employee_payroll_deductions
+    data_tests:
+      - dim_employee_payroll_deductions_row_count_matches_sources:
+          arguments:
+            source: ref('employee_payroll_deductions')
+    columns:
+      - name: DTS_CREATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: CREATED_BY
+        data_type: VARCHAR(250)
+      - name: DTS_UPDATED_AT
+        data_type: TIMESTAMP_LTZ
+      - name: UPDATED_BY
+        data_type: VARCHAR(250)
+      - name: KEY
+        data_type: VARCHAR(5000)
+        data_tests:
+          - unique
+          - not_null
+      - name: KEY_COMPANY
+        data_type: VARCHAR(5000)
+      - name: KEY_EMPLOYEE
+        data_type: VARCHAR(5000)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
+      - name: CHECK_ID
+        data_type: VARCHAR(5000)
+      - name: DEDUCTION_CODE
+        data_type: VARCHAR(5000)
+      - name: PAY_GROUP_ID
+        data_type: VARCHAR(5000)
+      - name: PAYEE_ID
+        data_type: VARCHAR(5000)
+      - name: TAX_CALCULATION_GROUP_ID
+        data_type: VARCHAR(5000)
+      - name: TIMECLOCK_CODE
+        data_type: VARCHAR(5000)
+      - name: WAGE_GARNISHMENT_WAGE_CODE
+        data_type: VARCHAR(5000)
+      - name: AMT_BENEFIT
+        data_type: NUMBER(38,17)
+      - name: AMT_CURRENT_ARREARS
+        data_type: NUMBER(38,17)
+      - name: AMT_CUSTOM_1
+        data_type: NUMBER(38,17)
+      - name: AMT_CUSTOM_2
+        data_type: NUMBER(38,17)
+      - name: AMT_DEDUCTION_CALCULATION_BASIS
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_CURRENT
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_GOAL
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_GOAL_TO_DATE
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_ORIGINAL
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYER_CURRENT
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_ADDITIONAL_ARREARAGE
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_DISPOSABLE_INCOME
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMPT
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMPT_FROM_LEVY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMT_FROM_GARN
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_SUBJECT_TO_CS
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_SUBJECT_TO_GARNISHMENT
+        data_type: NUMBER(38,17)
+      - name: AMT_YEAR_TO_DATE_DEFERRED_COMPENSATION_COMBINED
+        data_type: NUMBER(38,17)
+      - name: BENEFIT_OPTION
+        data_type: VARCHAR(5000)
+      - name: BENEFIT_PROVIDER
+        data_type: VARCHAR(5000)
+      - name: BLN_ALLOW_PARTIAL_DEDUCTION
+        data_type: BOOLEAN
+      - name: BLN_DEDUCTION_FOR_BONUS_ONLY
+        data_type: BOOLEAN
+      - name: BLN_EXCLUDE_FROM_WORKERS_COMPENSATION
+        data_type: BOOLEAN
+      - name: BLN_IS_401_K
+        data_type: BOOLEAN
+      - name: BLN_IS_403_B
+        data_type: BOOLEAN
+      - name: BLN_IS_408_K
+        data_type: BOOLEAN
+      - name: BLN_IS_408_P
+        data_type: BOOLEAN
+      - name: BLN_IS_457
+        data_type: BOOLEAN
+      - name: BLN_IS_457_B
+        data_type: BOOLEAN
+      - name: BLN_IS_457_F
+        data_type: BOOLEAN
+      - name: BLN_IS_501_C
+        data_type: BOOLEAN
+      - name: BLN_IS_D_125
+        data_type: BOOLEAN
+      - name: BLN_IS_DEDUCTION_OFF_SET
+        data_type: BOOLEAN
+      - name: BLN_IS_DEFERRED_COMPENSATION
+        data_type: BOOLEAN
+      - name: BLN_IS_DEPENDENT_CARE
+        data_type: BOOLEAN
+      - name: BLN_IS_HOUSING
+        data_type: BOOLEAN
+      - name: BLN_IS_NON_QUALIFIED_PLAN
+        data_type: BOOLEAN
+      - name: BLN_IS_PRORATED
+        data_type: BOOLEAN
+      - name: BLN_IS_PUBLIC_EMPLOYEE_RETIREMENT
+        data_type: BOOLEAN
+      - name: BLN_IS_SECTION_125
+        data_type: BOOLEAN
+      - name: BLN_IS_VOIDED
+        data_type: BOOLEAN
+      - name: BLN_IS_VOIDING_RECORD
+        data_type: BOOLEAN
+      - name: WAGE_GARNISHMENT_MINIMUM_WAGE_FACTOR
+        data_type: NUMBER(38,17)
+      - name: CHILD_SUPPORT_TYPE
+        data_type: VARCHAR(5000)
+      - name: DEDUCTION_PLAN_TYPE
+        data_type: VARCHAR(5000)
+      - name: DEDUCTION_TYPE
+        data_type: VARCHAR(5000)
+      - name: DEFERRED_COMPENSATION_CAP
+        data_type: NUMBER(38,17)
+      - name: DEFERRED_COMPENSATION_REGULAR_CAP
+        data_type: NUMBER(38,17)
+      - name: DTE_CUSTOM
+        data_type: TIMESTAMP_NTZ(9)
+      - name: DTE_EMPLOYEE_DEDUCTION_LAST_PAID
+        data_type: TIMESTAMP_NTZ(9)
+      - name: DTE_PAY
+        data_type: TIMESTAMP_NTZ(9)
+      - name: EMPLOYEE_CALCULAITON_RULE
+        data_type: NUMBER(38,0)
+      - name: EMPLOYEE_CALCULATION_RATE_OR_PERCENT
+        data_type: NUMBER(38,17)
+      - name: EMPLOYEE_GOAL_RULE
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NUMBER
+        data_type: VARCHAR(5000)
+      - name: EMPLOYER_ANNUAL_CAP_CALCULATION_RULE
+        data_type: VARCHAR(5000)
+      - name: EMPLOYER_CALCULATION_RATE_OR_PERCENT
+        data_type: NUMBER(38,17)
+      - name: EMPLOYER_CALCULATION_RULE
+        data_type: NUMBER(38,0)
+      - name: EMPLOYER_PERIOD_CAP_CALCULATION_RULE
+        data_type: VARCHAR(5000)
+      - name: GENERAL_LEDGER_EXPENSE_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: GENERAL_LEDGER_PAY_ACCOUNT
+        data_type: VARCHAR(5000)
+      - name: PERIOD_CONTROL
+        data_type: NUMBER(38,0)
+      - name: TAX_CATEGORY
+        data_type: VARCHAR(5000)
+      - name: VENDOR
+        data_type: VARCHAR(5000)
+      - name: BLN_WAGE_GARNISHMENT_ALLOCATE_AS_ARREARS
+        data_type: BOOLEAN
+      - name: WAGE_GARNISHMENT_DEDUCTION_TAX_CATEGORY
+        data_type: VARCHAR(5000)
+      - name: COMPANY_NAME
+        data_type: VARCHAR(5000)
+      - name: ENTITY_NAME
+        data_type: VARCHAR(5000)
+      - name: ENTITY_ID
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE_ENTITY
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: AMT_BENEFIT_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_CURRENT_ARREARS_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_CUSTOM_1_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_CUSTOM_2_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_DEDUCTION_CALCULATION_BASIS_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_CURRENT_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_GOAL_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_GOAL_TO_DATE_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_ORIGINAL_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYER_CURRENT_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_ADDITIONAL_ARREARAGE_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_DISPOSABLE_INCOME_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMPT_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMPT_FROM_LEVY_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMT_FROM_GARN_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_SUBJECT_TO_CS_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_SUBJECT_TO_GARNISHMENT_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_YEAR_TO_DATE_DEFERRED_COMPENSATION_COMBINED_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_BENEFIT_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_CURRENT_ARREARS_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_CUSTOM_1_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_CUSTOM_2_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_DEDUCTION_CALCULATION_BASIS_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_CURRENT_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_GOAL_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_GOAL_TO_DATE_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_ORIGINAL_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYER_CURRENT_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_ADDITIONAL_ARREARAGE_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_DISPOSABLE_INCOME_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMPT_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMPT_FROM_LEVY_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMT_FROM_GARN_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_SUBJECT_TO_CS_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_SUBJECT_TO_GARNISHMENT_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_YEAR_TO_DATE_DEFERRED_COMPENSATION_COMBINED_ENTITY
+        data_type: NUMBER(38,17)
+      - name: EMPLOYEE_EMAIL
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME_LF
+        data_type: VARCHAR(5000)
