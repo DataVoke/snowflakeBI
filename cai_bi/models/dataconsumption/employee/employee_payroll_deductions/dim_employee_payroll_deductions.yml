@@ -1,52 +1,31 @@
 version: 2
 
 models:
-  - name: employee_payroll_deductions
-    description: Model for employee payroll deductions
-    config:
-      contract:
-        enforced: true
+  - name: dim_employee_payroll_deductions
     data_tests:
-      - employee_payroll_deductions_source_count_match
+      - dim_employee_payroll_deductions_row_count_matches_sources:
+          arguments:
+            source: ref('employee_payroll_deductions')
     columns:
-      - name: SRC_SYS_KEY
-        data_type: VARCHAR(250)
       - name: DTS_CREATED_AT
-        data_type: TIMESTAMP_TZ(9)
+        data_type: TIMESTAMP_LTZ
       - name: CREATED_BY
         data_type: VARCHAR(250)
       - name: DTS_UPDATED_AT
-        data_type: TIMESTAMP_TZ(9)
+        data_type: TIMESTAMP_LTZ
       - name: UPDATED_BY
         data_type: VARCHAR(250)
-      - name: DTS_EFF_START
-        data_type: TIMESTAMP_TZ(9)
-      - name: DTS_EFF_END
-        data_type: TIMESTAMP_TZ(9)
-      - name: BLN_CURRENT
-        data_type: BOOLEAN
       - name: KEY
         data_type: VARCHAR(5000)
         data_tests:
-          - not_null
           - unique
-      - name: HASH_KEY
-        data_type: VARCHAR(32)
-        data_tests:
           - not_null
-          - unique
-      - name: LINK
-        data_type: VARCHAR(5000)
-      - name: HASH_LINK
-        data_type: VARCHAR(32)
       - name: KEY_COMPANY
         data_type: VARCHAR(5000)
-      - name: HASH_KEY_COMPANY
-        data_type: VARCHAR(32)
       - name: KEY_EMPLOYEE
         data_type: VARCHAR(5000)
-      - name: HASH_KEY_EMPLOYEE
-        data_type: VARCHAR(32)
+      - name: KEY_ENTITY
+        data_type: VARCHAR(5000)
       - name: CHECK_ID
         data_type: VARCHAR(5000)
       - name: DEDUCTION_CODE
@@ -192,4 +171,92 @@ models:
       - name: BLN_WAGE_GARNISHMENT_ALLOCATE_AS_ARREARS
         data_type: BOOLEAN
       - name: WAGE_GARNISHMENT_DEDUCTION_TAX_CATEGORY
+        data_type: VARCHAR(5000)
+      - name: COMPANY_NAME
+        data_type: VARCHAR(5000)
+      - name: ENTITY_NAME
+        data_type: VARCHAR(5000)
+      - name: ENTITY_ID
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE_ENTITY
+        data_type: VARCHAR(5000)
+      - name: CURRENCY_ISO_CODE
+        data_type: VARCHAR(5000)
+      - name: AMT_BENEFIT_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_CURRENT_ARREARS_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_CUSTOM_1_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_CUSTOM_2_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_DEDUCTION_CALCULATION_BASIS_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_CURRENT_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_GOAL_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_GOAL_TO_DATE_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_ORIGINAL_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYER_CURRENT_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_ADDITIONAL_ARREARAGE_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_DISPOSABLE_INCOME_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMPT_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMPT_FROM_LEVY_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMT_FROM_GARN_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_SUBJECT_TO_CS_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_SUBJECT_TO_GARNISHMENT_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_YEAR_TO_DATE_DEFERRED_COMPENSATION_COMBINED_USD
+        data_type: NUMBER(38,17)
+      - name: AMT_BENEFIT_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_CURRENT_ARREARS_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_CUSTOM_1_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_CUSTOM_2_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_DEDUCTION_CALCULATION_BASIS_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_CURRENT_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_GOAL_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_GOAL_TO_DATE_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYEE_ORIGINAL_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_EMPLOYER_CURRENT_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_ADDITIONAL_ARREARAGE_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_DISPOSABLE_INCOME_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMPT_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMPT_FROM_LEVY_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_EXEMT_FROM_GARN_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_SUBJECT_TO_CS_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_WAGE_GARNISHMENT_SUBJECT_TO_GARNISHMENT_ENTITY
+        data_type: NUMBER(38,17)
+      - name: AMT_YEAR_TO_DATE_DEFERRED_COMPENSATION_COMBINED_ENTITY
+        data_type: NUMBER(38,17)
+      - name: EMPLOYEE_EMAIL
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME
+        data_type: VARCHAR(5000)
+      - name: EMPLOYEE_NAME_LF
         data_type: VARCHAR(5000)
