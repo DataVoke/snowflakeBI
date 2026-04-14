@@ -207,7 +207,7 @@ with
             coalesce( ei.dte_org_exchrate,ei.dte_entry,ei.exp_dte_when_posted) as dte_exch_rate,
             ei.exp_dte_when_posted as dte_entry,
             ei.state as status,
-            ei.bln_billable as bln_billable           
+            ei.bln_billable as bln_billable
         from {{ ref("dim_expense_item") }} as ei
         inner join project p on ei.key_project = p.key
         left join currency_conversion cc_proj on (
