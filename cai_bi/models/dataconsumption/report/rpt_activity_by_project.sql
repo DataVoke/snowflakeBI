@@ -115,7 +115,8 @@ with
             round(rate_project_usd * te.qty, 2) as cost_project_usd, 
             te.state as status, 
             te.bln_billable as bln_billable, 
-            te.sfc_status
+            te.sfc_status,
+            te.location_worked
         from {{ ref("dim_timesheet_entry") }} as te
         inner join project p on te.key_project = p.key
         left join currency_conversion cc_proj on (
@@ -206,7 +207,7 @@ with
             coalesce( ei.dte_org_exchrate,ei.dte_entry,ei.exp_dte_when_posted) as dte_exch_rate,
             ei.exp_dte_when_posted as dte_entry,
             ei.state as status,
-            ei.bln_billable as bln_billable
+            ei.bln_billable as bln_billable           
         from {{ ref("dim_expense_item") }} as ei
         inner join project p on ei.key_project = p.key
         left join currency_conversion cc_proj on (
@@ -398,7 +399,8 @@ with
             te.cost_project_usd,
             te.status,
             te.bln_billable,
-            te.sfc_status
+            te.sfc_status,
+            te.location_worked
          from timesheet_entry te  
     ),
     --*********************************************************************************************************
@@ -431,6 +433,7 @@ with
             ei.status,
             ei.bln_billable,
             'N/A' as sfc_status,
+            'N/A' as location_worked 
          from expense_item ei 
          group by all
     ),
@@ -465,6 +468,7 @@ with
             apbi.status as status,
             apbi.bln_billable as bln_billable,
             'N/A' as sfc_status,
+            'N/A' as location_worked 
          from ap_bill_item apbi
          group by all
     ),
@@ -499,6 +503,7 @@ with
             ccte.status as status,
             ccte.bln_billable as bln_billable,
             'N/A' as sfc_status,
+            'N/A' as location_worked 
          from ccte_entry ccte
          group by all
     ),
@@ -623,6 +628,7 @@ select
      coalesce(billing_type,'') as billing_type,
      coalesce(root_parent_name,'') as root_parent_name,
      coalesce(notes,'') as notes,
+     coalesce(location_worked,'') as location_worked,
      cast(ifnull(amt_po, 0) as number(38,2)) as amt_po,
      cast(ifnull(amt_po_usd, 0) as number(38,2)) as amt_po_usd, 
      cast(ifnull(rate, 0) as number(38,2)) as rate,

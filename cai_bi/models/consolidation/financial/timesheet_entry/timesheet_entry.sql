@@ -173,7 +173,8 @@ sage_intacct as (
         si_timesheetentry.record_url as record_url,
         si_timesheetentry.statglentrylineno as stat_gl_entry_line_no,
         si_timesheetentry.state as state,
-        si_timesheetentry.taskname as task_name
+        si_timesheetentry.taskname as task_name,
+        null as location_worked
     from si_timesheetentry_filtered as si_timesheetentry
     inner join si_timesheet on si_timesheet.recordno = si_timesheetentry.timesheetkey
     left join billrate_currency on billrate_currency.timerecordno = si_timesheetentry.recordno
@@ -261,7 +262,8 @@ salesforce as (
         null as record_url,
         null as stat_gl_entry_line_no,
         th.pse_status_c as state,
-        tt.phase_code_name_c as task_name
+        tt.phase_code_name_c as task_name,
+        tt.location as location_worked
     from (
         select
             tt.id,
@@ -271,6 +273,7 @@ salesforce as (
             th.pse_resource_c,
             nullif(tt.pse_sunday_hours_c, 0) as hours,
             th.pse_sunday_notes_c as notes,
+            th.pse_location_sun_c as location,
             tt.created_by_id,
             tt.last_modified_by_id,
             tt.created_date,
@@ -295,6 +298,7 @@ salesforce as (
             th.pse_resource_c,
             nullif(tt.pse_monday_hours_c, 0) as hours,
             th.pse_monday_notes_c as notes,
+            th.pse_location_mon_c as location,
             tt.created_by_id,
             tt.last_modified_by_id,
             tt.created_date,
@@ -319,6 +323,7 @@ salesforce as (
             th.pse_resource_c,
             nullif(tt.pse_tuesday_hours_c, 0) as hours,
             th.pse_tuesday_notes_c as notes,
+            th.pse_location_tue_c as location,
             tt.created_by_id,
             tt.last_modified_by_id,
             tt.created_date,
@@ -343,6 +348,7 @@ salesforce as (
             th.pse_resource_c,
             nullif(tt.pse_wednesday_hours_c, 0) as hours,
             th.pse_wednesday_notes_c as notes,
+            th.pse_location_wed_c as location,
             tt.created_by_id,
             tt.last_modified_by_id,
             tt.created_date,
@@ -367,6 +373,7 @@ salesforce as (
             th.pse_resource_c,
             nullif(tt.pse_thursday_hours_c, 0) as hours,
             th.pse_thursday_notes_c as notes,
+            th.pse_location_thu_c as location,
             tt.created_by_id,
             tt.last_modified_by_id,
             tt.created_date,
@@ -391,6 +398,7 @@ salesforce as (
             th.pse_resource_c,
             nullif(tt.pse_friday_hours_c, 0) as hours,
             th.pse_friday_notes_c as notes,
+            th.pse_location_fri_c as location,
             tt.created_by_id,
             tt.last_modified_by_id,
             tt.created_date,
@@ -415,6 +423,7 @@ salesforce as (
             th.pse_resource_c,
             nullif(tt.pse_saturday_hours_c, 0) as hours,
             th.pse_saturday_notes_c as notes,
+            th.pse_location_sat_c as location,
             tt.created_by_id,
             tt.last_modified_by_id,
             tt.created_date,
@@ -536,5 +545,6 @@ SELECT
     record_url,
     stat_gl_entry_line_no,
     state,
-    task_name
+    task_name,
+    location_worked
 FROM final

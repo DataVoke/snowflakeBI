@@ -210,3 +210,5 @@ models:
         data_type: NUMBER(38,2)
       - name: BILL_RATE_EMPLOYEE_PROJECT_ENTITY
         data_type: NUMBER(38,2)
+      - name: LOCATION_WORKED
+        data_type: VARCHAR(5000)
