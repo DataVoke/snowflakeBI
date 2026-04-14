@@ -9,14 +9,21 @@
 with
 
     int as (select * from {{ ref('timesheet_entry') }}),
+    timesheet as (select key, state_worked, src_sys_key from {{ ref('timesheet') }}),
     sfc as (
-        select 
-            hash_link, 
-            sum(qty) as qty, 
-            listagg(notes, ', ') within group(order by notes) as notes
-        from int
-        where src_sys_key = 'sfc'
-        group by hash_link 
+        select hash_link, initcap(coalesce(location_worked, state_worked_sfc)) as location_worked, state, qty, notes
+        from (
+            select int.hash_link, 
+                int.location_worked as location_worked, 
+                int.state, 
+                sum(int.qty) as qty, 
+                listagg(t.state_worked, ', ') within group(order by t.state_worked) as state_worked_sfc, 
+                listagg(int.notes, ', ') within group(order by int.notes) as notes
+            from int
+            left join timesheet t on int.key_timesheet = t.key and t.src_sys_key = 'sfc'
+            where int.src_sys_key = 'sfc'
+            group by all
+        ) as sfc
     ),
     departments as (select * from {{ source('portal', 'departments') }} where _fivetran_deleted = false),
     locations as (select * from {{ source('portal', 'locations') }} where _fivetran_deleted = false),
@@ -180,14 +187,11 @@ with
         ifnull(
             cast(pay.hourly_pay_rate_cola_original * ifnull(cc_pay_to_project.fx_rate_mul,1) as number(38,2)),
             cast(ifnull(labor_gl_entry_cost_rate,0) * ifnull(cc_ic_to_project.fx_rate_mul,1) as number(38,2))
-        ) as employee_pay_hourly_rate_cola_project
+        ) as employee_pay_hourly_rate_cola_project,
+        initcap(ifnull(sfc.location_worked, t.state_worked)) as location_worked
     from int
-    left join (
-        select hash_link, state, sum(qty) as qty, listagg(notes, ', ') within group(order by notes) as notes
-        from int
-        where src_sys_key = 'sfc'
-        group by all
-    ) sfc on int.hash_link = sfc.hash_link 
+    left join timesheet t on int.key_timesheet = t.key
+    left join sfc on int.hash_link = sfc.hash_link 
     left join departments on int.department_id = departments.intacct_id
     left join locations on int.location_id = locations.intacct_id and locations.id != '55-1'
     left join locations_intacct on int.location_key = locations_intacct.recordno

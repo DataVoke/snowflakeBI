@@ -174,3 +174,5 @@ models:
         data_type: VARCHAR(5000)
       - name: TASK_NAME
         data_type: VARCHAR(5000)
+      - name: LOCATION_WORKED
+        data_type: VARCHAR(5000)
