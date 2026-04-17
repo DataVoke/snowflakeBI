@@ -12,11 +12,12 @@ with
     si_project           as (select * from {{ source('sage_intacct', 'project') }} where _fivetran_deleted = false),
     si_timesheetentry_filtered          as (
                             select 
-                                * 
-                            from si_timesheetentry
+                                te.* 
+                            from si_timesheetentry te
+                            inner join si_timesheet t on te.timesheetkey = t.recordno
                             qualify row_number() over (
-                                partition by projectid, employeeid, entrydate, taskkey 
-                                order by whenmodified desc
+                                partition by te.projectid, te.employeeid, te.entrydate, te.taskkey 
+                                order by te.whenmodified desc
                             ) = 1
                         ),
                         
