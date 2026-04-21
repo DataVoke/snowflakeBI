@@ -245,3 +245,11 @@ models:
         data_type: NUMBER(38,17)
       - name: TRAVEL_RATE
         data_type: NUMBER(38,17)
+      - name: BLN_LOCKED_FOR_CX
+        data_type: BOOLEAN
+      - name: BLN_CAI_CX_ENABLED
+        data_type: BOOLEAN
+      - name: BLN_CAI_PID_ENABLED
+        data_type: BOOLEAN
+      - name: BLN_CAI_SUMMARY_ENABLED
+        data_type: BOOLEAN

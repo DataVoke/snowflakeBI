@@ -132,7 +132,11 @@ sage_intacct as (
         termname as term_name,
         null as total_earned_value,
         null as total_number_of_tasks,
-        null as travel_rate
+        null as travel_rate,
+        null as bln_locked_for_cx,
+        null as bln_cai_cx_enabled,
+        null as bln_cai_pid_enabled,
+        null as bln_cai_summary_enabled
     from si_project
     left join si_location on si_location.locationid = si_project.locationid
 ),
@@ -252,7 +256,11 @@ salesforce as (
         null as term_name,
         sf_project.total_earned_value_c as total_earned_value,
         sf_project.pse_total_number_of_tasks_c as total_number_of_tasks,
-        null as travel_rate
+        null as travel_rate,
+        sf_project.locked_for_cx_use_c as bln_locked_for_cx,
+        sf_project.cx_enabled_c as bln_cai_cx_enabled,
+        sf_project.p_id_enabled_c as bln_cai_pid_enabled,
+        sf_project.cai_summary_enabled_c as bln_cai_summary_enabled
     from sf_project
     left join opportunity on opportunity.id = sf_project.pse_opportunity_c
     left join sf_pse_grp on sf_pse_grp.id = sf_project.pse_group_c
@@ -376,7 +384,11 @@ psatools as (
         term_id as term_name,
         null as total_earned_value,
         null as total_number_of_tasks,
-        travel_rate as travel_rate
+        travel_rate as travel_rate,
+        null as bln_locked_for_cx,
+        is_cx_enabled as bln_cai_cx_enabled,
+        is_pid_enabled_ as bln_cai_pid_enabled,
+        is_cai_summary_enabled as bln_cai_summary_enabled
     from psatools_projects
 ),
 
@@ -502,5 +514,9 @@ select
     term_name,
     total_earned_value,
     cast(total_number_of_tasks as number(38, 0)) as total_number_of_tasks,
-    travel_rate
+    travel_rate,
+    ifnull(bln_locked_for_cx, false) as bln_locked_for_cx,
+    ifnull(bln_cai_cx_enabled, false) as bln_cai_cx_enabled,
+    ifnull(bln_cai_pid_enabled, false) as bln_cai_pid_enabled,
+    ifnull(bln_cai_summary_enabled, false) as bln_cai_summary_enabled
 from final
