@@ -219,7 +219,11 @@ select
     int.term_name,
     sfc.total_earned_value,
     sfc.total_number_of_tasks,
-    pts.travel_rate
+    pts.travel_rate,
+    ifnull(sfc.bln_locked_for_cx, false) as bln_locked_for_cx,
+    ifnull(sfc.bln_cai_cx_enabled, false) as bln_cai_cx_enabled,
+    ifnull(sfc.bln_cai_pid_enabled, false) as bln_cai_pid_enabled,
+    ifnull(sfc.bln_cai_summary_enabled, false) as bln_cai_summary_enabled
 from int
 left join pts on int.hash_link = pts.hash_link
 left join sfc on int.hash_link = sfc.hash_link
