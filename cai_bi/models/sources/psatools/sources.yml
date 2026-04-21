@@ -32,6 +32,7 @@ sources:
       - name: personnel
       - name: phasecode
       - name: phasecodetype
+      - name: products
       - name: projects
       - name: projects_personnel
       - name: projects_phase_codes
@@ -46,6 +47,8 @@ sources:
       - name: scopepartitem
       - name: scopepartphasecodelink
       - name: standarddeliverable
+      - name: standard_phase_codes
+      - name: standard_phase_codes_product_links
       - name: standardestimate
       - name: subcontractedservice
       - name: travelclassification
