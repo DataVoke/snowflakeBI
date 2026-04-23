@@ -1155,9 +1155,9 @@ WITH
     -- Get prod data for timesheet aggregates
     select pto_hours,
         current_timestamp as dts_created_at,
-        'timesheet_entry_aggregates' as created_by,
+        '{{ this.name }}' as created_by,
         current_timestamp as dts_updated_at,
-        'timesheet_entry_aggregates' as updated_by,
+        '{{ this.name }}' as updated_by,
         concat(te.employee_id,'|', te.date_group_id,'|', te.type,'|', te.entity_grouping,'|', te.key_entity) as id,
         te.key_employee,
         te.key_entity,
