@@ -12,7 +12,36 @@ WITH
     currencies_active       as (select * from {{ ref("currencies_active") }}),
     fx_rates_timeseries     as (select * from {{ ref("ref_fx_rates_timeseries") }}),
     timesheet_entry         as (select * from {{ ref("dim_timesheet_entry") }}),
-    time_type_phase_codes   as (select * from {{ ref("time_type_phase_codes") }}),
+    spc_links               as (select * from {{ source("psatools", "standard_phase_codes_product_links") }}),
+    time_pto                as (select distinct phase_code
+                                from spc_links spcl
+                                where standard_phase_code_id in ('PTO','PAIDLEAVE','DULL','COMP','SICK','LTS','LTD')
+                            ),
+    time_internal_tvl       as (select distinct phase_code
+                                from spc_links spcl
+                                where phase_code in ('Internal TVL')
+                            ),
+    time_tvl                as (select distinct phase_code
+                                from spc_links spcl
+                                where phase_code in ('TVL')
+                            ),
+    time_disfun             as (select distinct phase_code
+                                from spc_links spcl
+                                where standard_phase_code_id in ('DISFUN')
+                            ),
+    time_nowork             as (select distinct phase_code
+                                from spc_links spcl
+                                where standard_phase_code_id in ('NOWORK')
+                            ),
+    time_internal           as (select distinct phase_code
+                                  from spc_links spcl
+                                  where spcl.standard_phase_code_id in ('PTO','PAIDLEAVE','DULL','COMP','SICK','NOWORK','DISFUN','LTS','LTD')
+                            ),
+    time_exclude_from_billable as (select distinct phase_code, standard_phase_code_id
+                                from spc_links spcl
+                                where spcl.standard_phase_code_id in ('PTO','PAIDLEAVE','DULL','COMP','SICK','NOWORK','DISFUN','LTS','LTD','UNPAIDLEAVE')
+                                    or phase_code in ('TVL', 'Internal TVL')
+                            ),
     portal_users_forecasts  as (select * from {{ source("portal", "users_forecasts") }}),
     portal_timeframes       as (select * from {{ source("portal", "timeframes") }}),
     portal_users            as (select * from {{ source("portal", "users") }}),
@@ -247,7 +276,7 @@ WITH
         select
             'Total' as type, 'Employee' as entity_grouping, 1 as type_sort, te.key_employee, key_entity_employee as key_entity, te.employee_id, te.date_group_id, te.date_group_type_id, te.date_group_year,
             sum(te.qty) as hours,
-            sum(iff(te.task_name not in (select phase_code from time_type_phase_codes where time_type = 'billable') and te.bln_billable = true, te.qty,0)) as hours_billable,
+            sum(iff(te.task_name not in (select phase_code from time_exclude_from_billable) and te.bln_billable = true, te.qty,0)) as hours_billable,
             
             -- get aggregates for entity
             currency_code_employee_entity as currency_code_entity,
@@ -276,7 +305,7 @@ WITH
         select
             'Total' as type, 'Project' as entity_grouping, 101 as type_sort, te.key_employee, key_entity_project as key_entity, te.employee_id, te.date_group_id, te.date_group_type_id, te.date_group_year,
             sum(te.qty) as hours,
-            sum(iff(te.task_name not in (select phase_code from time_type_phase_codes where time_type = 'billable') and te.bln_billable = true, te.qty,0)) as hours_billable,
+            sum(iff(te.task_name not in (select phase_code from time_exclude_from_billable) and te.bln_billable = true, te.qty,0)) as hours_billable,
             
             -- get aggregates for entity
             currency_code_project_entity as currency_code_entity,
@@ -347,7 +376,7 @@ WITH
                 cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
                 cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
             from base_timesheet_entry as te
-            where te.task_name not in (select phase_code from time_type_phase_codes where time_type = 'billable') and te.bln_billable = true
+            where te.task_name not in (select phase_code from time_exclude_from_billable) and te.bln_billable = true
             group by all
             union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -407,7 +436,7 @@ WITH
                 cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
                 cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
             from base_timesheet_entry as te
-            where te.task_name not in (select phase_code from time_type_phase_codes where time_type = 'billable') and te.bln_billable = true
+            where te.task_name not in (select phase_code from time_exclude_from_billable) and te.bln_billable = true
             group by all
             union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -467,7 +496,7 @@ WITH
                 cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
                 cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
             from base_timesheet_entry as te
-            where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'pto')
+            where te.task_name in (select phase_code from time_pto) and te.bln_billable = false
             group by all
             union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -527,7 +556,7 @@ WITH
                 cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
                 cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
             from base_timesheet_entry as te
-            where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'pto')
+            where te.task_name in (select phase_code from time_pto) and te.bln_billable = false
             group by all
             union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -587,9 +616,12 @@ WITH
                 cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
                 cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
             from base_timesheet_entry as te
-            where (te.task_name in (select phase_code from time_type_phase_codes where time_type = 'internaltvl'))
-            or (te.task_name in (select phase_code from time_type_phase_codes where time_type = 'tvl') and te.bln_billable=false)
-            or (te.task_name not in (select phase_code from time_type_phase_codes where time_type in ('internal','disfun','nowork')) and te.bln_billable=false)
+            where (
+                te.task_name in (select phase_code from time_internal_tvl))
+                or (te.task_name in (select phase_code from time_tvl) and te.bln_billable=false)
+                or (te.task_name not in (select phase_code from time_internal) 
+                and te.bln_billable=false
+            )
             group by all
             union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -649,9 +681,12 @@ WITH
                 cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
                 cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
             from base_timesheet_entry as te
-            where (te.task_name in (select phase_code from time_type_phase_codes where time_type = 'internaltvl'))
-            or (te.task_name in (select phase_code from time_type_phase_codes where time_type = 'tvl') and te.bln_billable=false)
-            or (te.task_name not in (select phase_code from time_type_phase_codes where time_type in ('internal','disfun','nowork')) and te.bln_billable=false)
+            where (
+                te.task_name in (select phase_code from time_internal_tvl))
+                or (te.task_name in (select phase_code from time_tvl) and te.bln_billable=false)
+                or (te.task_name not in (select phase_code from time_internal) 
+                and te.bln_billable=false
+            )
             group by all
             union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -711,7 +746,7 @@ WITH
                 cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
                 cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
             from base_timesheet_entry as te
-            where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'tvl') and te.bln_billable = true
+            where te.task_name in (select phase_code from time_tvl) and te.bln_billable = true
             group by all
             union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -771,7 +806,7 @@ WITH
                 cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
                 cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
             from base_timesheet_entry as te
-            where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'tvl') and te.bln_billable = true
+            where te.task_name in (select phase_code from time_tvl) and te.bln_billable = true
             group by all
             union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -831,7 +866,7 @@ WITH
                 cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
                 cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
             from base_timesheet_entry as te
-            where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'disfun')
+            where te.task_name in (select phase_code from time_disfun)
             group by all
         union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -891,7 +926,7 @@ WITH
                 cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
                 cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
             from base_timesheet_entry as te
-            where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'disfun')
+            where te.task_name in (select phase_code from time_disfun)
             group by all
         union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -951,7 +986,7 @@ WITH
                 cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
                 cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
             from base_timesheet_entry as te
-            where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'nowork') and te.bln_billable = false
+            where te.task_name in (select phase_code from time_nowork) and te.bln_billable = false
             group by all
         union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -1011,7 +1046,7 @@ WITH
                 cast(div0(amt_cost_usd, hours) as number(38,2)) as avg_cost_rate_usd,
                 cast(div0(amt_cost_cola_usd, hours) as number(38,2)) as avg_cost_rate_cola_usd
             from base_timesheet_entry as te
-            where te.task_name in (select phase_code from time_type_phase_codes where time_type = 'nowork')
+            where te.task_name in (select phase_code from time_nowork)
             group by all
         union (
                 select key_employee, key_entity, employee_id, date_group_id, date_group_type_id, date_group_year, hours, hours_billable, currency_code_entity, amt_bill_entity, amt_cost_entity, 
@@ -1123,7 +1158,7 @@ WITH
         '{{ this.name }}' as created_by,
         current_timestamp as dts_updated_at,
         '{{ this.name }}' as updated_by,
-        concat(te.employee_id, te.date_group_id, te.type) as id,
+        concat(te.employee_id,'|', te.date_group_id,'|', te.type,'|', te.entity_grouping,'|', te.key_entity) as id,
         te.key_employee,
         te.key_entity,
         te.type,
