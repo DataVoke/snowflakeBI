@@ -27,7 +27,7 @@ concat(l.id,'|3') as id,
         left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
         left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
         left join {{ source('portal', 'practices') }} p on p.id = 3
-        where practice_id like '%|3|%' and r.visible = true
+        where practice_id like '%|3|%' and r.visible = true and l._fivetran_deleted = false
 ),
 
 practice_2 as (
@@ -53,7 +53,7 @@ practice_2 as (
         left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
         left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
         left join {{ source('portal', 'practices') }} p on p.id = 2 
-            where practice_id like '%|2|%' and r.visible = true
+            where practice_id like '%|2|%' and r.visible = true and l._fivetran_deleted = false
 ),
 
 practice_4 as (
@@ -79,7 +79,7 @@ practice_4 as (
         left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
         left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
         left join {{ source('portal', 'practices') }} p on p.id = 4 
-            where practice_id like '%|4|%' and r.visible = true
+            where practice_id like '%|4|%' and r.visible = true and l._fivetran_deleted = false
 )
 ,
 
@@ -106,7 +106,7 @@ practice_5 as (
         left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
         left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
         left join {{ source('portal', 'practices') }} p on p.id = 5
-            where practice_id like '%|5|%' and r.visible = true
+            where practice_id like '%|5|%' and r.visible = true and l._fivetran_deleted = false
 ),
 practice_internal as (
             select 
@@ -130,7 +130,7 @@ practice_internal as (
         from {{ source('portal', 'reporting_groups_locations') }} l
         left join {{ source('portal', 'reporting_groups') }} r on l.group_id=r.id
         left join {{ source('portal', 'locations') }} loc on l.location_id = loc.id
-             where r.parent_id = 'INT1000' or r.id IN ('INT1000', 'ALL')  and r.visible = true
+             where r.parent_id = 'INT1000' or r.id IN ('INT1000', 'ALL')  and r.visible = true and l._fivetran_deleted = false
 )
 
 select
