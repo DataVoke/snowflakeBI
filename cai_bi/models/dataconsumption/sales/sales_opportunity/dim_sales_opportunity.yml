@@ -164,6 +164,8 @@ models:
         data_type: VARCHAR(5000)
       - name: DTE_CLOSE
         data_type: DATE
+      - name: DTE_PROPOSAL_DUE
+        data_type: TIMESTAMP_TZ
       - name: DTE_CUSTOMER_PO_AWARDED
         data_type: DATE
       - name: DTE_ESTIMATED_PROJECT_END
