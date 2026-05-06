@@ -17,7 +17,7 @@
               nullif(tt.pse_thursday_hours_c, 0) IS NOT NULL OR
               nullif(tt.pse_friday_hours_c, 0) IS NOT NULL OR
               nullif(tt.pse_saturday_hours_c, 0) IS NOT NULL
-          ) and tt._fivetran_deleted = false
+          ) and tt._fivetran_deleted = false and th._fivetran_deleted = false
     )
     SELECT 1
     WHERE (SELECT cnt FROM model_count) != (SELECT cnt FROM source_count)
