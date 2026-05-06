@@ -108,6 +108,7 @@ select
     reviewer_4.key as key_reviewer_4,
     reviewer_5.key as key_reviewer_5,
     vice_president.key as key_vice_president,
+    proposal_lead.key as key_proposal_lead,
     proposal.estimate_id,
     proposal.src_created_by_id,
     proposal.src_modified_by_id,
@@ -206,6 +207,9 @@ select
     vice_president.display_name as vice_president_name,
     vice_president.display_name_lf as vice_president_name_lf,
     vice_president.email_address_work as vice_president_email,
+    proposal_lead.display_name as proposal_lead_name,
+    proposal_lead.display_name_lf as proposal_lead_name_lf,
+    proposal_lead.email_address_work as proposal_lead_email,
     proposal.key_account_owner as sfc_account_owner_id,
     proposal.key_approver_1 as sfc_approver_1_id,
     proposal.key_approver_2 as sfc_approver_2_id,
@@ -227,7 +231,8 @@ select
     proposal.key_reviewer_3 as sfc_reviewer_3_id,
     proposal.key_reviewer_4 as sfc_reviewer_4_id,
     proposal.key_reviewer_5 as sfc_reviewer_5_id,
-    proposal.key_vice_president as sfc_vice_president_id
+    proposal.key_vice_president as sfc_vice_president_id,
+    proposal.key_proposal_lead as sfc_proposal_lead_id,
 from proposal
 left join opportunity on proposal.key_opportunity = opportunity.key
 left join opportunity as parent_opportunity on opportunity.key_parent_opportunity = parent_opportunity.key
@@ -261,6 +266,7 @@ left join all_employees as reviewer_2 on proposal.key_reviewer_2 = reviewer_2.sf
 left join all_employees as reviewer_3 on proposal.key_reviewer_3 = reviewer_3.sfc_user_id
 left join all_employees as reviewer_4 on proposal.key_reviewer_4 = reviewer_4.sfc_user_id
 left join all_employees as reviewer_5 on proposal.key_reviewer_5 = reviewer_5.sfc_user_id
+left join all_employees as proposal_lead on proposal.key_proposal_lead = proposal_lead.sfc_user_id
 left join all_employees as vice_president on proposal.key_vice_president = vice_president.sfc_user_id
 left join proposal_discounts on proposal.key = proposal_discounts.key_proposal
 left join psa_estimates on proposal.estimate_id = psa_estimates.estimateid
