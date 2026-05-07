@@ -71,6 +71,8 @@ final as (
         md5(reviewer_5_c) as hash_key_reviewer_5,
         vice_president_c as key_vice_president,
         md5(vice_president_c) as hash_key_vice_president,
+        proposal_lead_c as key_proposal_lead,
+        md5(proposal_lead_c) as hash_key_proposal_lead,
         estimate_id_c as estimate_id,
         created_by_id as src_created_by_id,
         last_modified_by_id as src_modified_by_id,

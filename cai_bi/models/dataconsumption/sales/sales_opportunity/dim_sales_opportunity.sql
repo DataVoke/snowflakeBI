@@ -162,6 +162,7 @@ select
     silver_oppty.currency_iso_code,
     silver_oppty.description,
     silver_oppty.dte_close,
+    silver_oppty.dte_proposal_due,
     silver_oppty.dte_customer_po_awarded,
     silver_oppty.dte_estimated_project_end,
     silver_oppty.dte_estimated_project_start,
