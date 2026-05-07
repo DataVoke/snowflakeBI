@@ -133,6 +133,10 @@ models:
         data_type: VARCHAR(32)
       - name: HASH_KEY_VICE_PRESIDENT
         data_type: VARCHAR(5000)
+      - name: KEY_PROPOSAL_LEAD
+        data_type: VARCHAR(32)
+      - name: HASH_KEY_PROPOSAL_LEAD
+        data_type: VARCHAR(5000)
       - name: ESTIMATE_ID
         data_type: VARCHAR(5000)
       - name: SRC_CREATED_BY_ID
