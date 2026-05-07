@@ -104,7 +104,7 @@ select
     inv.trx_discountapplied as qty_trx_discount_applied,
     inv.trx_totalselected as qty_trx_total_selected,
     cast(inv.vat_rate as number(38,17)) as rate_vat,
-    inv.reclaim as qty_reclaim,
+    cast(inv.reclaim as number(38,0)) as qty_reclaim,
     inv.recordtype as record_type,
     inv.record_url as record_url,
     inv.retainagepercentage as qty_retain_age_percentage,
