@@ -93,6 +93,7 @@ final as (
         sfc_opportunity.estimated_project_start_date_c as dte_estimated_project_start,
         sfc_opportunity.last_activity_date as dte_last_activity,
         sfc_opportunity.proposal_submitted_date_c as dte_proposal_submitted,
+        sfc_opportunity.proposal_due_date_c as dte_proposal_due,
         sfc_opportunity.stage_last_updated_c as dte_stage_last_updated,
         cast (sfc_opportunity.last_stage_change_date as timestamp_tz) as dts_last_stage_change,
         cast (sfc_opportunity.created_date as timestamp_tz) as dts_src_created,
