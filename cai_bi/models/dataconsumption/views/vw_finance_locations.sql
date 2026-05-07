@@ -2,7 +2,7 @@
     config(
         materialized="view",
         schema="dataconsumption",
-        alias="vw_finance_location"
+        alias="vw_finance_locations"
     )
 }}
 
