@@ -178,7 +178,7 @@ models:
       - name: DTE_PROPOSAL_SUBMITTED
         data_type: DATE
       - name: DTE_PROPOSAL_DUE
-        data_type: TIMESTAMP_TZ
+        data_type: TIMESTAMP_TZ(9)
       - name: DTE_STAGE_LAST_UPDATED
         data_type: DATE
       - name: DTS_LAST_STAGE_CHANGE
