@@ -30,17 +30,28 @@ Repo for CAI BI Snowflake account
 
 ### Typical dbt commands
 
-Testing new models:
-    - `dbt run` to execute the models
-        - `dbt run --models <model_name>` to run a specific model
-        - `dbt run --select <model_name>` to select specific models to run
-        - `dbt run --select <model_name> --debug` to run a model with debug information
-    - `dbt test` to run tests on your models
-        - `dbt test --models <model_name>` to test a specific model
-        - `dbt test --select <model_name>` to select specific models to test
-        - `dbt test --select <model_name> --debug` to test a model with debug information
-    - `dbt docs generate` to create documentation for the models
-    - `dbt docs serve` to serve the documentation locally
+#### Run models    
+`dbt run` to execute the models
+    
+`dbt run --models <model_name>` to run a specific model
+
+`dbt run --select <model_name>` to select specific models to run
+
+`dbt run --select <model_name> --debug` to run a model with debug information
+
+#### Test models
+`dbt test` to run tests on your models
+
+`dbt test --models <model_name>` to test a specific model
+
+`dbt test --select <model_name>` to select specific models to test
+
+`dbt test --select <model_name> --debug` to test a model with debug information
+
+#### Docs        
+`dbt docs generate` to create documentation for the models
+
+`dbt docs serve` to serve the documentation locally
 
 ## Template for ~/.dbt/profiles.yml
 
