@@ -12,6 +12,12 @@ Repo for CAI BI Snowflake account
 ## Usage
 
 1. Clone the repository
+
+    ```bash
+        $git clone git@github.com:DataVoke/snowflakeBI.git
+        $cd snowflakeBI
+    ```
+    
 2. Create a virtual environment and activate it:
 
     ```bash
