@@ -15,8 +15,8 @@ Repo for CAI BI Snowflake account
 2. Create a virtual environment and activate it:
 
     ```bash
-        $python -m venv venv
-        $source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+        $python -m venv <venv_name>
+        $source <venv_name>/bin/activate  # On Windows, use `venv\Scripts\activate`
     ```
 
 3. Install the required packages using `pip install -r requirements.txt`
