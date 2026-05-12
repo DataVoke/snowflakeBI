@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: sage_intacct_gl
+    description: "source tables from sage intacct gl"
+    database: prod_bi_raw
+    schema: sage_intacct_gl
+    tables:
+      - name: acct_range
+      - name: gl_account
+      - name: gl_acct_grp
+      - name: gl_acct_grp_member
+      - name: gl_batch
+      - name: gl_detail
+      - name: gl_entry
+      - name: gl_journal
