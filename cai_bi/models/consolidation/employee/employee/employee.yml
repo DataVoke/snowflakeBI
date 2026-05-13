@@ -3,8 +3,9 @@ version: 2
 models:
   - name: employee
     description: "Consolidated employee dimension combining UKG, Salesforce, Sage Intacct, and Portal sources."
-    contract:
-      enforced: true
+    config:
+      contract:
+        enforced: true
     data_tests:
       - employee_source_count_match_portal
       - employee_source_count_match_sage
