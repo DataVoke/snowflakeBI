@@ -26,6 +26,33 @@ with
     sf_project          as (select * from {{ source('salesforce', 'pse_proj_c') }} where is_deleted = false),
     sf_contact          as (select * from {{ source('salesforce', 'contact') }} where is_deleted = false),
     sf_projecttask      as (select * from {{ source('salesforce', 'pse_project_task_c') }} where is_deleted = false),
+    rate_exceptions     as (
+                            select 
+                                UUID_STRING() as recordno, 
+                                cast(u.intacct_employee_record_no as number(38,0)) as employeekey, 
+                                u.intacct_employee_id as employeeid, 
+                                cast(p.int_record_no as number(38,0)) as projectkey,
+                                p.int_project_id as projectid,
+                                cast(i.recordno as number(38,0)) as itemkey,
+                                ex.item_id as itemid,
+                                e.contact_name as employeecontactname,
+                                ex.effective_date as startdate,  
+                                ex.rate as billingrate,
+                            from {{ source('psatools', 'project_personnel_exceptions') }} ex
+                            left join {{ source('portal', 'users') }} u on ex.user_id = u.id
+                            left join {{ source('psatools', 'projects') }} p on ex.project_id = p.id
+                            left join {{ source('sage_intacct', 'employee') }} e on u.intacct_employee_record_no = e.recordno
+                            left join {{ source('sage_intacct', 'item') }} i on ex.item_id = i.itemid
+                            where ex._fivetran_deleted = false
+    ),
+    si_project_resources_combined as (
+        select recordno, employeekey, employeeid, projectkey, projectid, itemkey, itemid, employeecontactname, startdate, billingrate
+        from si_project_resources
+        union (
+            select recordno, employeekey, employeeid, projectkey, projectid, itemkey, itemid, employeecontactname, startdate, billingrate
+            from rate_exceptions
+        )
+    ),  
     billrate_currency   as (
         with base as (
             select 
@@ -41,7 +68,7 @@ with
                 p.currency, 
                 ifnull(pr.startdate, '1900-01-01') as effectivedate, 
                 concat(ifnull(pr.employeeid,''), ifnull(pr.projectid,''), ifnull(pr.itemid,'')) as currentid
-            from si_project_resources pr
+            from si_project_resources_combined pr
             left join si_project p on (pr.projectid = p.projectid)
         ),
         with_date_ranges as (
