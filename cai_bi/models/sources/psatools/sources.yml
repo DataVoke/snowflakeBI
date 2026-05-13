@@ -35,6 +35,7 @@ sources:
       - name: products
       - name: projects
       - name: projects_personnel
+      - name: project_personnel_exceptions
       - name: projects_phase_codes
       - name: projects_tasks
       - name: ratecard
