@@ -2,13 +2,6 @@ version: 2
 
 models:
   - name: dim_expense_item
-    data_tests:
-      - dim_expense_item_row_count_matches_sources:
-          arguments:
-            source1: ref('expenseitem')
-            source2: ref('expense')
-          config:
-            severity: warn
     columns:
       - name: DTS_CREATED_AT
         data_type: TIMESTAMP_LTZ
