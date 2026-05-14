@@ -1,0 +1,4 @@
+# Use pinned versions of dbt and the Snowflake connector to ensure compatibility and stability.
+dbt-core==1.10.13
+dbt-snowflake==1.9.4
+snowflake-connector-python
