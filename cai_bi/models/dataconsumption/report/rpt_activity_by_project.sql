@@ -85,7 +85,7 @@ with
     ),
 
     --*********************************************************************************************************
-     -- time entry reference query
+    -- time entry reference query
     timesheet_entry as (
         select 
             te.key,
@@ -116,7 +116,8 @@ with
             te.state as status, 
             te.bln_billable as bln_billable, 
             te.sfc_status,
-            te.location_worked
+            te.location_worked,
+            te.dte_entry as dte_when_posted
         from {{ ref("dim_timesheet_entry") }} as te
         inner join project p on te.key_project = p.key
         left join currency_conversion cc_proj on (
@@ -207,7 +208,8 @@ with
             coalesce( ei.dte_org_exchrate,ei.dte_entry,ei.exp_dte_when_posted) as dte_exch_rate,
             ei.exp_dte_when_posted as dte_entry,
             ei.state as status,
-            ei.bln_billable as bln_billable
+            ei.bln_billable as bln_billable,
+            ei.exp_dte_when_posted as dte_when_posted
         from {{ ref("dim_expense_item") }} as ei
         inner join project p on ei.key_project = p.key
         left join currency_conversion cc_proj on (
@@ -276,7 +278,8 @@ with
             coalesce( apbi.dte_exch_rate,apbi.dte_entry,apbi.ap_dte_when_posted) as dte_exch_rate, 
             apbi.ap_dte_when_posted as dte_entry,
             apbi.state as status,
-            apbi.bln_billable as bln_billable
+            apbi.bln_billable as bln_billable,
+            apbi.ap_dte_when_posted as dte_when_posted
         from {{ ref("dim_ap_bill_item") }} apbi
         inner join project p on apbi.key_project = p.key
         left join currency_conversion cc_proj on (
@@ -355,7 +358,8 @@ with
             ccte.dts_src_created as dte_exch_rate, 
             ccte.cct_dts_src_created as dte_entry,
             ccte.cct_state as status,
-            ccte.bln_billable
+            ccte.bln_billable, 
+            ccte.dts_src_created as dte_when_posted
         from {{ ref("dim_cc_transaction_entry") }} ccte 
         inner join project p on ccte.key_project = p.key
         left join currency_conversion cc_proj on (
@@ -400,7 +404,8 @@ with
             te.status,
             te.bln_billable,
             te.sfc_status,
-            te.location_worked
+            te.location_worked,
+            te.dte_when_posted
          from timesheet_entry te  
     ),
     --*********************************************************************************************************
@@ -433,7 +438,8 @@ with
             ei.status,
             ei.bln_billable,
             'N/A' as sfc_status,
-            'N/A' as location_worked 
+            'N/A' as location_worked,
+            ei.dte_when_posted
          from expense_item ei 
          group by all
     ),
@@ -468,7 +474,8 @@ with
             apbi.status as status,
             apbi.bln_billable as bln_billable,
             'N/A' as sfc_status,
-            'N/A' as location_worked 
+            'N/A' as location_worked,
+            apbi.dte_when_posted 
          from ap_bill_item apbi
          group by all
     ),
@@ -503,7 +510,8 @@ with
             ccte.status as status,
             ccte.bln_billable as bln_billable,
             'N/A' as sfc_status,
-            'N/A' as location_worked 
+            'N/A' as location_worked,
+            ccte.dte_when_posted
          from ccte_entry ccte
          group by all
     ),
@@ -573,9 +581,9 @@ with
 --Results Query to table
 select 
      current_timestamp as dts_created_at,
-     'activity_by_project' as created_by,
+     '{{ this.name }}' as created_by,
      current_timestamp as dts_updated_at,
-     'activity_by_project' as updated_by,
+     '{{ this.name }}' as updated_by,
      key_project,
      coalesce(key_parent,'') as key_parent,
      coalesce(activity_type,'') as activity_type,
@@ -639,5 +647,6 @@ select
      cast(ifnull(cost_project_usd, 0) as number(38,2)) as cost_project_usd,
      status,
      ifnull(bln_billable, false) as bln_billable,
-     sfc_status
+     sfc_status,
+     cast(dte_when_posted as date) as dte_when_posted
 from final
