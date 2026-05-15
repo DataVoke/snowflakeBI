@@ -47,7 +47,11 @@ models:
         - name: DTS_SYSTEM_MODSTAMP
           data_type: TIMESTAMP_TZ(9)
         - name: EARNED_VALUE
-          data_type: NUMBER(35,17)
+          data_type: NUMBER(38,2)
+        - name: EARNED_VALUE_PROJECT
+          data_type: NUMBER(38,2)
+        - name: EARNED_VALUE_USD
+          data_type: NUMBER(38,2)
         - name: NAME
           data_type: VARCHAR(5000)
         - name: PERC_COMPLETE
@@ -55,7 +59,11 @@ models:
         - name: STATUS
           data_type: VARCHAR(5000)
         - name: STATUS_INDIRECT_TVL
-          data_type: NUMBER(35,17)
+          data_type: NUMBER(38,2)
+        - name: STATUS_INDIRECT_TVL_PROJECT
+          data_type: NUMBER(38,2)
+        - name: STATUS_INDIRECT_TVL_USD
+          data_type: NUMBER(38,2)
         - name: TYPE
           data_type: VARCHAR(5000)
         - name: PROJECT_NAME
