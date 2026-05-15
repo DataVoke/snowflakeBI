@@ -76,7 +76,30 @@ locations_intacct as (
 dim_employee as (
     select * from {{ref('dim_employee' )}}
 ),
-forex_filtered as ( select * from {{ ref('ref_fx_rates_timeseries')}} where to_curr = 'USD' )
+currency_conversion as (
+        select 
+            frm_curr, 
+            to_curr, 
+            date, 
+            fx_rate_mul,
+            fx_rate_div
+        from {{ ref('ref_fx_rates_timeseries')}}  as cc
+        where frm_curr in (select currency from {{ ref("currencies_active") }})
+        and to_curr = 'USD'
+),
+opportunities as (
+        select 
+            key, 
+            scope_type_c, 
+            cast((ifnull(amt,0) + ifnull(amt_child_opportunities,0)) as number(38,2)) as bac,
+            cast(((ifnull(amt,0) * ifnull(cc_usd.fx_rate_mul,1)) + (ifnull(amt_child_opportunities,0) * ifnull(cc_usd.fx_rate_mul,1))) as number(38,2)) as bac_usd,
+        from {{ ref('sales_opportunity') }}
+        left join currency_conversion cc_usd on (
+            upper(cc_usd.frm_curr) = upper(currency_iso_code)
+            and cc_usd.to_curr = 'USD'
+            and cc_usd.date = coalesce(dte_close, dte_proposal_submitted, dte_estimated_project_start)
+        )
+)
 
 select
     current_timestamp as dts_created_at,
@@ -132,6 +155,7 @@ select
     sfc.opportunity_id as key_opportunity,
     ifnull(por_pract.record_id, por_pract_bkup.record_id) as key_practice,
     employee_ukg.key as key_project_manager,
+    accountant_manager_ukg.key as key_project_accountant,
     por_pract_area.record_id as key_practice_area,
 
     por_dep.display_name as department_name,
@@ -149,6 +173,9 @@ select
     asst_manager_por.display_name as assistant_project_manager_name,
     asst_manager_por.display_name_lf as assistant_project_manager_name_lf,
     asst_manager_por.email_address_work as assistant_project_manager_email,
+    accountant_manager_ukg.display_name as project_accountant_name,
+    accountant_manager_ukg.display_name_lf as project_accountant_name_lf,
+    accountant_manager_ukg.email_address_work as project_accountant_email,
     por_region.key_regional_manager,
     por_region.regional_manager_email_address,
     por_region.regional_manager_name,
@@ -192,7 +219,6 @@ select
     pts.dts_sfc_last_task_sync,
     int.dts_src_created,
     int.dts_src_modified,
-    --sfc.group_name,
     int.invoice_currency,
     pts.last_resource_plan_review_by,
     pts.last_synced_status,
@@ -204,7 +230,7 @@ select
     coalesce(ex.fx_rate_div,1) as rate_div,
     coalesce(ex.fx_rate_mul,1) as rate_mul,
     coalesce(round(int.amt_po,2),0) as amt_po ,
-    coalesce(round(case when rate_div >={{ var('rate_threshold') }} then int.amt_po/rate_div else int.amt_po * rate_mul end,2),0) as amt_po_usd,
+    cast(int.amt_po * coalesce(ex.fx_rate_mul,1) as number(38,2)) as amt_po_usd,
     int.po_number,
     pts.portal_project_code,
     int.project_category,
@@ -223,7 +249,11 @@ select
     ifnull(sfc.bln_locked_for_cx, false) as bln_locked_for_cx,
     ifnull(sfc.bln_cai_cx_enabled, false) as bln_cai_cx_enabled,
     ifnull(sfc.bln_cai_pid_enabled, false) as bln_cai_pid_enabled,
-    ifnull(sfc.bln_cai_summary_enabled, false) as bln_cai_summary_enabled
+    ifnull(sfc.bln_cai_summary_enabled, false) as bln_cai_summary_enabled,
+    pts.project_status as pts_status,
+    o.scope_type_c as scope_type,
+    o.bac as amt_bac,
+    o.bac_usd as amt_bac_usd
 from int
 left join pts on int.hash_link = pts.hash_link
 left join sfc on int.hash_link = sfc.hash_link
@@ -232,6 +262,8 @@ left join employee_sfc on sfc.client_manager_id = employee_sfc.key
 left join employee_ukg on employee_int.hash_link = employee_ukg.hash_link
 left join employee_ukg client_manager_ukg on employee_sfc.hash_link = client_manager_ukg.hash_link
 left join employee_por asst_manager_por on pts.assistant_project_manager_id = asst_manager_por.key
+left join employee_sfc accountant_manager_sfc on sfc.project_accountant_id = accountant_manager_sfc.key
+left join employee_ukg accountant_manager_ukg on accountant_manager_sfc.hash_link = accountant_manager_ukg.hash_link
 left join por_dep on int.department_id = por_dep.intacct_id
 left join por_grp on sfc.group_id = por_grp.salesforce_id
 left join por_pract_area on int.department_id = por_pract_area.intacct_id
@@ -242,9 +274,8 @@ left join por_region on por_region.id = por_loc.region_id
 left join locations_intacct on int.project_location_key = locations_intacct.recordno
 left join por_ent on coalesce(locations_intacct.parentkey,int.project_location_key) = por_ent.id
 left join dim_employee on dim_employee.key = employee_ukg.key
---left join por_ent on por_loc.entity_id = por_ent.id
-left join forex_filtered ex on (int.currency_iso_code = ex.frm_curr )
+left join opportunities o on sfc.opportunity_id = o.key
+left join currency_conversion ex on (int.currency_iso_code = ex.frm_curr )
         and ex.to_curr = 'USD'
         and ex.date = date(dte_conversion_rate)
 where lower(int.project_type) <> 'client site'
---qualify row_number() over ( partition by int.key order by ex.date desc ) =1

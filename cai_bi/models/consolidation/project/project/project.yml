@@ -49,6 +49,8 @@ models:
         data_type: VARCHAR(5000)
       - name: ASSISTANT_PROJECT_MANAGER_ID
         data_type: VARCHAR(5000)
+      - name: PROJECT_ACCOUNTANT_ID
+        data_type: VARCHAR(5000)
       - name: BILLTO_KEY
         data_type: NUMBER(38,0)
       - name: CLIENT_SITE_ID
