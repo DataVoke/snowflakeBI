@@ -30,6 +30,16 @@ with
     ),
     sf_users as (
         select * from {{ ref('sales_user') }} where src_sys_key = 'sfc' 
+    ),
+    currency_conversion as (
+        select 
+            frm_curr, 
+            to_curr, 
+            date, 
+            fx_rate_mul
+        from {{ ref('ref_fx_rates_timeseries')}}  as cc
+        where frm_curr in (select currency from {{ ref("currencies_active") }})
+        and to_curr in (select currency from {{ ref("currencies_active") }})
     )
 select 
     cast(current_timestamp as timestamp_tz) as dts_created_at,
@@ -50,11 +60,15 @@ select
     milestones.dts_src_created,
     milestones.dts_src_modified,
     milestones.dts_system_modstamp,
-    ifnull(milestones.earned_value,0) as earned_value,
+    cast(ifnull(milestones.earned_value,0) as number(38,2)) as earned_value,
+    cast(ifnull(milestones.earned_value,0) * ifnull(cc_proj.fx_rate_mul,1) as number(38,2)) as earned_value_project,
+    cast(ifnull(milestones.earned_value,0) * ifnull(cc_usd.fx_rate_mul,1) as number(38,2)) as earned_value_usd,
     milestones.name,
     ifnull(milestones.perc_complete,0) as perc_complete,
     milestones.status,
     ifnull(milestones.status_indirect_tvl,0) as status_indirect_tvl,
+    cast(ifnull(milestones.status_indirect_tvl,0) * ifnull(cc_proj.fx_rate_mul,1) as number(38,2)) as status_indirect_tvl_project,
+    cast(ifnull(milestones.status_indirect_tvl,0) * ifnull(cc_usd.fx_rate_mul,1) as number(38,2)) as status_indirect_tvl_usd,
     milestones.type,
     int_project.project_name,
     int_project.project_id,
@@ -76,5 +90,15 @@ left join all_employees as created_by on milestones.src_created_by_id = created_
 left join sf_users as sf_users_created on milestones.src_created_by_id = sf_users_created.key
 left join all_employees as modified_by on milestones.src_modified_by_id = modified_by.sfc_user_id
 left join sf_users as sf_users_modified on milestones.src_modified_by_id = sf_users_modified.key
+left join currency_conversion cc_proj on (
+                                                cc_proj.frm_curr = upper(coalesce(nullif(milestones.currency_iso_code,''),int_project.currency_iso_code, 'USD')) 
+                                                and cc_proj.to_curr = upper(ifnull(nullif(int_project.currency_iso_code,''),'USD'))
+                                                and cc_proj.date = ifnull(milestones.dte_milestone, int_project.dte_src_start)
+                                            )
+left join currency_conversion cc_usd on (
+                                                cc_usd.frm_curr = upper(coalesce(nullif(milestones.currency_iso_code,''),int_project.currency_iso_code, 'USD')) 
+                                                and cc_usd.to_curr = 'USD'
+                                                and cc_usd.date = ifnull(milestones.dte_milestone, int_project.dte_src_start)
+                                            )
 where milestones.src_sys_key='sfc'
 
